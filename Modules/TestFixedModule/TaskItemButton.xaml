@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="TestModule.TaskItemButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:TestModule"
+             mc:Ignorable="d" Width="Auto">
+    <UserControl.Resources>
+        <Style TargetType="Button" x:Key="TaskItemButtonButtonStyle">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="#01000000" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="IsManipulationEnabled"
+                    Value="{Binding IsActiveWindow, Mode=OneWay, FallbackValue=False, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="0" BorderBrush="#00000000" Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}" CornerRadius="0"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Border x:Name="PART_Active" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        IsHitTestVisible="False" Background="LightBlue" BorderBrush="LightBlue"
+                                        BorderThickness="0" Margin="0" Padding="0" Visibility="Hidden" />
+                                <Border x:Name="PART_Hover" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        IsHitTestVisible="False" Background="#40FFFFFF" BorderBrush="LightBlue"
+                                        BorderThickness="0,0,0,2" Margin="0" Padding="0" Visibility="Hidden" />
+                                <Border x:Name="PART_Pressed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        IsHitTestVisible="False" Background="#7FFFFFFF" BorderBrush="LightBlue"
+                                        BorderThickness="0,0,0,2" Margin="0" Padding="0" Visibility="Hidden" />
+                                <Border x:Name="PART_Idle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        IsHitTestVisible="False" Background="#00000000" BorderBrush="LightBlue"
+                                        BorderThickness="0" Margin="0" Padding="2,0" Visibility="Visible">
+                                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            IsHitTestVisible="False" Background="#00000000" BorderBrush="LightBlue"
+                                            BorderThickness="0,0,0,2" />
+                                </Border>
+                                <ContentControl Content="{TemplateBinding Content}"
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                IsHitTestVisible="True" IsEnabled="True" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Idle" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Hover" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="PART_Pressed" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="PART_Idle" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Hover" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Pressed" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="PART_Idle" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Hover" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Pressed" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsManipulationEnabled" Value="True">
+                                <Setter TargetName="PART_Active" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsManipulationEnabled" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Button x:Name="RootButton" Width="Auto" MaxWidth="160" Style="{DynamicResource TaskItemButtonButtonStyle}">
+        <StackPanel Orientation="Horizontal" Margin="10,0" IsHitTestVisible="False">
+            <Canvas x:Name="Icon" Width="32" Height="32" VerticalAlignment="Center" Margin="0"
+                    Background="{Binding WindowIcon, Mode=TwoWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
+                    IsHitTestVisible="False" />
+            <TextBlock x:Name="Title" VerticalAlignment="Center"
+                       Text="{Binding WindowTitle, Mode=TwoWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
+                       Foreground="{Binding Foreground, Mode=OneWay, FallbackValue=White, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                       Margin="4,0,0,0" IsHitTestVisible="False" />
+        </StackPanel>
+    </Button>
+</UserControl>
