@@ -3,13 +3,14 @@ A Windows shell supplement, one which aims to be not only modular, but extensibl
 
 ## Compatability
 *Ranking: Excellent, Good, Satisfactory, Needs improvement*
+
 | OS            | Compatability | Remarks |
 | ------------- |---------------|---|
-| Windows 10    | Excellent     | |
-| Windows 8.1   | Excellent     | |
-| Windows 7     | Excellent     | |
-| Windows Vista | Untested      | |
-| Windows XP    | Untested      | |
+| Windows 10    | Excellent     ||
+| Windows 8.1   | Excellent     ||
+| Windows 7     | Untested      ||
+| Windows Vista | Untested      ||
+| Windows XP    | Untested      ||
 | ReactOS       | Broken        | Silently crashes on startup|
 
 ### Dependencies and Frameworks
