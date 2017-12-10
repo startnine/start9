@@ -1,7 +1,8 @@
 # Start9
 A Windows shell supplement or replacement, one which aims to be not only modular, but extends to most needs.
 
-We are planning to ship 14 modules with Start9 out of the box:
+## Modules
+*We are planning to ship 14 modules with Start9 out of the box*:
 - 9600 menu
 - 9795 menu
 - 9879 menu
