@@ -1,6 +1,23 @@
 # Start9
 A Windows shell supplement, one which aims to be not only modular, but extends to most needs.
 
+We are planning to ship 14 modules with Start9 out of the box:
+- 9600 menu
+- 9795 menu
+- 9879 menu
+- 9926 menu
+- 10240 menu
+- 14393 menu
+- 15063 menu
+- 3790 Taskbar
+- 6000 Taskbar
+- 7601 Taskbar
+- macOS Dock
+- 4074 Sidebar
+- 9888 Notication Center
+- 10240 Notification Center
+
+
 ## Compatability
 *Ranking: Excellent, Good, Satisfactory, Needs Improvement, Broken*
 
