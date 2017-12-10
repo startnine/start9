@@ -22,4 +22,4 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
   - ControlzEx
   - Fluent.Ribbon
 
-Join our Discord for more information: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)]()
+Join our Discord for more information: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/6cpvxBS)
