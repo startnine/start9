@@ -1,10 +1,10 @@
 # Start9
-A Windows shell supplement, one which aims to be not only modular, but extensible to your heart’s content.
+A Windows shell supplement, one which aims to be not only modular, but extends to most needs.
 
 ## Compatability
-*Ranking: Excellent, Good, Satisfactory, Needs improvement*
+*Ranking: Excellent, Good, Satisfactory, Needs Improvement, Broken*
 
-| OS            | Compatability | Remarks |
+| OS            | Compatability | Notes |
 | ------------- |---------------|---|
 | Windows 10    | Excellent     ||
 | Windows 8.1   | Excellent     ||
