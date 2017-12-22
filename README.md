@@ -15,7 +15,7 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
 - 7601 Taskbar
 - macOS Dock
 - 4074 Sidebar
-- 9888 Notication Center
+- 9888 Notification Center
 - 10240 Notification Center
 
 
