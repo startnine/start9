@@ -72,7 +72,7 @@ namespace Start9.Api.Tools
 		{
 			var uiPoint = uiElement.PointToScreen(new System.Windows.Point(0, 0));
 
-			var uiDrawPoint = new Point((int) uiPoint.X, (int) uiPoint.Y);
+			var uiDrawPoint = new Point((int)ConvertPixelsToWpfUnits(uiPoint.X), (int)ConvertPixelsToWpfUnits(uiPoint.Y));
 			return uiDrawPoint;
 		}
 

@@ -22,26 +22,26 @@ namespace Start9.Api.Objects
 					var assembly = Assembly.Load(an);
 					if (assembly == null) continue;
 
-					foreach (var type in assembly.GetTypes())
-					{
-						var theseInterfaces = type.GetInterfaces().ToList();
+                    foreach (var type in assembly.GetTypes())
+                    {
+                        var theseInterfaces = type.GetInterfaces().ToList();
 
-						if (theseInterfaces.Contains(typeof(IFixedModule)))
-						{
-							var module = (IFixedModule) Activator.CreateInstance(type);
-							InstalledFixedModules.Add(module);
-							Debug.WriteLine(module + " ENABLED! (FIXED)");
-							module.ModuleEnabled();
-						}
+                        if (theseInterfaces.Contains(typeof(IFixedModule)))
+                        {
+                            var module = (IFixedModule)Activator.CreateInstance(type);
+                            InstalledFixedModules.Add(module);
+                            Debug.WriteLine(module + " ENABLED! (FIXED)");
+                            module.ModuleEnabled();
+                        }
 
-						if (theseInterfaces.Contains(typeof(ITransientModule)))
-						{
-							var module = (ITransientModule) Activator.CreateInstance(type);
-							InstalledTransientModules.Add(module);
-							Debug.WriteLine(module + " ENABLED! (TRANSIENT)");
-							module.ModuleEnabled();
-						}
-					}
+                        if (theseInterfaces.Contains(typeof(ITransientModule)))
+                        {
+                            var module = (ITransientModule)Activator.CreateInstance(type);
+                            InstalledTransientModules.Add(module);
+                            Debug.WriteLine(module + " ENABLED! (TRANSIENT)");
+                            module.ModuleEnabled();
+                        }
+                    }
 				}
 		}
 

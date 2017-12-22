@@ -114,6 +114,12 @@
         <Setter Property="Focusable" Value="False" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource PlexFocusVisualStyle}" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="320" ShadowDepth="3"
+                                              BlurRadius="10" Opacity="0.5" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -124,10 +130,6 @@
                                FontFamily="Marlett" FontSize="12" RenderOptions.EdgeMode="Aliased" IsTabStop="False"
                                Margin="0" Padding="0" />
                         <!--ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Focusable="False" IsTabStop="False"/-->
-                        <Grid.Effect>
-                            <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="320" ShadowDepth="3"
-                                              BlurRadius="10" Opacity="0.5" />
-                        </Grid.Effect>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -142,6 +144,24 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="GlassCaptionButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+        <Setter Property="Foreground" Value="#FFE6E6E6" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" Direction="90" ShadowDepth="0"
+                                              BlurRadius="2" Opacity="2" />
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="#FF7F7F7F" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="PlexWindowStyle" TargetType="{x:Type plex:PlexWindow}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="WindowStyle" Value="None" />
@@ -150,12 +170,12 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type plex:PlexWindow}">
-                    <Grid x:Name="WindowRoot">
-                        <DockPanel Margin="0" LastChildFill="True" Background="Transparent">
+                    <Grid x:Name="WindowRoot" Margin="0" >
+                        <DockPanel Margin="{TemplateBinding Padding}" LastChildFill="True" Background="Transparent">
                             <Grid x:Name="PART_Titlebar" HorizontalAlignment="Stretch" Margin="0"
                                   Height="{TemplateBinding TitleBarHeight}" Visibility="Visible" Opacity="1"
                                   DockPanel.Dock="Top">
@@ -301,7 +321,7 @@
                                 <ContentPresenter Content="{TemplateBinding Content}" />
                             </Border>
                         </DockPanel>
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="{TemplateBinding Padding}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -523,7 +543,6 @@
                             <Setter TargetName="FooterBorder" Property="CornerRadius" Value="0" />
                             <Setter TargetName="ActiveTitlebarBorder" Property="CornerRadius" Value="0" />
                             <Setter TargetName="InactiveTitlebarBorder" Property="CornerRadius" Value="0" />
-
                             <Setter TargetName="PART_ThumbBottom" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="PART_ThumbTop" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="PART_ThumbBottomRightCorner" Property="Visibility" Value="Hidden" />
@@ -532,7 +551,48 @@
                             <Setter TargetName="PART_ThumbBottomLeftCorner" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="PART_ThumbRight" Property="Visibility" Value="Hidden" />
                             <Setter TargetName="PART_ThumbLeft" Property="Visibility" Value="Hidden" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.0" From="0" To="7, 7, -7, -7"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.375" From="7, 7, -7, -7" To="107, 107, 93, 93">
+                                            <ThicknessAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </ThicknessAnimation.EasingFunction>
+                                        </ThicknessAnimation>
+                                        <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.376" Duration="0">
+                                            <DiscreteThicknessKeyFrame Value="0" KeyTime="0:0:0.0"/>
+                                        </ThicknessAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
+                        <!--MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Maximized" Value="False"/>
+                                <Condition Property="Minimized" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-DoubleAnimation Storyboard.TargetProperty="Width" BeginTime="0:0:0.0" Duration="0:0:0.375" From="{x:Static SystemParameters.PrimaryScreenWidth}" To="{TemplateBinding Width}"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" BeginTime="0:0:0.0" Duration="0:0:0.375" From="{x:Static SystemParameters.PrimaryScreenHeight}" To="{TemplateBinding Height}"/->
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin"
+                 BeginTime="0:0:0.0" Duration="0:0:0.375" From="100" To="0">
+                                            <ThicknessAnimation.EasingFunction>
+                                                <BackEase EasingMode="EaseOut" Amplitude="0.25" />
+                                            </ThicknessAnimation.EasingFunction>
+                                        </ThicknessAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
                 <!--ControlTemplate TargetType="{x:Type local:PlexWindow}">
@@ -570,6 +630,406 @@
                         <ContentPresenter Grid.Row="1"/>
                     </Grid>
                 </ControlTemplate-->
+            </Setter.Value>
+        </Setter>
+        <!--Style.Triggers>
+            <Trigger Property="Visibility" Value="Hidden">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                 BeginTime="0:0:0.0" Duration="0:0:0.4" From="1" To="0">
+                                <DoubleAnimation.EasingFunction>
+                                    <BackEase EasingMode="EaseOut" Amplitude="0.25" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetProperty="(Window.RenderTransform).(ScaleTransform.ScaleX)"
+                 BeginTime="0:0:0.0" Duration="0:0:0.4" From="1" To="0.75">
+                                <DoubleAnimation.EasingFunction>
+                                    <BackEase EasingMode="EaseOut" Amplitude="0.25" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                            <DoubleAnimation Storyboard.TargetProperty="(Window.RenderTransform).(ScaleTransform.ScaleY)"
+                 BeginTime="0:0:0.0" Duration="0:0:0.4" From="1" To="0.75">
+                                <DoubleAnimation.EasingFunction>
+                                    <BackEase EasingMode="EaseOut" Amplitude="0.25" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers-->
+    </Style>
+
+    <Style x:Key="PlexGlassWindowStyle" TargetType="{x:Type plex:PlexWindow}" BasedOn="{StaticResource PlexWindowStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type plex:PlexWindow}">
+                    <Grid x:Name="WindowRoot" Margin="0" >
+                        <DockPanel Margin="{TemplateBinding Padding}" LastChildFill="True" Background="Transparent">
+                            <Grid x:Name="PART_Titlebar" HorizontalAlignment="Stretch" Margin="0"
+                                  Height="{TemplateBinding TitleBarHeight}" Visibility="Visible" Opacity="1"
+                                  DockPanel.Dock="Top" Background="#01FFFFFF">
+                                <Grid x:Name="ActiveTitlebarBackground" Visibility="Visible">
+                                    <Border x:Name="ActiveTitlebarBorder" CornerRadius="12,12,0,0"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            BorderBrush="#C0000000"
+                                            Margin="0,0,0,-12" Padding="0" ClipToBounds="True">
+                                        <Grid>
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="384" Height="125">
+                                                <Canvas.Background>
+                                                    <RadialGradientBrush GradientOrigin="0,0" Center="0,0">
+                                                        <RadialGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#C0FFFFFF"/>
+                                                            <GradientStop Offset="1" Color="#00FFFFFF"/>
+                                                        </RadialGradientBrush.GradientStops>
+                                                    </RadialGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="384" Height="125">
+                                                <Canvas.Background>
+                                                    <RadialGradientBrush GradientOrigin="1,0" Center="1,0">
+                                                        <RadialGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#C0FFFFFF"/>
+                                                            <GradientStop Offset="1" Color="#00FFFFFF"/>
+                                                        </RadialGradientBrush.GradientStops>
+                                                    </RadialGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Border CornerRadius="12,12,0,0" BorderThickness="1,1,1,0" Background="Transparent" BorderBrush="#C0000000" Margin="0" Padding="0" ClipToBounds="True">
+                                                <Border CornerRadius="11,11,0,0" BorderThickness="1,1,1,0" Background="Transparent" BorderBrush="#C0FFFFFF" Margin="0" Padding="0"/>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="InactiveTitlebarBackground" Visibility="Hidden">
+                                    <Border x:Name="InactiveTitlebarBorder" CornerRadius="12,12,0,0"
+                                            BorderThickness="0,1,0,0"
+                                            Background="{DynamicResource InactiveTitlebarBackgroundBrush}"
+                                            BorderBrush="{DynamicResource InactiveTitlebarBorderBrush}"
+                                            Margin="0,0,0,-12" Padding="0" />
+                                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"
+                                            Margin="12,2,12,0"
+                                            Background="{DynamicResource InactiveTitlebarBorderBrush}" />
+                                </Grid>
+                                <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="16"
+                                        Margin="3">
+                                    <Canvas.Background>
+                                        <ImageBrush ImageSource="{TemplateBinding Icon}" />
+                                    </Canvas.Background>
+                                </Canvas>
+                                <Label Content="{TemplateBinding Title}" HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Top" HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center" Height="26" Margin="0,-2"
+                                       FontFamily="Segoe UI" FontSize="12" Foreground="White">
+                                    <Label.Effect>
+                                        <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="320"
+                                                          ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
+                                    </Label.Effect>
+                                </Label>
+                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top"
+                                            Orientation="Horizontal" Height="22" Margin="10,6">
+                                    <Button x:Name="PART_MinimizeButton" Width="18" VerticalAlignment="Stretch"
+                                            Style="{DynamicResource GlassCaptionButtonStyle}">
+                                        0
+                                    </Button>
+                                    <Grid Width="18" VerticalAlignment="Stretch" Margin="1,1,-1,-1">
+                                        <Button x:Name="PART_MaximizeButton" HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Style="{DynamicResource GlassCaptionButtonStyle}">
+                                            1
+                                        </Button>
+                                        <Button x:Name="PART_RestoreButton" HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Style="{DynamicResource GlassCaptionButtonStyle}" Visibility="Hidden">
+                                            2
+                                        </Button>
+                                    </Grid>
+                                    <Button x:Name="PART_CloseButton" Width="18" VerticalAlignment="Stretch"
+                                            Style="{DynamicResource GlassCaptionButtonStyle}">
+                                        r
+                                    </Button>
+                                </StackPanel>
+                                <ContentPresenter Content="{TemplateBinding TitleBarContent}" />
+                            </Grid>
+                            <Grid x:Name="ToolBar" HorizontalAlignment="Stretch" Margin="0"
+                                  Height="{TemplateBinding ToolBarHeight}" Visibility="Visible" DockPanel.Dock="Top">
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                                    <Grid Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Border x:Name="ToolBarBorder" CornerRadius="8,8,0,0" BorderThickness="1,1,1,0"
+                                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FF366AAF" />
+                                                        <GradientStop Offset="0.5" Color="#FF5F9CDA" />
+                                                        <GradientStop Offset="1" Color="#FF366AAF" />
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FF4D80C9" />
+                                                        <GradientStop Offset="0.5" Color="#FF85C0FA" />
+                                                        <GradientStop Offset="1" Color="#FF4D80C9" />
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Border.BorderBrush>
+                                            <Border x:Name="ToolBarSecondaryBorder" CornerRadius="8,8,0,0"
+                                                    BorderThickness="0,1,0,0" Background="#003566A4"
+                                                    BorderBrush="#FF3566A4" />
+                                        </Border>
+                                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="0">
+                                            <Canvas.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FF366AAF" />
+                                                        <GradientStop Offset="0.5" Color="#FF5F9CDA" />
+                                                        <GradientStop Offset="1" Color="#FF366AAF" />
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Canvas.Background>
+                                        </Canvas>
+                                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="1">
+                                            <Canvas.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FF5894D3" />
+                                                        <GradientStop Offset="0.5" Color="#FF81BEFC" />
+                                                        <GradientStop Offset="1" Color="#FF5894D3" />
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Canvas.Background>
+                                        </Canvas>
+                                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="2">
+                                            <Canvas.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FF3C70B5" />
+                                                        <GradientStop Offset="0.5" Color="#FF255898" />
+                                                        <GradientStop Offset="1" Color="#FF3C70B5" />
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Canvas.Background>
+                                        </Canvas>
+                                    </Grid>
+                                    <ContentPresenter Content="{TemplateBinding ToolBarContent}" />
+                                </Grid>
+                            </Grid>
+                            <Grid x:Name="Footer" HorizontalAlignment="Stretch" Margin="0"
+                                  Height="{TemplateBinding FooterHeight}" Visibility="Visible" DockPanel.Dock="Bottom">
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,-12,0,0">
+                                    <Border x:Name="FooterBorder" HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch" Background="{TemplateBinding FooterBrush}"
+                                            CornerRadius="0,0,12,12" />
+                                    <ContentPresenter Content="{TemplateBinding FooterContent}" />
+                                </Grid>
+                            </Grid>
+                            <Border x:Name="Body" CornerRadius="12" BorderBrush="Transparent" BorderThickness="0"
+                                    HorizontalAlignment="Stretch" Margin="0" Padding="0"
+                                    Background="{TemplateBinding BodyBrush}">
+                                <ContentPresenter Content="{TemplateBinding Content}" />
+                            </Border>
+                        </DockPanel>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Thumb x:Name="PART_ThumbBottom" HorizontalAlignment="Stretch" Cursor="SizeNS"
+                                   Grid.Column="0" Background="{x:Null}" Margin="3,0" Grid.ColumnSpan="3" Grid.Row="3"
+                                   Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbTop" HorizontalAlignment="Stretch" Cursor="SizeNS" Grid.Column="0"
+                                   Background="{x:Null}" Margin="3,0" Grid.ColumnSpan="3" Height="4"
+                                   Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbRight" Cursor="SizeWE" Grid.Column="2" Grid.RowSpan="4"
+                                   Background="{x:Null}" Margin="0,3" Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbLeft" Cursor="SizeWE" Grid.Column="0" Grid.RowSpan="4"
+                                   HorizontalContentAlignment="Right" Background="{x:Null}" Margin="0,3"
+                                   Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbBottomRightCorner" HorizontalAlignment="Right" Cursor="SizeNWSE"
+                                   Grid.Row="3" Grid.Column="3" Background="{x:Null}"
+                                   Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbTopRightCorner" HorizontalAlignment="Right" Cursor="SizeNESW"
+                                   Grid.Row="0" Grid.Column="2" Background="{x:Null}"
+                                   Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbTopLeftCorner" HorizontalAlignment="Left" Cursor="SizeNWSE"
+                                   Grid.Row="0" Grid.Column="0" Background="{x:Null}"
+                                   Style="{DynamicResource BorderThumb}" />
+                            <Thumb x:Name="PART_ThumbBottomLeftCorner" HorizontalAlignment="Left" Cursor="SizeNESW"
+                                   Grid.Row="3" Grid.Column="0" Background="{x:Null}"
+                                   Style="{DynamicResource BorderThumb}" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsActive" Value="True">
+                            <Setter TargetName="ActiveTitlebarBackground" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="InactiveTitlebarBackground" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="IsActive" Value="False">
+                            <Setter TargetName="ActiveTitlebarBackground" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="InactiveTitlebarBackground" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_MinimizeButton" Property="Foreground" Value="#FF89A4D2" />
+                            <Setter TargetName="PART_MaximizeButton" Property="Foreground" Value="#FF89A4D2" />
+                            <Setter TargetName="PART_RestoreButton" Property="Foreground" Value="#FF89A4D2" />
+                            <Setter TargetName="PART_CloseButton" Property="Foreground" Value="#FF89A4D2" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowToolBar" Value="True" />
+                                <Condition Property="ShowFooter" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="True" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="12,12,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="False" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="True" />
+                                <Condition Property="Maximized" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="12,12,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="False" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="True" />
+                                <Condition Property="Maximized" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowToolBar" Value="True" />
+                                <Condition Property="ShowFooter" Value="False" />
+                                <Condition Property="Maximized" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="0,0,12,12" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowToolBar" Value="True" />
+                                <Condition Property="ShowFooter" Value="False" />
+                                <Condition Property="Maximized" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="True" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="False" />
+                                <Condition Property="Maximized" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="12,12,12,12" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="True" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="False" />
+                                <Condition Property="Maximized" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="12,12,0,0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="False" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="False" />
+                                <Condition Property="Maximized" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="12,12,12,12" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="False" />
+                                <Condition Property="ShowToolBar" Value="False" />
+                                <Condition Property="ShowFooter" Value="False" />
+                                <Condition Property="Maximized" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Body" Property="CornerRadius" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowTitleBar" Value="False" />
+                                <Condition Property="ShowToolBar" Value="True" />
+                                <Condition Property="Maximized" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="ToolBarBorder" Property="CornerRadius" Value="0" />
+                                <Setter TargetName="ToolBarSecondaryBorder" Property="CornerRadius" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="ShowTitleBar" Value="False">
+                            <Setter Property="TitleBarHeight" Value="0" />
+                            <Setter TargetName="PART_Titlebar" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="ShowToolBar" Value="False">
+                            <Setter Property="ToolBarHeight" Value="0" />
+                            <Setter TargetName="ToolBar" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="ShowFooter" Value="False">
+                            <Setter Property="FooterHeight" Value="0" />
+                            <Setter TargetName="Footer" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="Maximized" Value="True">
+                            <Setter TargetName="WindowRoot" Property="Margin" Value="7, 7, -7, -7"/>
+                            <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_RestoreButton" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="FooterBorder" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="ActiveTitlebarBorder" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="InactiveTitlebarBorder" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="PART_ThumbBottom" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTop" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbBottomRightCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTopRightCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTopLeftCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbBottomLeftCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbRight" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbLeft" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

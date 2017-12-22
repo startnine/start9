@@ -20,7 +20,7 @@ namespace Start9.Api.Plex
 		public ShadowWindow(PlexWindow window)
 		{
 			InitializeComponent();
-			Tag = window;
+            /*Tag = window;
 			Activated += delegate
 			{
 				try
@@ -31,11 +31,11 @@ namespace Start9.Api.Plex
 				{
 					Debug.WriteLine(ex);
 				}
-			};
-			//ShadowGrid.Margin = new Thickness(Padding.Left * -1, Padding.Top * -1, Padding.Right * -1, Padding.Bottom * -1);
-		}
+			};*/
+            //ShadowGrid.Margin = new Thickness(Padding.Left * -1, Padding.Top * -1, Padding.Right * -1, Padding.Bottom * -1);
+        }
 
-		protected override void OnSourceInitialized(EventArgs e)
+        protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
 

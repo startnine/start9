@@ -22,17 +22,18 @@ namespace Start9.Api.Objects
 				{
 					WindowOpened?.Invoke(
 						new WindowEventArgs(new ProgramWindow(new IntPtr((sender as AutomationElement).Current.NativeWindowHandle))));
-				});
+                    AddClosedHandler((IntPtr)((sender as AutomationElement).Current.NativeWindowHandle));
+                });
 
-			/*Automation.AddAutomationEventHandler(
-			    WindowPattern.WindowClosedEvent,
-			    AutomationElement.RootElement,
-			    TreeScope.Subtree,
-			    (sender, e) =>
-			    {
-			        WindowClosed?.Invoke(new WindowEventArgs(new ProgramWindow(new IntPtr((sender as AutomationElement).Current.NativeWindowHandle))));
-			    });*/
-		}
+            /*Automation.AddAutomationEventHandler(
+                WindowPattern.WindowClosedEvent,
+                AutomationElement.RootElement,
+                TreeScope.Descendants,
+                (sender, e) =>
+                {
+                    WindowClosed?.Invoke(new WindowEventArgs(new ProgramWindow(new IntPtr((sender as AutomationElement).Current.NativeWindowHandle))));
+                });*/
+        }
 
 		public ProgramWindow(IntPtr hwnd)
 		{
@@ -104,6 +105,19 @@ namespace Start9.Api.Objects
 					yield return new ProgramWindow(hwnd);
 			}
 		}
+
+        private static void AddClosedHandler(IntPtr handle)
+        {
+            Automation.AddAutomationEventHandler(
+			    WindowPattern.WindowClosedEvent,
+			    AutomationElement.FromHandle(handle),
+			    TreeScope.Subtree,
+			    (sender, e) =>
+			    {
+                    Debug.WriteLine(handle.ToString() + " IS KILL");
+			        WindowClosed?.Invoke(new WindowEventArgs(new ProgramWindow(handle)));
+			    });
+        }
 
 		/// <summary>
 		///     Opens a new instance of the application that owns this window.

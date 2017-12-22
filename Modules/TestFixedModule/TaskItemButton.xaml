@@ -4,20 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TestModule"
+             xmlns:apicontrol="clr-namespace:Start9.Api.Objects.Controls;assembly=Start9.Api"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" Width="Auto">
     <UserControl.Resources>
+        <BitmapImage x:Key="TestBitmapImage"/>
+        <Thickness x:Key="TestThickness">10</Thickness>
+
+
         <Style TargetType="Button" x:Key="TaskItemButtonButtonStyle">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="#01000000" />
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="#FF404040" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="IsManipulationEnabled"
-                    Value="{Binding IsActiveWindow, Mode=OneWay, FallbackValue=False, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}" />
+            <Setter Property="IsManipulationEnabled" Value="{Binding Path=IsActiveWindow, FallbackValue=False, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -27,25 +32,26 @@
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Border x:Name="PART_Active" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="LightBlue" BorderBrush="LightBlue"
+                                        IsHitTestVisible="False" Background="#FFFF00FF" BorderBrush="#FF404040"
                                         BorderThickness="0" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Hover" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#40FFFFFF" BorderBrush="LightBlue"
+                                        IsHitTestVisible="False" Background="#40000000" BorderBrush="#FF404040"
                                         BorderThickness="0,0,0,2" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Pressed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#7FFFFFFF" BorderBrush="LightBlue"
+                                        IsHitTestVisible="False" Background="#7F000000" BorderBrush="#FF404040"
                                         BorderThickness="0,0,0,2" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Idle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#00000000" BorderBrush="LightBlue"
+                                        IsHitTestVisible="False" Background="#00000000" BorderBrush="#FF404040"
                                         BorderThickness="0" Margin="0" Padding="2,0" Visibility="Visible">
                                     <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                            IsHitTestVisible="False" Background="#00000000" BorderBrush="LightBlue"
-                                            BorderThickness="0,0,0,2" />
+                                            IsHitTestVisible="False" Background="#00000000" BorderBrush="#FF404040"
+                                            BorderThickness="0,0,0,2">
+                                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <apicontrol:NineGridCanvas SizingMargin="{DynamicResource TestThickness}" SizingImage="{DynamicResource TestBitmapImage}" TargetWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" TargetHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"/>
+                                        </Border>
+                                    </Border>
                                 </Border>
-                                <ContentControl Content="{TemplateBinding Content}"
-                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                IsHitTestVisible="True" IsEnabled="True" />
+                                <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsHitTestVisible="True" IsEnabled="True" />
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -65,27 +71,30 @@
                                 <Setter TargetName="PART_Pressed" Property="Visibility" Value="Hidden" />
                             </Trigger>
                             <Trigger Property="IsManipulationEnabled" Value="True">
+                                <Setter TargetName="PART_Idle" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Hover" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_Pressed" Property="Visibility" Value="Hidden" />
                                 <Setter TargetName="PART_Active" Property="Visibility" Value="Visible" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
+            <!--Style.Triggers>
                 <Trigger Property="IsManipulationEnabled" Value="True">
-                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Foreground" Value="White" />
                 </Trigger>
-            </Style.Triggers>
+            </Style.Triggers-->
         </Style>
     </UserControl.Resources>
-    <Button x:Name="RootButton" Width="Auto" MaxWidth="160" Style="{DynamicResource TaskItemButtonButtonStyle}">
+    <Button x:Name="RootButton" MaxWidth="160" Style="{DynamicResource TaskItemButtonButtonStyle}">
         <StackPanel Orientation="Horizontal" Margin="10,0" IsHitTestVisible="False">
             <Canvas x:Name="Icon" Width="32" Height="32" VerticalAlignment="Center" Margin="0"
                     Background="{Binding WindowIcon, Mode=TwoWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
                     IsHitTestVisible="False" />
             <TextBlock x:Name="Title" VerticalAlignment="Center"
                        Text="{Binding WindowTitle, Mode=TwoWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
-                       Foreground="{Binding Foreground, Mode=OneWay, FallbackValue=White, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                       Foreground="{Binding Foreground, Mode=OneWay, FallbackValue=#FF404040, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
                        Margin="4,0,0,0" IsHitTestVisible="False" />
         </StackPanel>
     </Button>

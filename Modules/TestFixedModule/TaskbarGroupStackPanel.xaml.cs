@@ -23,7 +23,7 @@ namespace TestModule
 			InitializeComponent();
 			ThumbPreviewWindow = new Window
 			{
-				Background = new SolidColorBrush(Color.FromArgb(0xC0, 0x0, 0x0, 0x0)),
+				Background = new SolidColorBrush(Color.FromArgb(0xC0, 0xFF, 0xFF, 0xFF)),
 				WindowStyle = WindowStyle.None,
 				AllowsTransparency = true,
 				Width = 400,
@@ -34,7 +34,7 @@ namespace TestModule
 					HorizontalAlignment = HorizontalAlignment.Stretch,
 					VerticalAlignment = VerticalAlignment.Top,
 					Orientation = Orientation.Vertical,
-					Background = new SolidColorBrush(Color.FromArgb(0x40, 0xFF, 0xFF, 0xFF))
+					Background = new SolidColorBrush(Color.FromArgb(0x40, 0x0, 0x0, 0x0))
 				},
 				Topmost = true,
 				ShowActivated = false,
@@ -147,28 +147,40 @@ namespace TestModule
 			};
 			mouseGroupContactTimer.Elapsed += delegate
 			{
-				Dispatcher.Invoke(new Action(() =>
+                Dispatcher.Invoke(new Action(() =>
 				{
-					{
-						if (
-							(MainTools.GetDpiScaledCursorPosition().X > MainTools.GetDpiScaledGlobalControlPosition(this).X) &
-							(MainTools.GetDpiScaledCursorPosition().X < MainTools.GetDpiScaledGlobalControlPosition(this).X + ActualWidth) &
-							(MainTools.GetDpiScaledCursorPosition().Y > MainTools.GetDpiScaledGlobalControlPosition(this).Y) &
-							(MainTools.GetDpiScaledCursorPosition().Y < MainTools.GetDpiScaledGlobalControlPosition(this).Y + ActualHeight)
-						)
-							if (showThumbnailPreviewCounter < 50)
-							{
-								showThumbnailPreviewCounter = showThumbnailPreviewCounter + 1;
-							}
-							else
-							{
-								showThumbnailPreviewCounter = 0;
-								if ((ThumbPreviewWindow.Visibility == Visibility.Visible) & !ThumbPreviewWindow.IsMouseOver & !IsMouseOver)
-									HideThumbnailPreviewWindow();
-								else
-									ShowThumbnailPreviewWindow();
-							}
-					}
+                    if (Window.GetWindow(this) == null)
+                    {
+                        mouseGroupContactTimer.Stop();
+                    }
+                    else
+                    {
+                        /*try
+                        {*/
+                        if (
+                            (MainTools.GetDpiScaledCursorPosition().X > MainTools.GetDpiScaledGlobalControlPosition(this).X) &
+                            (MainTools.GetDpiScaledCursorPosition().X < MainTools.GetDpiScaledGlobalControlPosition(this).X + ActualWidth) &
+                            (MainTools.GetDpiScaledCursorPosition().Y > MainTools.GetDpiScaledGlobalControlPosition(this).Y) &
+                            (MainTools.GetDpiScaledCursorPosition().Y < MainTools.GetDpiScaledGlobalControlPosition(this).Y + ActualHeight)
+                        )
+                            if (showThumbnailPreviewCounter < 50)
+                            {
+                                showThumbnailPreviewCounter = showThumbnailPreviewCounter + 1;
+                            }
+                            else
+                            {
+                                showThumbnailPreviewCounter = 0;
+                                if ((ThumbPreviewWindow.Visibility == Visibility.Visible) & !ThumbPreviewWindow.IsMouseOver & !IsMouseOver)
+                                    HideThumbnailPreviewWindow();
+                                else
+                                    ShowThumbnailPreviewWindow();
+                            }
+                        /*}
+                        catch
+                        {
+                            
+                        }*/
+                    }
 				}));
 			};
 
@@ -241,22 +253,33 @@ namespace TestModule
 			ManageButtons();
 		}
 
-		public void RemoveButtonByHwnd(IntPtr hWnd)
+		public bool RemoveButtonByHwnd(IntPtr hWnd)
 		{
+            bool isEmpty = false;
+            Debug.WriteLine(hWnd.ToString());
 			for (var i = 0; i < ProgramWindowsList.Count; i++)
 			{
 				var p = ProgramWindowsList[i];
-				if (p.Hwnd == hWnd)
-					ProgramWindowsList.Remove(p);
+                Debug.WriteLine(p.Hwnd.ToString());
+                if (p.Hwnd == hWnd)
+                {
+                    Debug.WriteLine(hWnd + " " + p.ToString() + " is delet");
+                    ProgramWindowsList.Remove(p);
+                }
 			}
 
-			if ((Config.GroupingMode != TaskbarGroupingMode.Combine) | ForceCombine)
+            if (ProgramWindowsList.Count == 0)
+                isEmpty = true;
+            return isEmpty;
+
+            /*if ((Config.GroupingMode != TaskbarGroupingMode.Combine) | ForceCombine)
 				for (var i = 0; i < Buttons.Children.Count; i++)
 				{
 					var b = (Button) Buttons.Children[i];
 					if ((b.Tag as ProgramWindow).Hwnd == hWnd)
 						Buttons.Children.Remove(b);
-				}
+				}*/
+            ManageButtons();
 		}
 
 		void ManageButtons()
@@ -296,7 +319,7 @@ namespace TestModule
 			}
 		}
 
-		public void CreateButtons(WrapPanel taskband)
+		public void CreateButtons()
 		{
 			Buttons.Children.Clear();
 
@@ -337,13 +360,13 @@ namespace TestModule
 					taskItemButton.RootButton.PreviewMouseLeftButtonDown += TaskItemButton_MouseLeftButtonDown;
 
 
-					taskItemButton.RootButton.Click += delegate
+					/*taskItemButton.RootButton.Click += delegate
 					{
 						if (MiscTools.GetForegroundWindow() == (taskItemButton.Tag as ProgramWindow).Hwnd)
 							(taskItemButton.Tag as ProgramWindow).Minimize();
 						else
 							(taskItemButton.Tag as ProgramWindow).Show();
-					};
+					};*/
 
 					try
 					{
@@ -374,7 +397,7 @@ namespace TestModule
 					{
 						if (Mouse.LeftButton == MouseButtonState.Released)
 						{
-							dragTimer.Stop();
+                            dragTimer.Stop();
 							var g = _thisModule.Taskbars[0].Taskband.Children;
 							for (var i = 0; i < g.Count; i++)
 							{

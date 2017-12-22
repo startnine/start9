@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Start9.Api.Objects;
 using Start9.Api.Tools;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace TestModule
 {
@@ -25,9 +27,18 @@ namespace TestModule
 			typeof(ImageBrush), typeof(TaskItemButton), new PropertyMetadata(new ImageBrush()));
 
 
-		public TaskItemButton()
-		{
-			InitializeComponent();
+        public TaskItemButton()
+        {
+            InitializeComponent();
+            if (File.Exists(Environment.ExpandEnvironmentVariables(@"%userprofile%\Documents\TestImage.png")))
+            {
+                Resources["TestBitmapImage"] = new BitmapImage(new Uri(Environment.ExpandEnvironmentVariables(@"%userprofile%\Documents\TestImage.png"), UriKind.Relative));
+            }
+            else
+            {
+                //Resources["TestBitmapImage"] = new BitmapImage(new Uri(Environment.ExpandEnvironmentVariables(@"%windir%\web\Wallpaper\Windows\img0.jpg"), UriKind.Relative));
+                Resources["TestBitmapImage"] = null;
+            }
 		}
 
 		public TaskItemButton(ProgramWindow programWindow)

@@ -4,10 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:TestTransientModule"
-        Title="Start Menu" WindowStyle="None" AllowsTransparency="True" Height="500" Width="500" Background="#C0000000"
+        xmlns:apicontrols="clr-namespace:Start9.Api.Objects.Controls;assembly=Start9.Api"
+        Title="Start Menu" WindowStyle="None" AllowsTransparency="True" Height="512" Width="512" Background="#C0000000"
         Visibility="Visible" Topmost="True" ShowInTaskbar="False">
     <DockPanel LastChildFill="True">
-        <DockPanel x:Name="LeftColumn" MinWidth="125" DockPanel.Dock="Left" VerticalAlignment="Stretch"
+        <DockPanel x:Name="LeftColumn" MinWidth="128" DockPanel.Dock="Left" VerticalAlignment="Stretch"
                    LastChildFill="True">
             <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top" Height="40" LastChildFill="True">
                 <Button DockPanel.Dock="Right" Width="40" VerticalAlignment="Stretch" />
@@ -24,9 +25,65 @@
             </StackPanel>
         </DockPanel>
         <Grid x:Name="RightColumn" VerticalAlignment="Stretch">
-            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <WrapPanel x:Name="TileGrid" />
-            </ScrollViewer>
+            <!--WrapPanel x:Name="TileGrid" /-->
+            <apicontrols:VariableSizedWrapGridView x:Name="TileGrid">
+                <ItemsControl.Style>
+                    <Style TargetType="{x:Type apicontrols:VariableSizedWrapGridView}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type apicontrols:VariableSizedWrapGridView}">
+                                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                                        <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,0,-20,0">
+                                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ItemsControl.Style>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <apicontrols:VariableSizedWrapGrid LatchItemSize="False" StrictItemOrder="False" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="1300" Width="1300">
+                            <Grid.Background>
+                                <SolidColorBrush Color="{Binding Color}"/>
+                            </Grid.Background>
+                            <StackPanel VerticalAlignment="Top">
+                                <StackPanel.Background>
+                                    <SolidColorBrush Color="Black" Opacity=".75"/>
+                                </StackPanel.Background>
+                                <TextBlock Foreground="Ivory" FontSize="15" Margin="10">
+                            <Run Text="{Binding Index, Mode=OneWay}" />. <Run Text="{Binding Name, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Items>
+                    <Grid Height="256" Width="256" Background="Black"/>
+                    <Grid Height="128" Width="128" Background="Aqua"/>
+                    <Grid Height="128" Width="128" Background="Red"/>
+                    <Grid Height="256" Width="256" Background="Green"/>
+                    <Grid Height="128" Width="128" Background="Blue"/>
+                    <Grid Height="128" Width="128" Background="Red"/>
+                    <Grid Height="64" Width="64" Background="Yellow"/>
+                    <Grid Height="64" Width="64" Background="Purple"/>
+                    <Grid Height="256" Width="256" Background="Green"/>
+                    <Grid Height="128" Width="128" Background="Blue"/>
+                    <Grid Height="128" Width="128" Background="Aqua"/>
+                    <Grid Height="128" Width="128" Background="Red"/>
+                    <Grid Height="64" Width="64" Background="Yellow"/>
+                    <Grid Height="64" Width="64" Background="Purple"/>
+                    <Grid Height="64" Width="64" Background="OrangeRed"/>
+                    <Grid Height="64" Width="64" Background="LightCoral"/>
+                    <Grid Height="128" Width="128" Background="Black"/>
+                </ItemsControl.Items>
+            </apicontrols:VariableSizedWrapGridView>
         </Grid>
     </DockPanel>
 </Window>

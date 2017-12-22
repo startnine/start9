@@ -57,6 +57,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\Controls\NineGridCanvas.cs" />
+    <Compile Include="Objects\Controls\VariableSizedWrapGrid.cs" />
+    <Compile Include="Objects\Controls\VariableSizedWrapGridView.cs" />
+    <Compile Include="Objects\ImageBrushNineGridConverter.cs" />
+    <Compile Include="Objects\NineGridImageBrush.cs" />
     <Compile Include="Tools\DpiManager.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Objects\IModule.cs" />

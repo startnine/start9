@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestModule"
         mc:Ignorable="d"
-        Title="Taskbar" Height="40" Width="800" Background="#C0000000" AllowsTransparency="True" WindowStyle="None"
+        Title="Taskbar" Height="40" Width="800" Background="LightGray" AllowsTransparency="True" WindowStyle="None"
         ResizeMode="NoResize" Focusable="False" ShowActivated="False" Visibility="Visible" ShowInTaskbar="False"
         Topmost="True">
     <Window.Resources>
         <Style TargetType="Button" x:Key="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="#FF404040" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -67,7 +67,7 @@
         <Style TargetType="Button" x:Key="ShowDesktopButtonStyle">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="#FF404040" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -83,13 +83,13 @@
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Border x:Name="PART_Hover" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#40FFFFFF" BorderBrush="White"
+                                        IsHitTestVisible="False" Background="#40FFFFFF" BorderBrush="#FF404040"
                                         BorderThickness="1,0,0,0" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Pressed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#7FFFFFFF" BorderBrush="White"
+                                        IsHitTestVisible="False" Background="#7FFFFFFF" BorderBrush="#FF404040"
                                         BorderThickness="1,0,0,0" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Idle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#00000000" BorderBrush="White"
+                                        IsHitTestVisible="False" Background="#00000000" BorderBrush="#FF404040"
                                         BorderThickness="1,0,0,0" Margin="0" Padding="0" Visibility="Visible" />
                                 <ContentControl Content="{TemplateBinding Content}"
                                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -139,9 +139,9 @@
                         FontFamily="Marlett" FontSize="20" Content="1" Click="ActionCenter_Click" />
                 <Button x:Name="Clock" Width="100" VerticalAlignment="Stretch" DockPanel.Dock="Right">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label x:Name="ClockTime" Padding="0" Foreground="White" HorizontalContentAlignment="Center"
+                        <Label x:Name="ClockTime" Padding="0" Foreground="#FF404040" HorizontalContentAlignment="Center"
                                Visibility="Visible" />
-                        <Label x:Name="ClockDate" Padding="0" Foreground="White" HorizontalContentAlignment="Center"
+                        <Label x:Name="ClockDate" Padding="0" Foreground="#FF404040" HorizontalContentAlignment="Center"
                                Visibility="Visible" />
                     </StackPanel>
                 </Button>

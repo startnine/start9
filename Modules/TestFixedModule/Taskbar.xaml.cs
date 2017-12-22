@@ -50,9 +50,9 @@ namespace TestModule
 									if (b.Hwnd == active)
 										isAnythingActive = true;
 								if (isAnythingActive)
-									t.RunningBackgroundButton.IsManipulationEnabled = true;
+									t.RunningBackgroundButton.IsActiveWindow = true;
 								else
-									t.RunningBackgroundButton.IsManipulationEnabled = false;
+									t.RunningBackgroundButton.IsActiveWindow = false;
 							}
 							else
 							{
@@ -147,7 +147,7 @@ namespace TestModule
 				//if (Taskband.ActualWidth >= Width)
 				if (t.ProgramWindowsList.Count > 3)
 					t.ForceCombine = true;
-				t.CreateButtons(Taskband);
+				t.CreateButtons();
 			}
 		}
 
@@ -157,14 +157,14 @@ namespace TestModule
 			Taskband.Dispatcher.Invoke(new Action(() =>
 			{
 				{
-					var addedToExistingGroup = false;
+					bool addedToExistingGroup = false;
 					foreach (TaskbarGroupStackPanel t in Taskband.Children)
 						try
 						{
 							if (e.Window.Process.MainModule.FileName == t.Tag.ToString())
 							{
 								t.ProgramWindowsList.Add(e.Window);
-								t.CreateButtons(Taskband);
+								t.CreateButtons();
 								addedToExistingGroup = true;
 							}
 						}
@@ -183,8 +183,9 @@ namespace TestModule
 						};
 
 						programStackPanel.ProgramWindowsList.Add(e.Window);
-						programStackPanel.CreateButtons(Taskband);
-					}
+						programStackPanel.CreateButtons();
+                        Taskband.Children.Add(programStackPanel);
+                    }
 				}
 			}));
 		}
@@ -193,16 +194,21 @@ namespace TestModule
 		{
 			Taskband.Dispatcher.Invoke(new Action(() =>
 			{
-				{
-					foreach (TaskbarGroupStackPanel t in Taskband.Children)
-						try
-						{
-							t.RemoveButtonByHwnd(e.Window.Hwnd);
-						}
-						catch
-						{
-						}
-				}
+                {
+                    for(int i = 0; i < Taskband.Children.Count; i++)
+                        try
+                        {
+                            var t = (TaskbarGroupStackPanel)(Taskband.Children[i]);
+                            if (t.RemoveButtonByHwnd(e.Window.Hwnd))
+                            {
+                                Taskband.Children.RemoveAt(i);
+                                i = i - 1;
+                            }
+                        }
+                        catch
+                        {
+                        }
+                }
 			}));
 		}
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -111,20 +113,21 @@ namespace Start9.Api.Plex
 		public static readonly DependencyProperty FooterBrushProperty = DependencyProperty.Register("FooterBrush",
 			typeof(Brush), typeof(PlexWindow),
 			new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0xFF, 0x5E, 0x98, 0xD9))));
-		//#FF5E98D9
+        //#FF5E98D9
 
+        TimeSpan animationDuration = TimeSpan.FromMilliseconds(375);
 
-		/// <summary>
-		///     Interaction logic for PlexWindow.xaml
-		/// </summary>
-		public PlexWindow()
+        /// <summary>
+        ///     Interaction logic for PlexWindow.xaml
+        /// </summary>
+        public PlexWindow()
 		{
 			_shadowWindow = new ShadowWindow(this);
 			WindowStyle = WindowStyle.None;
 			AllowsTransparency = true;
 			//SyncShadowToWindow();
 			//SyncShadowToWindowSize();
-			_shadowTimer.Elapsed += delegate
+			/*_shadowTimer.Elapsed += delegate
 			{
 				Dispatcher.Invoke(new Action(() =>
 				{
@@ -132,8 +135,19 @@ namespace Start9.Api.Plex
 						SyncShadowToWindow();
 					}
 				}));
-			};
-			Loaded += PlexWindow_Loaded;
+			};*/
+
+            _shadowScaleTimer.Elapsed += delegate
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    {
+                        SyncShadowToWindowScale();
+                    }
+                }));
+            };
+            Loaded += PlexWindow_Loaded;
+            IsVisibleChanged += PlexWindow_IsVisibleChanged;
 			Activated += PlexWindow_Activated;
 			Deactivated += PlexWindow_Deactivated;
 			/*StoreMaxWidth = MaxWidth;
@@ -142,9 +156,17 @@ namespace Start9.Api.Plex
 			var restoreMinSettings = new RoutedCommand();
 			restoreMinSettings.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Windows));
 			CommandBindings.Add(new CommandBinding(restoreMinSettings, RestoreMinimizeWindow));
-		}
+            ScaleTransform ScaleTransform = new ScaleTransform()
+            {
+                CenterX = (ActualWidth / 2),
+                CenterY = (ActualHeight / 2),
+                ScaleX = 1,
+                ScaleY = 1
+            };
+            this.RenderTransform = ScaleTransform;
+        }
 
-		public bool Maximized
+        public bool Maximized
 		{
 			get => (bool) GetValue(MaximizedProperty);
 			set => SetValue(MaximizedProperty, value);
@@ -253,14 +275,19 @@ namespace Start9.Api.Plex
 			set => SetValue(FooterBrushProperty, value);
 		}
 
-		readonly Timer _shadowTimer = new Timer
+		/*readonly Timer _shadowTimer = new Timer
 		{
 			Interval = 1
-		};
-		/*double StoreMaxWidth = 0;
+		};*/
+
+        readonly Timer _shadowScaleTimer = new Timer
+        {
+            Interval = 1
+        };
+        /*double StoreMaxWidth = 0;
 	    double StoreMaxHeight = 0;*/
 
-		readonly ShadowWindow _shadowWindow;
+        readonly ShadowWindow _shadowWindow;
 
 		LinearGradientBrush _bodyLinearGradientBrush = new LinearGradientBrush
 		{
@@ -319,7 +346,7 @@ namespace Start9.Api.Plex
 			SyncShadowToWindowSize();
 		}
 
-		public override void OnApplyTemplate()
+        public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
 			{
@@ -329,20 +356,27 @@ namespace Start9.Api.Plex
 				_titlebar.MouseMove += Titlebar_MouseMove;
 
 				_minButton = GetTemplateChild(PartMinimizeButton) as Button;
-				_minButton.Click += delegate { ManageMaximizeRestore(2); };
+                //_minButton.Click += delegate { ManageMaximizeRestore(2); };
+                _minButton.Click += delegate { PlexWindow_AnimateMinimize(); };
 
-				_maxButton = GetTemplateChild(PartMaximizeButton) as Button;
-				_maxButton.Click += delegate { ManageMaximizeRestore(0); };
+                _maxButton = GetTemplateChild(PartMaximizeButton) as Button;
+                _maxButton.Click += delegate {
+                    WindowState = WindowState.Maximized;
+                };
 
-				_restButton = GetTemplateChild(PartRestoreButton) as Button;
-				_restButton.Click += delegate { ManageMaximizeRestore(1); };
+                _restButton = GetTemplateChild(PartRestoreButton) as Button;
+                _restButton.Click += delegate {
+                    WindowState = WindowState.Normal;
+                };
 
-				_closeButton = GetTemplateChild(PartCloseButton) as Button;
+                _closeButton = GetTemplateChild(PartCloseButton) as Button;
 				_closeButton.Click += delegate
 				{
-					Close();
-					_shadowWindow.Close();
-				};
+                    Close();
+                    _shadowWindow.Close();
+                    //Hide();
+                    //_shadowWindow.Visibility = Visibility.Hidden;
+                };
 
 
 				_thumbBottom = GetTemplateChild(PartThumbBottom) as Thumb;
@@ -378,7 +412,97 @@ namespace Start9.Api.Plex
 			}
 		}
 
-		public void ManageMaximizeRestore(int maxRestMin)
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            SyncShadowToWindow();
+            SyncShadowToWindowSize();
+        }
+
+        protected override void OnLocationChanged(EventArgs e)
+        {
+            base.OnLocationChanged(e);
+            SyncShadowToWindow();
+        }
+
+        private void PlexWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                CircleEase circleEase = new CircleEase()
+                {
+                    EasingMode = EasingMode.EaseOut
+                };
+                var scaleTransform = (this.RenderTransform as ScaleTransform);
+                scaleTransform.CenterX = (ActualWidth / 2);
+                scaleTransform.CenterY = (ActualHeight / 2);
+
+                DoubleAnimation windowOpacityAnimation = new DoubleAnimation()
+                {
+                    From = 0,
+                    To = 1,
+                    Duration = animationDuration,
+                    EasingFunction = circleEase
+                };
+
+                DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+                {
+                    From = 0.75,
+                    To = 1,
+                    Duration = animationDuration,
+                    EasingFunction = circleEase
+                };
+                BeginAnimation(Window.OpacityProperty, windowOpacityAnimation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
+            }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            bool cancel = e.Cancel;
+            e.Cancel = true;
+            CircleEase circleEase = new CircleEase()
+            {
+                EasingMode = EasingMode.EaseOut
+            };
+            var scaleTransform = (this.RenderTransform as ScaleTransform);
+            scaleTransform.CenterX = (ActualWidth / 2);
+            scaleTransform.CenterY = (ActualHeight / 2);
+
+            DoubleAnimation windowOpacityAnimation = new DoubleAnimation()
+            {
+                From = 1,
+                To = 0,
+                Duration = animationDuration,
+                EasingFunction = circleEase
+            };
+
+            DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+            {
+                From = 1,
+                To = 0.75,
+                Duration = animationDuration,
+                EasingFunction = circleEase
+            };
+            windowSizeAnimation.Completed += delegate
+            {
+                try
+                {
+                    e.Cancel = cancel;
+                    base.OnClosing(e);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            };
+            BeginAnimation(Window.OpacityProperty, windowOpacityAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
+        }
+
+        /*public void ManageMaximizeRestore(int maxRestMin)
 		{
 			if (maxRestMin < 2)
 			{
@@ -487,38 +611,284 @@ namespace Start9.Api.Plex
 				Width = _restoreWidth;
 				Height = _restoreHeight;
 			}
-		}
+		}*/
 
 		protected override void OnStateChanged(EventArgs e)
-		{
-			if (WindowState == WindowState.Maximized)
-			{
-				Minimized = false;
-				WindowState = WindowState.Normal;
-				ManageMaximizeRestore(0);
-			}
-			else if (WindowState == WindowState.Normal)
-			{
-				Minimized = false;
-				Maximized = false;
-			}
-			else if ((WindowState == WindowState.Minimized) & !Minimized)
-			{
-				Maximized = false;
-				ManageMaximizeRestore(2);
-			}
-		}
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            Screen s = Screen.FromHandle(hwnd);
+            if (WindowState == WindowState.Maximized)
+            {
+                _shadowWindow.Visibility = Visibility.Hidden;
+                Maximized = true;
+                _maxButton.Visibility = Visibility.Hidden;
+                _restButton.Visibility = Visibility.Visible;
+                //double leftPadding = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.X);
+                //double topPadding = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.Y);
+                //Padding = new Thickness((leftPadding * -1), (topPadding * -1), leftPadding, topPadding);
+                MaxWidth = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.Width);
+                MaxHeight = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.Height);
+                CircleEase circleEase = new CircleEase()
+                {
+                    EasingMode = EasingMode.EaseOut
+                };
+                var scaleTransform = (this.RenderTransform as ScaleTransform);
+                scaleTransform.CenterX = (ActualWidth / 2);
+                scaleTransform.CenterY = (ActualHeight / 2);
 
-		void PlexWindow_Activated(object sender, EventArgs e)
-		{
-			_shadowWindow.Visibility = Visibility.Visible;
-			SyncShadowToWindow();
-			_shadowWindow.Topmost = true;
-			_shadowWindow.Topmost = false;
-			_shadowWindow.Opacity = 1;
-			Focus();
-			Topmost = true;
-			Topmost = false;
+                DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+                {
+                    From = 0.75,
+                    To = 1,
+                    Duration = animationDuration,
+                    EasingFunction = circleEase
+                };
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+                scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
+            }
+            else
+            {
+                _maxButton.Visibility = Visibility.Visible;
+                _restButton.Visibility = Visibility.Hidden;
+                Padding = new Thickness(0, 0, 0, 0);
+                MaxWidth = double.PositiveInfinity;
+                MaxHeight = double.PositiveInfinity;
+
+                if (WindowState == WindowState.Minimized)
+                {
+                    _shadowWindow.Visibility = Visibility.Hidden;
+                    Minimized = true;
+                }
+                else
+                {
+                    _shadowWindow.Visibility = Visibility.Visible;
+                    //SyncShadowToWindow();
+                    _shadowWindow.Focus();
+                    Focus();
+                    Activate();
+                    if (Minimized)
+                    {
+                        var scaleTransform = (this.RenderTransform as ScaleTransform);
+                        scaleTransform.CenterX = (ActualWidth / 2);
+                        scaleTransform.CenterY = ActualHeight;
+                        CircleEase circleEase = new CircleEase()
+                        {
+                            EasingMode = EasingMode.EaseOut
+                        };
+                        DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+                        {
+                            From = 0,
+                            To = 1,
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };
+
+                        DoubleAnimation windowTopAnimation = new DoubleAnimation()
+                        {
+                            To = Top,
+                            From = System.Windows.Forms.Screen.FromHandle(new WindowInteropHelper(this).Handle).WorkingArea.Bottom,
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };
+                        //scaleTransform.CenterX = (ActualWidth / 2);
+                        //scaleTransform.CenterY = (ActualHeight / 2);
+                        /*Rect windowRect = WindowRect;
+
+                        DoubleAnimation windowTopAnimation = new DoubleAnimation()
+                        {
+                            To = WindowRect.Top,
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };*/
+
+                        /*DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+                        {
+                            From = 0,
+                            To = 1,
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };
+
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);*/
+                        windowTopAnimation.Completed += delegate
+                        {
+                            _shadowScaleTimer.Stop();
+                        };
+                        _shadowScaleTimer.Start();
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
+                        BeginAnimation(PlexWindow.TopProperty, windowTopAnimation);
+                        Minimized = false;
+                    }
+                    else if (Maximized)
+                    {
+                        CircleEase circleEase = new CircleEase()
+                        {
+                            EasingMode = EasingMode.EaseOut
+                        };
+                        var scaleTransform = (this.RenderTransform as ScaleTransform);
+                        scaleTransform.CenterX = (ActualWidth / 2);
+                        scaleTransform.CenterY = (ActualHeight / 2);
+
+                        DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+                        {
+                            From = 1.333,
+                            To = 1,
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };
+                        DoubleAnimation windowVertSizeAnimation = new DoubleAnimation()
+                        {
+                            From = 1.333,
+                            To = 1,
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };
+                        Rect windowRect = WindowRect;
+
+                        /*RectAnimation windowRectAnimation = new RectAnimation()
+                        {
+                            To = new Rect(Left, Top, Width, Height),
+                            From = new Rect(Left - 100, Top - 100, Width + 200, Height + 200),
+                            Duration = animationDuration,
+                            EasingFunction = circleEase
+                        };*/
+                        windowSizeAnimation.Completed += delegate
+                        {
+                            WindowRect = new Rect(Left + 100, Top + 100, Width - 200, Height - 200);
+
+                            /*Left = Left + 100;
+                            Top = Top + 100;
+                            Width = Width - 200;
+                            Height = Height - 200;*/
+                        };
+
+
+                        WindowRect = new Rect(Left - 100, Top - 100, Width + 200, Height + 200);
+                        /*Left = Left - 100;
+                        Top = Top - 100;
+                        Width = Width + 200;
+                        Height = Height + 200;*/
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowVertSizeAnimation);
+                        //BeginAnimation(PlexWindow.WindowRectProperty, windowRectAnimation);
+
+                        /*int scaleInterval = 0;
+
+                        System.Windows.Forms.Timer scaleTimer = new System.Windows.Forms.Timer()
+                        {
+                            Interval = 1
+                        };
+
+                        scaleTimer.Tick += delegate
+                        {
+                            if (scaleInterval < 375)
+                            {
+                                scaleInterval = scaleInterval + 1;
+                            }
+                            else
+                            {
+                                scaleTimer.Stop();
+                                scaleInterval = 0;
+                                Left = Left + 100;
+                                Top = Top + 100;
+                                Width = Width - 200;
+                                Height = Height - 200;
+                            }
+                        };*/
+                        //scaleTimer.Start();
+                        //375
+                    }
+                }
+                Maximized = false;
+            }
+        }
+
+        public void PlexWindow_AnimateMinimize()
+        {
+            var scaleTransform = (this.RenderTransform as ScaleTransform);
+            var windowRect = WindowRect;
+            scaleTransform.CenterX = (ActualWidth / 2);
+            scaleTransform.CenterY = ActualHeight;
+            CircleEase circleEase = new CircleEase()
+            {
+                EasingMode = EasingMode.EaseOut
+            };
+            DoubleAnimation windowSizeAnimation = new DoubleAnimation()
+            {
+                From = 1,
+                To = 0,
+                Duration = animationDuration,
+                EasingFunction = circleEase
+            };
+
+            DoubleAnimation windowTopAnimation = new DoubleAnimation()
+            {
+                To = System.Windows.Forms.Screen.FromHandle(new WindowInteropHelper(this).Handle).WorkingArea.Bottom,
+                From = Top,
+                Duration = animationDuration,
+                EasingFunction = circleEase
+            };
+            windowTopAnimation.Completed += delegate
+            {
+                _shadowScaleTimer.Stop();
+                Minimized = true;
+                PlexWindow_ResetTransformProperties();
+                WindowRect = windowRect;
+                WindowState = WindowState.Minimized;
+            };
+            _shadowScaleTimer.Start();
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
+            BeginAnimation(PlexWindow.TopProperty, windowTopAnimation);
+        }
+
+        void PlexWindow_ResetTransformProperties()
+        {
+            var scaleTransform = (this.RenderTransform as ScaleTransform);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+            scaleTransform.ScaleX = 1;
+            scaleTransform.ScaleY = 1;
+            BeginAnimation(PlexWindow.LeftProperty, null);
+            BeginAnimation(PlexWindow.TopProperty, null);
+            BeginAnimation(PlexWindow.WidthProperty, null);
+            BeginAnimation(PlexWindow.HeightProperty, null);
+            BeginAnimation(PlexWindow.OpacityProperty, null);
+            BeginAnimation(PlexWindow.WindowRectProperty, null);
+            Opacity = 1;
+        }
+
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            base.OnGotFocus(e);
+            PlexWindow_Activated(this, null);
+        }
+
+        void PlexWindow_Activated(object sender, EventArgs e)
+        {
+            PlexWindow_ResetTransformProperties();
+            if (WindowState == WindowState.Normal)
+            {
+                _shadowWindow.Visibility = Visibility.Visible;
+                SyncShadowToWindow();
+                _shadowWindow.Opacity = 1;
+                _shadowWindow.Topmost = true;
+                _shadowWindow.Topmost = false;
+                Topmost = true;
+                Topmost = false;
+                //Activate();
+            }
+            /*if (WindowState == WindowState.Normal)
+            {
+                _shadowWindow.Topmost = true;
+                _shadowWindow.Topmost = false;
+            }*/
+            //Focus();
+            //Activate();
+			//Topmost = true;
+			//Topmost = false;
 		}
 
 
@@ -548,7 +918,21 @@ namespace Start9.Api.Plex
 			_shadowWindow.Height = Height + _shadowOffsetThickness.Top + _shadowOffsetThickness.Bottom;
 		}
 
-		void PlexWindow_StateChanged(object sender, EventArgs e)
+        public void SyncShadowToWindowScale()
+        {
+            var scaleTransform = RenderTransform as ScaleTransform;
+            _shadowWindow.RenderTransform = new ScaleTransform()
+            {
+                ScaleX = 1,
+                ScaleY = 1,
+                CenterX = scaleTransform.CenterX,
+                CenterY = scaleTransform.CenterY
+            };
+            (_shadowWindow.RenderTransform as ScaleTransform).ScaleX = scaleTransform.ScaleX;
+            (_shadowWindow.RenderTransform as ScaleTransform).ScaleY = scaleTransform.ScaleY;
+        }
+
+        void PlexWindow_StateChanged(object sender, EventArgs e)
 		{
 			if ((WindowState == WindowState.Maximized) | (WindowState == WindowState.Minimized))
 				_shadowWindow.Visibility = Visibility.Hidden;
@@ -556,24 +940,24 @@ namespace Start9.Api.Plex
 				_shadowWindow.Visibility = Visibility.Visible;
 		}
 
-		void PlexWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		/*void PlexWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if ((Visibility == Visibility.Visible) & (WindowState == WindowState.Normal))
 				_shadowWindow.Visibility = Visibility.Visible;
 			else
 				_shadowWindow.Visibility = Visibility.Hidden;
-		}
+		}*/
 
 		void Titlebar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			DragMove();
-			SyncShadowToWindow();
-			_shadowTimer.Start();
+			//SyncShadowToWindow();
+			//_shadowTimer.Start();
 		}
 
 		void Titlebar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			_shadowTimer.Stop();
+			//_shadowTimer.Stop();
 		}
 
 		void Titlebar_MouseMove(object sender, MouseEventArgs e)
