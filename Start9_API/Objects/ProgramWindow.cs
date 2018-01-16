@@ -106,6 +106,42 @@ namespace Start9.Api.Objects
 			}
 		}
 
+        public const int GWL_STYLE = -16;
+        public const int GWL_EXSTYLE = -20;
+        public const int TASKSTYLE = 0x10000000 | 0x00800000;
+        public const int WS_EX_TOOLWINDOW = 0x00000080;
+
+        public static IEnumerable<ProgramWindow> UserPerceivedProgramWindows
+        {
+            get
+            {
+                var collection = new List<IntPtr>();
+
+                bool Filter(IntPtr hWnd, int lParam)
+                {
+                    var strbTitle = new StringBuilder(Interop.GetWindowTextLength(hWnd));
+                    Interop.GetWindowText(hWnd, strbTitle, strbTitle.Capacity + 1);
+                    var strTitle = strbTitle.ToString();
+
+
+                    if (Interop.IsWindowVisible(hWnd) && string.IsNullOrEmpty(strTitle) == false)
+                        collection.Add(hWnd);
+
+                    return true;
+                }
+
+                if (!Interop.EnumDesktopWindows(IntPtr.Zero, Filter, IntPtr.Zero)) yield break;
+
+                foreach (var hwnd in collection)
+                {
+                    if ((TASKSTYLE == (TASKSTYLE & MainTools.GetWindowLong(hwnd, GWL_STYLE))) && ((MainTools.GetWindowLong(hwnd, GWL_EXSTYLE) & WS_EX_TOOLWINDOW) != WS_EX_TOOLWINDOW))
+                    {
+                        yield return new ProgramWindow(hwnd);
+                    }
+                }
+            }
+        }
+
         private static void AddClosedHandler(IntPtr handle)
         {
             Automation.AddAutomationEventHandler(

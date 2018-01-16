@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,6 +60,7 @@
     <Compile Include="Objects\Controls\NineGridCanvas.cs" />
     <Compile Include="Objects\Controls\VariableSizedWrapGrid.cs" />
     <Compile Include="Objects\Controls\VariableSizedWrapGridView.cs" />
+    <Compile Include="Tools\DwmTools.cs" />
     <Compile Include="Objects\ImageBrushNineGridConverter.cs" />
     <Compile Include="Objects\NineGridImageBrush.cs" />
     <Compile Include="Tools\DpiManager.cs" />
@@ -74,6 +75,7 @@
       <DependentUpon>ShadowWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Objects\WindowEventArgs.cs" />
+    <Compile Include="Tools\SystemPowerTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Plex\PlexStyles.xaml">

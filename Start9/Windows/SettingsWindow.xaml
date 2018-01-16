@@ -59,7 +59,7 @@
                                   VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
                         <Grid Height="768" Width="768">
                             <WrapPanel Width="192" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-                                <Button Width="86" Height="24" Content="Small Test Button" />
+                                <Button x:Name="ShowThumbnailButton" Width="86" Height="24" Content="Show a Thumbnail" Click="ShowThumbnailButton_Click"/>
                                 <Button Width="172" Height="36" Content="Medium Test Button" />
                                 <Button Width="86" Height="24" Content="Small Disabled Test Button" IsEnabled="False" />
                                 <Button Width="172" Height="36" Content="Medium Disabled Test Button" IsEnabled="False" />

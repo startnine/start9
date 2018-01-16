@@ -6,12 +6,20 @@ using System.Windows.Forms;
 using Start9.Api.Objects;
 using Start9.Api.Plex;
 using Point = System.Drawing.Point;
+using System.IO;
+using System.Diagnostics;
 
 namespace Start9.Api.Tools
 {
 	public static class MainTools
 	{
-		public static PlexWindow SettingsWindow;
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
+
+        public static PlexWindow SettingsWindow;
 
 		public static void ShowSettings()
 		{
@@ -116,5 +124,57 @@ namespace Start9.Api.Tools
 
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-	}
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SHFILEINFO
+        {
+            public IntPtr hIcon;
+            public int iIcon;
+            public uint dwAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        };
+
+        [DllImport("shell32.dll")]
+        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
+
+        public static Color GetColorFromImage(string sourceImagePath)
+        {
+            Debug.WriteLine("sourceImagePath: " + sourceImagePath);
+            Color OutputColor = Color.FromArgb((byte)255, (byte)128, (byte)128, (byte)128);
+            System.Drawing.Image SourceBitmap = new System.Drawing.Bitmap(1, 1);
+            if (sourceImagePath == Environment.ExpandEnvironmentVariables(@"%windir%\Explorer.exe"))
+            {
+                OutputColor = Color.FromArgb((byte)255, (byte)0, (byte)130, (byte)153);
+            }
+            else if ((File.Exists(sourceImagePath)) | (Directory.Exists(sourceImagePath)))
+            {
+                if (File.Exists(sourceImagePath))
+                {
+                    Debug.WriteLine("sourceImagePath File exists");
+                    SourceBitmap = System.Drawing.Bitmap.FromHicon(System.Drawing.Icon.ExtractAssociatedIcon(sourceImagePath).Handle);
+                }
+                else if (Directory.Exists(sourceImagePath))
+                {
+                    Debug.WriteLine("sourceImagePath Dir exists");
+                    SHFILEINFO shinfo = new SHFILEINFO();
+                    SHGetFileInfo(sourceImagePath, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), 0x100 | 0x0);
+                    SourceBitmap = System.Drawing.Bitmap.FromHicon(shinfo.hIcon);
+                }
+
+                System.Drawing.Bitmap DestBitmap = new System.Drawing.Bitmap(1, 1);
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage((System.Drawing.Image)DestBitmap))
+                {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.DrawImage(SourceBitmap, 0, 0, 1, 1);
+                }
+                System.Drawing.Color DestColor = DestBitmap.GetPixel(0, 0);
+                OutputColor = Color.FromArgb((byte)255, (byte)DestColor.R, (byte)DestColor.G, (byte)DestColor.B);
+            }
+
+            return OutputColor;
+        }
+    }
 }

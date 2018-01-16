@@ -17,7 +17,7 @@
                 <!--ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Generic.xaml" /-->
                 <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Colors/BaseLight.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Accents/Cobalt.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Start9_API;component/PlexStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Plex/PlexStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </plex:PlexWindow.Resources>

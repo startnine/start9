@@ -11,10 +11,47 @@
         <BitmapImage x:Key="TestBitmapImage"/>
         <Thickness x:Key="TestThickness">10</Thickness>
 
+        <Style x:Key="HoverCanvasStyle" TargetType="Canvas">
+            <Setter Property="Opacity" Value="0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType=local:TaskItemButton}}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.25" Duration="0:0:0.0625"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.0625"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsActiveWindow, RelativeSource={RelativeSource AncestorType=local:TaskItemButton}}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.0625"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.0625"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
         <Style TargetType="Button" x:Key="TaskItemButtonButtonStyle">
             <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Background" Value="#01000000" />
+            <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="#FF404040" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -32,13 +69,13 @@
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Border x:Name="PART_Active" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#FFFF00FF" BorderBrush="#FF404040"
+                                        IsHitTestVisible="False" Background="#00FF00FF" BorderBrush="#FF404040"
                                         BorderThickness="0" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Hover" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#40000000" BorderBrush="#FF404040"
+                                        IsHitTestVisible="False" Background="#7F000000" BorderBrush="#FF404040"
                                         BorderThickness="0,0,0,2" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Pressed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        IsHitTestVisible="False" Background="#7F000000" BorderBrush="#FF404040"
+                                        IsHitTestVisible="False" Background="#00000000" BorderBrush="#FF404040"
                                         BorderThickness="0,0,0,2" Margin="0" Padding="0" Visibility="Hidden" />
                                 <Border x:Name="PART_Idle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                         IsHitTestVisible="False" Background="#00000000" BorderBrush="#FF404040"
@@ -47,14 +84,14 @@
                                             IsHitTestVisible="False" Background="#00000000" BorderBrush="#FF404040"
                                             BorderThickness="0,0,0,2">
                                         <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <apicontrol:NineGridCanvas SizingMargin="{DynamicResource TestThickness}" SizingImage="{DynamicResource TestBitmapImage}" TargetWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" TargetHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"/>
+                                            <apicontrol:NineGridCanvas SizingMargin="{DynamicResource TestThickness}" SizingImage="{DynamicResource TestBitmapImage}" TargetWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" TargetHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Visibility="Hidden"/>
                                         </Border>
                                     </Border>
                                 </Border>
                                 <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsHitTestVisible="True" IsEnabled="True" />
                             </Grid>
                         </Border>
-                        <ControlTemplate.Triggers>
+                        <!--ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="PART_Idle" Property="Visibility" Value="Hidden" />
                                 <Setter TargetName="PART_Hover" Property="Visibility" Value="Visible" />
@@ -76,22 +113,24 @@
                                 <Setter TargetName="PART_Pressed" Property="Visibility" Value="Hidden" />
                                 <Setter TargetName="PART_Active" Property="Visibility" Value="Visible" />
                             </Trigger>
-                        </ControlTemplate.Triggers>
+                        </ControlTemplate.Triggers-->
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <!--Style.Triggers>
-                <Trigger Property="IsManipulationEnabled" Value="True">
-                    <Setter Property="Foreground" Value="White" />
-                </Trigger>
-            </Style.Triggers-->
         </Style>
     </UserControl.Resources>
     <Button x:Name="RootButton" MaxWidth="160" Style="{DynamicResource TaskItemButtonButtonStyle}">
-        <StackPanel Orientation="Horizontal" Margin="10,0" IsHitTestVisible="False">
-            <Canvas x:Name="Icon" Width="32" Height="32" VerticalAlignment="Center" Margin="0"
-                    Background="{Binding WindowIcon, Mode=TwoWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
-                    IsHitTestVisible="False" />
+        <StackPanel Orientation="Horizontal" Margin="0,0" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Width="56">
+                <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{Binding WindowIconColor, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}" Style="{DynamicResource HoverCanvasStyle}">
+                    <StackPanel Margin="0" Width="56" Height="40" Orientation="Vertical">
+                        <Canvas Margin="0" HorizontalAlignment="Stretch" Height="54" Background="#40000000"/>
+                        <Canvas Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="2" Background="#C0000000"/>
+                    </StackPanel>
+                </Canvas>
+                <Canvas x:Name="Icon" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Background="{Binding WindowIcon, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
+                    IsHitTestVisible="False"/>
+            </Grid>
             <TextBlock x:Name="Title" VerticalAlignment="Center"
                        Text="{Binding WindowTitle, Mode=TwoWay, FallbackValue=Center, RelativeSource={RelativeSource AncestorType={x:Type local:TaskItemButton}}}"
                        Foreground="{Binding Foreground, Mode=OneWay, FallbackValue=#FF404040, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"

@@ -3761,7 +3761,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}">
+    <Style x:Key="PlexScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="4" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -3794,6 +3794,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource PlexScrollViewerStyle}"/>
 
     <!-- End ScrollBar and ScrollViewer Styles -->
 
@@ -4151,6 +4152,27 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PlexMenuSeparatorStyle" TargetType="{x:Type Separator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Separator}">
+                    <Grid Height="Auto">
+                        <Path Fill="{x:Null}" Stretch="Fill" StrokeDashArray="2 2" Margin="32,1,3,2" VerticalAlignment="Center" Height="1" Data="M0,0L1,0" >
+                            <Path.Stroke>
+                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="Transparent"/>
+                                        <GradientStop Offset="1" Color="White"/>
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </Path.Stroke>
+                        </Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="PlexRibbonStyle" TargetType="{x:Type Fluent:Ribbon}">
         <!--Setter Property="Height" Value="117"-->
         <Setter Property="Background" Value="Transparent" />
@@ -4169,14 +4191,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Fluent:Ribbon}">
-                    <ControlTemplate.Resources>
-                        <Style BasedOn="{StaticResource MenuSeparatorStyle}" TargetType="{x:Type Separator}" />
-                        <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}"
-                               BasedOn="{StaticResource MenuSeparatorStyle}" TargetType="{x:Type Separator}" />
-                        <Style BasedOn="{StaticResource FluentRibbonDefaultContextMenuStyle}"
-                               TargetType="{x:Type ContextMenu}" />
-                    </ControlTemplate.Resources>
-
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}">
@@ -4313,8 +4327,8 @@
                                                           CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                                           Focusable="false" HorizontalAlignment="Left" Width="13"
                                                           Height="Auto" VerticalAlignment="Stretch"
-                                                          Style="{DynamicResource ScrollButtonStyle}">
-                                                <RepeatButton.Visibility>
+                                                          Style="{DynamicResource ScrollButtonStyle}" Visibility="Hidden">
+                                                <!--RepeatButton.Visibility>
                                                     <MultiBinding FallbackValue="Visibility.Collapsed"
                                                                   Converter="{StaticResource MenuScrollingVisibilityConverter}"
                                                                   ConverterParameter="0">
@@ -4327,8 +4341,8 @@
                                                         <Binding RelativeSource="{RelativeSource TemplatedParent}"
                                                                  Path="ViewportWidth" />
                                                     </MultiBinding>
-                                                </RepeatButton.Visibility>
-                                                <Path Fill="{DynamicResource BlackBrush}" Stretch="Fill"
+                                                </RepeatButton.Visibility-->
+                                                <Path Fill="Black" Stretch="Fill"
                                                       Stroke="{x:Null}" StrokeThickness="0"
                                                       HorizontalAlignment="Center" Margin="0"
                                                       VerticalAlignment="Center" Width="3" Height="5"
@@ -4338,8 +4352,8 @@
                                                           CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                                                           Focusable="false" HorizontalAlignment="Right" Width="13"
                                                           Height="Auto" VerticalAlignment="Stretch"
-                                                          Style="{DynamicResource ScrollButtonStyle}">
-                                                <RepeatButton.Visibility>
+                                                          Style="{DynamicResource ScrollButtonStyle}" Visibility="Hidden">
+                                                <!--RepeatButton.Visibility>
                                                     <MultiBinding FallbackValue="Visibility.Collapsed"
                                                                   Converter="{StaticResource MenuScrollingVisibilityConverter}"
                                                                   ConverterParameter="100">
@@ -4352,8 +4366,8 @@
                                                         <Binding RelativeSource="{RelativeSource TemplatedParent}"
                                                                  Path="ViewportWidth" />
                                                     </MultiBinding>
-                                                </RepeatButton.Visibility>
-                                                <Path Fill="{DynamicResource BlackBrush}" Stretch="Fill"
+                                                </RepeatButton.Visibility-->
+                                                <Path Fill="Black" Stretch="Fill"
                                                       Stroke="{x:Null}" StrokeThickness="0"
                                                       HorizontalAlignment="Center" Margin="0"
                                                       VerticalAlignment="Center" Width="3" Height="5"
@@ -4433,7 +4447,7 @@
                                                          Size="Small"
                                                          Style="{DynamicResource RibbonTabControlToggleButtonStyle}"
                                                          IsChecked="{Binding Path=IsMinimized, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                         Visibility="{TemplateBinding CanMinimize, Converter={StaticResource boolToVisibilityConverter}}" />
+                                                         Visibility="Visible" />
                                 </Grid>
                                 <StackPanel x:Name="PART_ToolbarPanel" Orientation="Horizontal" />
                             </StackPanel>
@@ -4775,14 +4789,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Fluent:RibbonGroupBox}">
-                    <ControlTemplate.Resources>
-                        <ResourceDictionary>
-                            <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}"
-                                   BasedOn="{StaticResource ScrollBarWhite}" />
-                            <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}"
-                                   BasedOn="{StaticResource ScrollViewerStyle}" />
-                        </ResourceDictionary>
-                    </ControlTemplate.Resources>
                     <Grid x:Name="grid2" HorizontalAlignment="Stretch">
                         <Grid>
                             <Border x:Name="HoverBackground" BorderThickness="1,0,1,1" CornerRadius="0"
@@ -4951,7 +4957,7 @@
                                        Fill="{DynamicResource Fluent.Ribbon.Brushes.GroupSeparator.Background}"
                                        HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="1" Height="Auto"
                                        Grid.RowSpan="2" Margin="0,4"
-                                       Visibility="{Binding IsSeparatorVisible, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                       Visibility="Visible" />
                         </Grid>
 
                         <Image x:Name="PART_SnappedImage" Visibility="Collapsed" />

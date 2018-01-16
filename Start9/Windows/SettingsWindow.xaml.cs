@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using Start9.Api.Plex;
 using Start9.Api.Tools;
+using System.Windows.Interop;
+using System;
 
 namespace Start9.Windows
 {
@@ -44,5 +46,10 @@ namespace Start9.Windows
 		{
 			ShowFooter = false;
 		}
-	}
+
+        private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
+        {
+            DwmTools.GetThumbnail(MainTools.FindWindowEx(IntPtr.Zero, IntPtr.Zero, null, "Progman"), ShowThumbnailButton);
+        }
+    }
 }
