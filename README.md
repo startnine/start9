@@ -1,5 +1,5 @@
 # Start9
-A Windows shell supplement, one which aims to be not only modular, but extends to most needs.
+A work in progress shell supplement (or replacement) for Windows, one which aims to be not only modular and extends to many needs.
 
 ## Modules
 *We are planning to ship 14 modules with Start9 out of the box*:
@@ -32,7 +32,7 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
 | ReactOS       | Broken        | Silently crashes on startup|
 
 ### Dependencies and Frameworks
-[These should be resolved by NuGet, but we want this to look longer or whatever]
+[These should be resolved by NuGet, however here's the list just incase]
 - Runtime
   - .NET Framework 4.0
   - WPF
@@ -40,4 +40,4 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
   - ControlzEx
   - Fluent.Ribbon
 
-Join our Discord for more information: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/6cpvxBS)
+Join our Discord for more information: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/yPJrS3T)
