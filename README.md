@@ -18,10 +18,10 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
 - 9888 Notification Center
 - 10240 Notification Center
 
-
+*As Start9 is still in the early stages of development, compatibility isn't a big concern right now*
+<!--
 ## Compatability
 *Ranking: Excellent, Good, Satisfactory, Needs Improvement, Broken*
-
 | OS            | Compatability | Notes |
 | ------------- |---------------|---|
 | Windows 10    | Excellent     ||
@@ -30,6 +30,7 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
 | Windows Vista | Untested      ||
 | Windows XP    | Untested      ||
 | ReactOS       | Broken        | Silently crashes on startup|
+-->
 
 ### Dependencies and Frameworks
 [These should be resolved by NuGet, but we want this to look longer or whatever]
@@ -40,4 +41,4 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
   - ControlzEx
   - Fluent.Ribbon
 
-Join our Discord for more information: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/6cpvxBS)
+Interested? Join our Discord: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/6cpvxBS)

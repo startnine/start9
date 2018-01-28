@@ -1,11 +1,12 @@
-# Contributing Guidelines
-Thanks for taking the time to contribute to Start9! To make sure that your efforts are used effectively, please take the time to read over these guidelines.
 *these guidelines are currently being written.*
+# Start9 Contributing Guidelines *WIP*
+Thanks for taking the time to contribute to Start9! To make sure that your efforts are used effectively, please take the time to read over these guidelines.
 
 ## Submiting an issue 
 We use GitHub issue tracking to manage problems and suggestions with Start9. If you've found a bug with Start9, this is where you should go. Creating a GitHub account is free and takes minutes. 
+
 ### Security Issue 
-	Please contact rob55rod/Splitwirez as soon as possible with information on how to reproduce the problem.
+Please contact rob55rod/Splitwirez as soon as possible with information on how to reproduce the problem.
 
 ### Non-security related isuse 
 1. Please check if the issue has been already posted on the issues page 
@@ -23,7 +24,7 @@ The easiest way to have your suggestion implemented into Start9 quickly is for y
 ## Writing Code 
 Please save us time by complying to our code guidelines.
 ### Code style 
-*In general, just respect the rules that are commonly used in C#.* 
+*In general, just respect the rules that are used in C# in other places.* 
 
 **Do:** 
 - Tab indentation (four spaces) 
@@ -47,4 +48,4 @@ Getting Start9 to multiple languages is important to us! Here's how you can help
 **SECTION TBD** for use #localization_lounge on the [Start9 Discord](https://discord.gg/6cpvxBS).
 
 ## Feedback 
-Do you want to improve these gudielines? Please edit this guide with your proposed changes and submit a pull request. For any errors that don't justify a new branch, discuss on discord.
+Would you want to improve these gudielines? Please edit this guide with your proposed changes and submit a pull request.
