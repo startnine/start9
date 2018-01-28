@@ -1,22 +1,27 @@
 # Start9
-A Windows shell supplement, one which aims to be not only modular, but extends to most needs.
+Start9 is a *work in progess* extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
 
-## Modules
-*We are planning to ship 14 modules with Start9 out of the box*:
-- 9600 menu
-- 9795 menu
-- 9879 menu
-- 9926 menu
-- 10240 menu
-- 14393 menu
-- 15063 menu
-- 3790 Taskbar
-- 6000 Taskbar
-- 7601 Taskbar
+## Planned Modules
+*We're planning to package Start9 with 14 modules built in, each module functioning similar to a familar user interface.*:
+### Start Menus / Screens
+- Windows 8.1 (build 9600)  
+- Windows 10 (build 9795)  
+- Windows 10 (build 9879)  
+- Windows 10 (build 9926)  
+- Windows 10 (build 10240)  
+- Windows 10 (build 14393)  
+- Windows 10 (build 15063)  
+
+### Taskbars
+- Windows XP (3790)  
+- windows Vista (6000)  
+- Windows 7 (7601)  
+
+### Misc.
 - macOS Dock
-- 4074 Sidebar
-- 9888 Notification Center
-- 10240 Notification Center
+- Windows Longhorn (build 4074) Sidebar  
+- Windows 10 (build 9888) Notification Center  
+- Windows 10 (build 10240) Notification Center  
 
 *As Start9 is still in the early stages of development, compatibility isn't a big concern right now*
 <!--
@@ -32,7 +37,7 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
 | ReactOS       | Broken        | Silently crashes on startup|
 -->
 
-### Dependencies and Frameworks
+## Dependencies and Frameworks
 [These should be resolved by NuGet, but we want this to look longer or whatever]
 - Runtime
   - .NET Framework 4.0
@@ -40,5 +45,5 @@ A Windows shell supplement, one which aims to be not only modular, but extends t
 - Packages
   - ControlzEx
   - Fluent.Ribbon
-
+---
 Interested? Join our Discord: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/6cpvxBS)
