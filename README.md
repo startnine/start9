@@ -1,8 +1,8 @@
 # Start9
-Start9 is a *work in progess* extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
+Start9 is a *work in progress* extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
 
 ## Planned Modules
-*We're planning to package Start9 with 14 modules built in, each module functioning similar to a familar user interface.*:
+*We're planning to package Start9 with 14 modules built in, each module functioning like a familiar user interface.*:
 ### Start Menus / Screens
 - Windows 8.1 (build 9600)  
 - Windows 10 (build 9795)  
@@ -34,7 +34,7 @@ Start9 is a *work in progess* extensible, customizable shell supplement for Wind
 | Windows 7     | Untested      ||
 | Windows Vista | Untested      ||
 | Windows XP    | Untested      ||
-| ReactOS       | Broken        | Silently crashes on startup|
+| ReactOS       | Broken        |  Crashes silently on startup|
 -->
 
 ## Dependencies and Frameworks
@@ -46,4 +46,4 @@ Start9 is a *work in progess* extensible, customizable shell supplement for Wind
   - ControlzEx
   - Fluent.Ribbon
 ---
-Interested? Join our Discord: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square&colorB=7289DA)](https://discord.gg/6cpvxBS)
+Interested? Join our Discord: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square?colorB=7289DA)](https://discord.gg/6cpvxBS)
