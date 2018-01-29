@@ -46,4 +46,4 @@ Start9 is a *work in progess* extensible, customizable shell supplement for Wind
   - ControlzEx
   - Fluent.Ribbon
 ---
-Interested? Join our Discord: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square)](https://discord.gg/6cpvxBS)
+Interested? Join our Discord: [![Discord](https://img.shields.io/discord/321793250602254336.svg?style=flat-square?colorB=7289DA)](https://discord.gg/6cpvxBS)
