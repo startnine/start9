@@ -18,137 +18,186 @@ namespace TestModule
 	/// </summary>
 	public partial class TaskbarGroupStackPanel : UserControl
 	{
-		public TaskbarGroupStackPanel()
-		{
-			InitializeComponent();
-			ThumbPreviewWindow = new Window
-			{
-				Background = new SolidColorBrush(Color.FromArgb(0xC0, 0xFF, 0xFF, 0xFF)),
-				WindowStyle = WindowStyle.None,
-				AllowsTransparency = true,
-				Width = 400,
-				Height = 35,
-				Visibility = Visibility.Hidden,
-				Content = new StackPanel
-				{
-					HorizontalAlignment = HorizontalAlignment.Stretch,
-					VerticalAlignment = VerticalAlignment.Top,
-					Orientation = Orientation.Vertical,
-					Background = new SolidColorBrush(Color.FromArgb(0x40, 0x0, 0x0, 0x0))
-				},
-				Topmost = true,
-				ShowActivated = false,
-				ShowInTaskbar = false
-			};
+        public TaskbarGroupStackPanel()
+        {
+            InitializeComponent();
+            ThumbPreviewWindow = new Window
+            {
+                Background = new SolidColorBrush(Color.FromArgb(0xC0, 0xFF, 0xFF, 0xFF)),
+                WindowStyle = WindowStyle.None,
+                AllowsTransparency = true,
+                Width = 400,
+                Height = 35,
+                Visibility = Visibility.Hidden,
+                Content = new StackPanel
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Orientation = Orientation.Vertical,
+                    Background = new SolidColorBrush(Color.FromArgb(0x40, 0x0, 0x0, 0x0))
+                },
+                Topmost = true,
+                ShowActivated = false,
+                ShowInTaskbar = false
+            };
+
+            JumpListWindow = new Window
+            {
+                Background = new SolidColorBrush(Colors.White),
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                Width = 400,
+                Height = 90,
+                Visibility = Visibility.Hidden,
+                Content = new StackPanel
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Orientation = Orientation.Vertical
+                },
+                Topmost = true,
+                ShowActivated = false,
+                ShowInTaskbar = false
+            };
+            JumpListWindow.Deactivated += delegate { HideJumpListWindow(); };
+
+            var JumpListContent = (JumpListWindow.Content as StackPanel);
+            StackPanel JumpListBottom = new StackPanel()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Orientation = Orientation.Vertical
+            };
+            Button NewInstanceButton = new Button()
+            {
+                Content = Tag,
+                Height = 30
+            };
+            NewInstanceButton.Click += NewInstanceButton_Click;
+            Button PinButton = new Button()
+            {
+                Content = "Pin this program to taskbar",
+                Height = 30
+            };
+            Button CloseAllButton = new Button()
+            {
+                Content = "Close all windows",
+                Height = 30
+            };
+            JumpListBottom.Children.Add(NewInstanceButton);
+            JumpListBottom.Children.Add(PinButton);
+            JumpListBottom.Children.Add(CloseAllButton);
+            JumpListContent.Children.Add(JumpListBottom);
 
 
-			ThumbPreviewWindow.MouseLeave += delegate
-			{
-				if (!IsMouseOver)
-				{
-					HideThumbnailPreviewWindow();
-					(ThumbPreviewWindow.Content as StackPanel).Children.Clear();
-				}
-			};
 
-			MouseLeave += delegate
-			{
-				if (ThumbPreviewWindow.Visibility == Visibility.Visible && !ThumbPreviewWindow.IsMouseOver)
-					ThumbPreviewWindow.Hide();
-			};
+            ThumbPreviewWindow.MouseLeave += delegate
+                {
+                    if (!IsMouseOver)
+                    {
+                        HideThumbnailPreviewWindow();
+                        (ThumbPreviewWindow.Content as StackPanel).Children.Clear();
+                    }
+                };
 
-
-			ThumbPreviewWindow.IsVisibleChanged += delegate
-			{
-				if (ThumbPreviewWindow.Visibility == Visibility.Visible)
-					foreach (var b in ProgramWindowsList)
-					{
-						var windowEntry = new Button
-						{
-							Style = (Style) Resources["ThumbPreviewButtonStyle"],
-							Content = new Grid
-							{
-								HorizontalAlignment = HorizontalAlignment.Stretch,
-								VerticalAlignment = VerticalAlignment.Stretch,
-								Margin = new Thickness(6, 0, 0, 0)
-							},
-							Tag = b
-						};
-
-						var entryContent = windowEntry.Content as Grid;
-
-						try
-						{
-							entryContent.Children.Add(new Canvas
-							{
-								HorizontalAlignment = HorizontalAlignment.Left,
-								Width = 16,
-								Height = 16,
-								Background = new ImageBrush(b.Icon.ToBitmap().ToBitmapSource())
-							});
-						}
-						catch (Exception ex)
-						{
-							Debug.WriteLine(ex);
-						}
-						;
-
-						entryContent.Children.Add(new Label
-						{
-							HorizontalAlignment = HorizontalAlignment.Left,
-							Content = b.Name,
-							Margin = new Thickness(16, 0, 0, 0),
-							Foreground = new SolidColorBrush(Colors.White)
-						});
-
-						var closeButton = new Button
-						{
-							Style = (Style) Resources["ThumbPreviewCloseButtonStyle"]
-						};
-						closeButton.Click += delegate
-						{
-							(windowEntry.Tag as ProgramWindow).Close();
-							(ThumbPreviewWindow.Content as StackPanel).Children.Remove(windowEntry);
-							foreach (Button g in Buttons.Children)
-								if ((g.Tag as ProgramWindow).Hwnd == (windowEntry.Tag as ProgramWindow).Hwnd)
-								{
-									Buttons.Children.Remove(g);
-									return;
-								}
-							foreach (var p in ProgramWindowsList)
-								if (p.Hwnd == (windowEntry.Tag as ProgramWindow).Hwnd)
-								{
-									ProgramWindowsList.Remove(p);
-									return;
-								}
-						};
+            MouseLeave += delegate
+            {
+                if (ThumbPreviewWindow.Visibility == Visibility.Visible && !ThumbPreviewWindow.IsMouseOver)
+                    ThumbPreviewWindow.Hide();
+            };
 
 
-						entryContent.Children.Add(closeButton);
+            ThumbPreviewWindow.IsVisibleChanged += delegate
+            {
+                if (ThumbPreviewWindow.Visibility == Visibility.Visible)
+                    foreach (var b in ProgramWindowsList)
+                    {
+                        var windowEntry = new Button
+                        {
+                            Style = (Style)Resources["ThumbPreviewButtonStyle"],
+                            Content = new Grid
+                            {
+                                HorizontalAlignment = HorizontalAlignment.Stretch,
+                                VerticalAlignment = VerticalAlignment.Stretch,
+                                Margin = new Thickness(6, 0, 0, 0)
+                            },
+                            Tag = b
+                        };
 
-						windowEntry.Click += delegate
-						{
-							(windowEntry.Tag as ProgramWindow).Show();
-							/*MiscTools.ShowWindow((WindowEntry.Tag as ProgramWindow).Hwnd, 10);
+                        var entryContent = windowEntry.Content as Grid;
+
+                        try
+                        {
+                            entryContent.Children.Add(new Canvas
+                            {
+                                HorizontalAlignment = HorizontalAlignment.Left,
+                                Width = 16,
+                                Height = 16,
+                                Background = new ImageBrush(b.Icon.ToBitmap().ToBitmapSource())
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex);
+                        }
+                        ;
+
+                        entryContent.Children.Add(new Label
+                        {
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            Content = b.Name,
+                            Margin = new Thickness(16, 0, 0, 0),
+                            Foreground = new SolidColorBrush(Colors.White)
+                        });
+
+                        var closeButton = new Button
+                        {
+                            Style = (Style)Resources["ThumbPreviewCloseButtonStyle"]
+                        };
+                        closeButton.Click += delegate
+                        {
+                            (windowEntry.Tag as ProgramWindow).Close();
+                            (ThumbPreviewWindow.Content as StackPanel).Children.Remove(windowEntry);
+                            foreach (Button g in Buttons.Children)
+                                if ((g.Tag as ProgramWindow).Hwnd == (windowEntry.Tag as ProgramWindow).Hwnd)
+                                {
+                                    Buttons.Children.Remove(g);
+                                    return;
+                                }
+                            foreach (var p in ProgramWindowsList)
+                                if (p.Hwnd == (windowEntry.Tag as ProgramWindow).Hwnd)
+                                {
+                                    ProgramWindowsList.Remove(p);
+                                    return;
+                                }
+                        };
+
+
+                        entryContent.Children.Add(closeButton);
+
+                        windowEntry.Click += delegate
+                        {
+                            (windowEntry.Tag as ProgramWindow).Show();
+                            /*MiscTools.ShowWindow((WindowEntry.Tag as ProgramWindow).Hwnd, 10);
 				            MiscTools.SetForegroundWindow((WindowEntry.Tag as ProgramWindow).Hwnd);*/
-							ThumbPreviewWindow.Hide();
-						};
+                            ThumbPreviewWindow.Hide();
+                        };
 
-						(ThumbPreviewWindow.Content as StackPanel).Children.Add(windowEntry);
-					}
-			};
-			//RunningBackgroundButton.Click += delegate { ShowThumbnailPreviewWindow(); };
+                        (ThumbPreviewWindow.Content as StackPanel).Children.Add(windowEntry);
+                    }
+            };
+            //RunningBackgroundButton.Click += delegate { ShowThumbnailPreviewWindow(); };
 
-			var showThumbnailPreviewCounter = 0;
+            var showThumbnailPreviewCounter = 0;
 
-			var mouseGroupContactTimer = new Timer
-			{
-				Interval = 1
-			};
-			mouseGroupContactTimer.Elapsed += delegate
-			{
+            var mouseGroupContactTimer = new Timer
+            {
+                Interval = 1
+            };
+            mouseGroupContactTimer.Elapsed += delegate
+            {
                 Dispatcher.Invoke(new Action(() =>
-				{
+                {
                     if (Window.GetWindow(this) == null)
                     {
                         mouseGroupContactTimer.Stop();
@@ -181,13 +230,18 @@ namespace TestModule
                             
                         }*/
                     }
-				}));
-			};
+                }));
+            };
 
-			Loaded += delegate { mouseGroupContactTimer.Start(); };
-		}
+            Loaded += delegate { mouseGroupContactTimer.Start(); };
+        }
 
-		public TaskbarGroupStatus GroupStatus
+        private void NewInstanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Tag.ToString());
+        }
+
+        public TaskbarGroupStatus GroupStatus
 		{
 			get => GroupStatusStorage;
 			set => GroupStatusStorage = value;
@@ -246,8 +300,9 @@ namespace TestModule
 		public List<ProgramWindow> ProgramWindowsList = new List<ProgramWindow>();
 
 		public Window ThumbPreviewWindow;
+        public Window JumpListWindow;
 
-		public void AddButton(TaskItemButton itemButton)
+        public void AddButton(TaskItemButton itemButton)
 		{
 			Buttons.Children.Add(itemButton);
 			ManageButtons();
@@ -255,9 +310,11 @@ namespace TestModule
 
 		public bool RemoveButtonByHwnd(IntPtr hWnd)
 		{
+            int targetIndex = 0;
+            bool found = false;
             bool isEmpty = false;
             Debug.WriteLine(hWnd.ToString());
-			for (var i = 0; i < ProgramWindowsList.Count; i++)
+			/*for (var i = 0; i < ProgramWindowsList.Count; i++)
 			{
 				var p = ProgramWindowsList[i];
                 Debug.WriteLine(p.Hwnd.ToString());
@@ -266,10 +323,26 @@ namespace TestModule
                     Debug.WriteLine(hWnd + " " + p.ToString() + " is delet");
                     ProgramWindowsList.Remove(p);
                 }
-			}
+			}*/
+            foreach(ProgramWindow p in ProgramWindowsList)
+            {
+                if (p.Hwnd == hWnd)
+                {
+                    targetIndex = ProgramWindowsList.IndexOf(p);
+                    found = true;
+                }
+            }
+
+            if(found)
+            {
+                ProgramWindowsList.RemoveAt(targetIndex);
+            }
 
             if (ProgramWindowsList.Count == 0)
+            {
                 isEmpty = true;
+            }
+
             return isEmpty;
 
             /*if ((Config.GroupingMode != TaskbarGroupingMode.Combine) | ForceCombine)
@@ -329,7 +402,10 @@ namespace TestModule
 				if (ProgramWindowsList.Count > 0)
 				{
 					RunningBackgroundButton.Visibility = Visibility.Visible;
-					if (ProgramWindowsList.Count > 2)
+                    var drawingColor = MiscTools.GetColorFromImage(Environment.ExpandEnvironmentVariables(ProgramWindowsList[0].Process.MainModule.FileName));
+                    RunningBackgroundButton.WindowIconColor = new SolidColorBrush(System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B));
+
+                    if (ProgramWindowsList.Count > 2)
 						GroupSideTabMode = TaskbarGroupSideTabMode.GroupTabDouble;
 					else if (ProgramWindowsList.Count > 1)
 						GroupSideTabMode = TaskbarGroupSideTabMode.GroupTabSingle;
@@ -347,7 +423,9 @@ namespace TestModule
 				//RunningBackgroundButton.RootButton.MouseEnter += TaskItemButton_MouseEnter;
 				//RunningBackgroundButton.RootButton.Click += RunningBackgroundButton_Click;
 				RunningBackgroundButton.RootButton.PreviewMouseLeftButtonDown += TaskItemButton_MouseLeftButtonDown;
-			}
+                RunningBackgroundButton.RootButton.PreviewMouseRightButtonDown += delegate { ShowJumpListWindow(); };
+
+            }
 			else
 			{
 				GroupSideTabMode = TaskbarGroupSideTabMode.None;
@@ -358,9 +436,10 @@ namespace TestModule
 					var taskItemButton = new TaskItemButton(b);
 
 					taskItemButton.RootButton.PreviewMouseLeftButtonDown += TaskItemButton_MouseLeftButtonDown;
+                    taskItemButton.RootButton.PreviewMouseRightButtonDown += delegate { ShowJumpListWindow(); };
 
 
-					/*taskItemButton.RootButton.Click += delegate
+                    /*taskItemButton.RootButton.Click += delegate
 					{
 						if (MiscTools.GetForegroundWindow() == (taskItemButton.Tag as ProgramWindow).Hwnd)
 							(taskItemButton.Tag as ProgramWindow).Minimize();
@@ -368,7 +447,7 @@ namespace TestModule
 							(taskItemButton.Tag as ProgramWindow).Show();
 					};*/
 
-					try
+                    try
 					{
 						var exStyle = MiscTools.GetWindowLong(b.Hwnd, MiscTools.GwlExstyle);
 						if (MiscTools.Taskstyle == (MiscTools.Taskstyle & MiscTools.GetWindowLong(b.Hwnd, MiscTools.GwlExstyle)) &&
@@ -385,56 +464,68 @@ namespace TestModule
 
 		void TaskItemButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var dragTimer = new Timer
+            //int index = _thisModule.Taskbars[0].Taskband.Children.IndexOf(this);
+
+            int duration = 0;
+
+            var dragTimer = new Timer
 			{
 				Interval = 1
 			};
 
 			dragTimer.Elapsed += delegate
-			{
-				Dispatcher.Invoke(new Action(() =>
-				{
-					{
-						if (Mouse.LeftButton == MouseButtonState.Released)
-						{
-                            dragTimer.Stop();
-							var g = _thisModule.Taskbars[0].Taskband.Children;
-							for (var i = 0; i < g.Count; i++)
-							{
-								var taskGroup = (TaskbarGroupStackPanel) g[i];
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    duration = duration + 1;
 
-								if ((taskGroup != this) &
-								    (MainTools.GetDpiScaledCursorPosition().X > MainTools.GetDpiScaledGlobalControlPosition(taskGroup).X) &
-								    (MainTools.GetDpiScaledCursorPosition().X <
-								     MainTools.GetDpiScaledGlobalControlPosition(taskGroup).X + taskGroup.ActualWidth)
-								)
-								{
-									var thisIsGreater = false;
-									if (g.IndexOf(taskGroup) < g.IndexOf(this))
-										thisIsGreater = true;
-									g.Remove(this);
-									var h = _thisModule.Taskbars[0].Taskband.Children;
-									if (thisIsGreater)
-									{
-										if (g.IndexOf(taskGroup) - 1 >= 0)
-											g.Insert(g.IndexOf(taskGroup) - 1, this);
-										else
-											g.Insert(0, this);
-										Console.WriteLine("Left");
-										//True regardless of direction moved (!?)
-									}
-									else
-									{
-										g.Insert(g.IndexOf(taskGroup), this);
-										Console.WriteLine("Right");
-										//True only when moving right, as intended
-									}
-								}
-							}
-						}
-					}
-				}));
-			};
+                    Debug.WriteLine(duration.ToString());
+                    if ((duration <= 25) & (Mouse.LeftButton == MouseButtonState.Released))
+                    {
+                        Debug.WriteLine("S T O P P");
+                        dragTimer.Stop();
+                        ProgramWindowsList[0].Show();
+                    }
+                    else if (Mouse.LeftButton == MouseButtonState.Released)
+                    {
+                        Debug.WriteLine("G O");
+                        dragTimer.Stop();
+                        var g = _thisModule.Taskbars[0].Taskband.Children;
+                        for (var i = 0; i < g.Count; i++)
+                        {
+                            var taskGroup = (TaskbarGroupStackPanel)g[i];
+
+                            if ((taskGroup != this) &
+                                (MainTools.GetDpiScaledCursorPosition().X > MainTools.GetDpiScaledGlobalControlPosition(taskGroup).X) &
+                                (MainTools.GetDpiScaledCursorPosition().X <
+                                    MainTools.GetDpiScaledGlobalControlPosition(taskGroup).X + taskGroup.ActualWidth)
+                            )
+                            {
+                                var thisIsGreater = false;
+                                if (g.IndexOf(taskGroup) < g.IndexOf(this))
+                                    thisIsGreater = true;
+                                g.Remove(this);
+                                var h = _thisModule.Taskbars[0].Taskband.Children;
+                                if (thisIsGreater)
+                                {
+                                    if (g.IndexOf(taskGroup) - 1 >= 0)
+                                        g.Insert(g.IndexOf(taskGroup) - 1, this);
+                                    else
+                                        g.Insert(0, this);
+                                    Console.WriteLine("Left");
+                                    //True regardless of direction moved (!?)
+                                }
+                                else
+                                {
+                                    g.Insert(g.IndexOf(taskGroup), this);
+                                    Console.WriteLine("Right");
+                                    //True only when moving right, as intended
+                                }
+                            }
+                        }
+                    }
+                }));
+            };
 
 			dragTimer.Start();
 		}
@@ -462,14 +553,32 @@ namespace TestModule
 
 		public void ShowThumbnailPreviewWindow()
 		{
-			var stackPoint = MainTools.GetDpiScaledGlobalControlPosition(this);
-			ThumbPreviewWindow.Height = 35 * ProgramWindowsList.Count;
-			ThumbPreviewWindow.Left = (stackPoint.X + (ActualWidth / 2)) - (ThumbPreviewWindow.ActualWidth / 2);
-			ThumbPreviewWindow.Top = stackPoint.Y - ThumbPreviewWindow.Height;
-			ThumbPreviewWindow.Visibility = Visibility.Visible;
+            if (!JumpListWindow.IsVisible)
+            {
+                var stackPoint = MainTools.GetDpiScaledGlobalControlPosition(this);
+                ThumbPreviewWindow.Height = 35 * ProgramWindowsList.Count;
+                ThumbPreviewWindow.Left = (stackPoint.X + (ActualWidth / 2)) - (ThumbPreviewWindow.ActualWidth / 2);
+                ThumbPreviewWindow.Top = stackPoint.Y - ThumbPreviewWindow.Height;
+                ThumbPreviewWindow.Visibility = Visibility.Visible;
+            }
 		}
 
-		public void HideThumbnailPreviewWindow()
+        public void ShowJumpListWindow()
+        {
+            var stackPoint = MainTools.GetDpiScaledGlobalControlPosition(this);
+            /*JumpListWindow.Height = 35 * ProgramWindowsList.Count;*/
+            JumpListWindow.Left = (stackPoint.X + (ActualWidth / 2)) - (JumpListWindow.ActualWidth / 2);
+            JumpListWindow.Top = stackPoint.Y - JumpListWindow.Height;
+            JumpListWindow.Visibility = Visibility.Visible;
+            HideThumbnailPreviewWindow();
+        }
+
+        public void HideJumpListWindow()
+        {
+            JumpListWindow.Visibility = Visibility.Hidden;
+        }
+
+            public void HideThumbnailPreviewWindow()
 		{
 			ThumbPreviewWindow.Visibility = Visibility.Hidden;
 		}

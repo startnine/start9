@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fluent;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -1058,4 +1059,12 @@ namespace Start9.Api.Plex
 			SyncShadowToWindowSize();
 		}
 	}
+
+    /*[TemplatePart(Name = PartIcon, Type = typeof(UIElement))]
+    [TemplatePart(Name = PART_RibbonTitleBar, Type = typeof(RibbonTitleBar))]
+    [TemplatePart(Name = PART_WindowCommands, Type = typeof(WindowCommands))]
+    public class PlexRibbonWindow : PlexWindowWindow
+    {
+        const string PartIcon = "PART_Titlebar";
+    }*/
 }

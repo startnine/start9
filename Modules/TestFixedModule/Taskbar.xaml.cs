@@ -122,16 +122,16 @@ namespace TestModule
 			{
 				var programStackPanel = new TaskbarGroupStackPanel
 				{
-					Background = new SolidColorBrush(Color.FromArgb(0x01, 0x0, 0x0, 0x0)),
+                    Tag = s,
+                    Background = new SolidColorBrush(Color.FromArgb(0x01, 0x0, 0x0, 0x0)),
 					VerticalAlignment = VerticalAlignment.Stretch,
-					Margin = new Thickness(2, 0, 2, 0),
-					Tag = s
+					Margin = new Thickness(2, 0, 2, 0)
 				};
 
 				Taskband.Children.Add(programStackPanel);
 			}
 
-			foreach (var wind in ProgramWindow.ProgramWindows)
+			foreach (var wind in ProgramWindow.UserPerceivedProgramWindows)
 			foreach (TaskbarGroupStackPanel t in Taskband.Children)
 				try
 				{
@@ -195,7 +195,7 @@ namespace TestModule
 			Taskband.Dispatcher.Invoke(new Action(() =>
 			{
                 {
-                    for(int i = 0; i < Taskband.Children.Count; i++)
+                    for(int i = 0; i < Taskband.Children.Count; i = i + 1)
                         try
                         {
                             var t = (TaskbarGroupStackPanel)(Taskband.Children[i]);

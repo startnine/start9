@@ -26,6 +26,9 @@ namespace TestModule
 		public static readonly DependencyProperty WindowIconProperty = DependencyProperty.Register("WindowIcon",
 			typeof(ImageBrush), typeof(TaskItemButton), new PropertyMetadata(new ImageBrush()));
 
+        public static readonly DependencyProperty WindowIconColorProperty = DependencyProperty.Register("WindowIconColor",
+            typeof(Brush), typeof(TaskItemButton), new PropertyMetadata((new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00))) as Brush));
+
 
         public TaskItemButton()
         {
@@ -46,13 +49,21 @@ namespace TestModule
 			InitializeComponent();
 			try
 			{
-				WindowIcon = new ImageBrush(programWindow.Icon.ToBitmap().ToBitmapSource());
-			}
+                Console.WriteLine("TEST 0");
+                WindowIcon = new ImageBrush(programWindow.Icon.ToBitmap().ToBitmapSource());
+                Console.WriteLine("TEST 1 " + Environment.ExpandEnvironmentVariables(programWindow.Process.MainModule.FileName));
+            }
 			catch (Exception ex)
 			{
 				Debug.WriteLine(ex);
 			}
-			WindowTitle = programWindow.Name;
+
+            var drawingColor = MiscTools.GetColorFromImage(Environment.ExpandEnvironmentVariables(programWindow.Process.MainModule.FileName));
+            Console.WriteLine("TEST 2 " + drawingColor.ToString());
+            WindowIconColor = new SolidColorBrush(System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B));
+            Console.WriteLine("TEST 3 " + WindowIconColor.ToString());
+
+            WindowTitle = programWindow.Name;
 			Tag = programWindow;
 			var doesThisWindowExist = new Timer
 			{
@@ -92,7 +103,22 @@ namespace TestModule
 			set => SetValue(WindowIconProperty, value);
 		}
 
-		[DllImport("user32.dll")]
+        public Brush WindowIconColor
+        {
+            get => (Brush)GetValue(WindowIconColorProperty);
+            set => SetValue(WindowIconColorProperty, value);
+        }
+
+        /*private static void OnWindowIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if ((d as TaskItemButton).Tag is ProgramWindow)
+            {
+                //e.NewValue
+            }
+        }*/
+
+
+        [DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool IsWindow(IntPtr hWnd);
 
