@@ -49,7 +49,7 @@ namespace Start9.Windows
 
         private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
         {
-            DwmTools.GetThumbnail(MainTools.FindWindowEx(IntPtr.Zero, IntPtr.Zero, null, "Progman"), ShowThumbnailButton);
+            DwmTools.GetThumbnail(WinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, null, "Progman"), ShowThumbnailButton);
         }
     }
 }

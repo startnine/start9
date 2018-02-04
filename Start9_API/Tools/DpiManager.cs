@@ -6,9 +6,6 @@ namespace Start9.Api.Tools
 {
 	public static class DpiManager
 	{
-		[DllImport("gdi32.dll")]
-		static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-
 		public static float GetScalingFactor()
 		{
 			var g = Graphics.FromHwnd(IntPtr.Zero);

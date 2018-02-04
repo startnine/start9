@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Start9.Api.Tools;
 using Button = System.Windows.Controls.Button;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Timer = System.Timers.Timer;
@@ -330,9 +331,6 @@ namespace Start9.Api.Plex
 		Thumb _thumbTopRightCorner;
 
 		Grid _titlebar;
-
-		[DllImport("user32.dll", SetLastError = true)]
-		internal static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 
 		void RestoreMinimizeWindow(object sender, ExecutedRoutedEventArgs e)
 		{
@@ -903,7 +901,7 @@ namespace Start9.Api.Plex
 			var window = (PlexWindow) d;
 			var hwnd = new WindowInteropHelper(window).Handle;
 			var rect = window.WindowRect;
-			MoveWindow(hwnd, (int) rect.Left, (int) rect.Top, (int) rect.Width, (int) rect.Height, true);
+			WinApi.MoveWindow(hwnd, (int) rect.Left, (int) rect.Top, (int) rect.Width, (int) rect.Height, true);
 		}
 
 
