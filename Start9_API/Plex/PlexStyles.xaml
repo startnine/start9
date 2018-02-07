@@ -621,14 +621,14 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.0" From="0" To="7, 7, -7, -7"/>
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.0" From="0" To="3, 3, -3, -3"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.375" From="7, 7, -7, -7" To="107, 107, 93, 93">
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.375" From="3, 3, -3, -3" To="107, 107, 93, 93"><!--7, 7, -7, -7-->
                                             <ThicknessAnimation.EasingFunction>
                                                 <CircleEase EasingMode="EaseOut"/>
                                             </ThicknessAnimation.EasingFunction>

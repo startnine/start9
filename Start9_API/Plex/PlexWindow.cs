@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-//using Start9.Api.Tools.WinApi;
 using Button = System.Windows.Controls.Button;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Timer = System.Timers.Timer;
@@ -71,7 +70,6 @@ namespace Start9.Api.Plex
 
         static void OnResizeModePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            int GWL_EXSTYLE = (-20);
             int GWL_STYLE = (-16);
             var window = (PlexWindow)d;
             var hwnd = new WindowInteropHelper(window).Handle;
@@ -84,34 +82,10 @@ namespace Start9.Api.Plex
             {
                 WinApi.SetWindowLong(hwnd, GWL_STYLE, new IntPtr(0x16CA0000));
             }
-            else/* if (window.ResizeMode == PlexResizeMode.NoResize)*/
+            else
             {
                 WinApi.SetWindowLong(hwnd, GWL_STYLE, new IntPtr(0x16C80000));
             }
-            
-            /*else if (window.ResizeMode == PlexResizeMode.Manual)
-            {
-                WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16C80000);
-                if (ShowMaxRestButton)
-                {
-                    WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16CF0000);
-                }
-                else if (ShowMinButton)
-                {
-                    WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16CA0000);
-                }
-                else
-                {
-                    WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16C80000);
-                }
-            }*/
-
-            /*else if (window.ResizeMode == PlexResizeMode.CanResizeWithGrip)
-            {
-                WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16CF0000);
-            }*/
-
-            //WinApi.SetWindowLong(hwnd, GWL_EXSTYLE, 0x00040100);
         }
 
         public static readonly DependencyProperty MaximizedProperty =
@@ -126,17 +100,6 @@ namespace Start9.Api.Plex
         static void OnWindowRectPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WinApi.MoveWindow(new WindowInteropHelper((PlexWindow)d).Handle, (int)((Rect)e.NewValue).Left, (int)((Rect)e.NewValue).Top, (int)((Rect)e.NewValue).Width, (int)((Rect)e.NewValue).Height, true);
-            /*var window = (PlexWindow)d;
-            var val = (Rect)e.NewValue;
-            window.Left = val.Left;
-            window.Top = val.Top;
-            window.Width = val.Width;
-            window.Height = val.Height;
-            window._shadowWindow.Focus();
-            window._shadowWindow.Activate();
-            window.Focus();
-            window.Activate();/
-            window.ShiftShadowBehindWindow();*/
         }
 
         public static readonly DependencyProperty TitleBarContentProperty =
@@ -200,16 +163,6 @@ namespace Start9.Api.Plex
 		public static readonly DependencyProperty FooterBrushProperty = DependencyProperty.Register("FooterBrush",
 			typeof(Brush), typeof(PlexWindow),
 			new PropertyMetadata(new SolidColorBrush(Color.FromArgb(0xFF, 0x5E, 0x98, 0xD9))));
-        //#FF5E98D9
-
-        /*public bool UseManualWindowManageControls
-        {
-            get => (bool)GetValue(UseManualWindowManageControlsProperty);
-            set => SetValue(UseManualWindowManageControlsProperty, value);
-        }
-
-        public static readonly DependencyProperty UseManualWindowManageControlsProperty =
-            DependencyProperty.Register("UseManualWindowManageControls", typeof(bool), typeof(PlexWindow), new PropertyMetadata(false));*/
 
         public bool ShowCloseButton
         {
@@ -275,15 +228,6 @@ namespace Start9.Api.Plex
             };
             RenderTransform = ScaleTransform;
             Opacity = 0;
-            /*_shadowScaleTimer.Elapsed += delegate
-            {
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    {
-                        SyncShadowToWindowScale();
-                    }
-                }));
-            };*/
             Loaded += PlexWindow_Loaded;
             IsVisibleChanged += PlexWindow_IsVisibleChanged;
 			Activated += PlexWindow_Activated;
@@ -311,19 +255,6 @@ namespace Start9.Api.Plex
 			get => (Rect) GetValue(WindowRectProperty);
 			set => SetValue(WindowRectProperty, value);
 		}
-
-		//private const string PART_Footer = "PART_Footer";
-
-		/*public static void SetTitleBarContent(PlexWindow element, object value)
-	    {
-
-	        element.SetValue(TitleBarContentProperty, value);
-	    }
-
-	    public static object GetTitleBarContent(PlexWindow element)
-	    {
-	        return element.GetValue(TitleBarContentProperty);
-	    }*/
 
 		public object TitleBarContent
 		{
@@ -393,32 +324,12 @@ namespace Start9.Api.Plex
 			get => (Brush) GetValue(BodyBrushProperty);
 			set => SetValue(BodyBrushProperty, value);
 		}
-		/*<Border.Background>
-	    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-	    <LinearGradientBrush.GradientStops>
-	    <GradientStop Color="White" Offset="0"/>
-	    <GradientStop Color="#FFC8D4E7" Offset="1"/>
-	    </LinearGradientBrush.GradientStops>
-	    </LinearGradientBrush>
-	    </Border.Background>*/
 
 		public Brush FooterBrush
 		{
 			get => (Brush) GetValue(FooterBrushProperty);
 			set => SetValue(FooterBrushProperty, value);
 		}
-
-		/*readonly Timer _shadowTimer = new Timer
-		{
-			Interval = 1
-		};*/
-
-        /*readonly Timer _shadowScaleTimer = new Timer
-        {
-            Interval = 1
-        };*/
-        /*double StoreMaxWidth = 0;
-	    double StoreMaxHeight = 0;*/
 
         readonly ShadowWindow _shadowWindow;
 
@@ -445,11 +356,6 @@ namespace Start9.Api.Plex
 		Button _maxButton;
 		Button _minButton;
 		Button _restButton;
-		/*double _restoreHeight;
-
-		double _restoreLeft;
-		double _restoreTop;
-		double _restoreWidth;*/
 
 		Thickness _shadowOffsetThickness = new Thickness(49, 14, 14, 60);
 		Thumb _thumbBottom;
@@ -519,11 +425,8 @@ namespace Start9.Api.Plex
 			{
 				_titlebar = GetTemplateChild(PartTitlebar) as Grid;
 				_titlebar.MouseLeftButtonDown += Titlebar_MouseLeftButtonDown;
-				_titlebar.MouseLeftButtonUp += Titlebar_MouseLeftButtonUp;
-				_titlebar.MouseMove += Titlebar_MouseMove;
 
 				_minButton = GetTemplateChild(PartMinimizeButton) as Button;
-                //_minButton.Click += delegate { ManageMaximizeRestore(2); };
                 _minButton.Click += delegate { WindowState = WindowState.Minimized; };
 
                 _maxButton = GetTemplateChild(PartMaximizeButton) as Button;
@@ -540,9 +443,6 @@ namespace Start9.Api.Plex
 				_closeButton.Click += delegate
 				{
                     Close();
-                    //_shadowWindow.Close();
-                    //Hide();
-                    //_shadowWindow.Visibility = Visibility.Hidden;
                 };
 
 
@@ -691,118 +591,7 @@ namespace Start9.Api.Plex
             }*/
         }
 
-        /*public void ManageMaximizeRestore(int maxRestMin)
-		{
-			if (maxRestMin < 2)
-			{
-				var windowAnimation = new RectAnimation
-				{
-					EasingFunction = new ExponentialEase
-					{
-						EasingMode = EasingMode.EaseOut
-					},
-					Duration = TimeSpan.FromMilliseconds(250),
-					From = new Rect(Left, Top, ActualWidth, ActualHeight)
-				};
-
-				switch (maxRestMin)
-				{
-					case 0:
-						ManageWindowSize(true);
-						var s = Screen.FromHandle(new WindowInteropHelper(this).Handle);
-						windowAnimation.To = new Rect(s.WorkingArea.Left, s.WorkingArea.Top, s.WorkingArea.Width, s.WorkingArea.Height);
-						Maximized = true;
-						_shadowWindow.Hide();
-						break;
-					case 1:
-						windowAnimation.To = new Rect(_restoreLeft, _restoreTop, _restoreWidth, _restoreHeight);
-
-						Maximized = false;
-						windowAnimation.Completed += delegate
-						{
-							_shadowWindow.Visibility = Visibility.Visible;
-							Visibility = Visibility.Hidden;
-							Visibility = Visibility.Visible;
-						};
-						break;
-				}
-
-				BeginAnimation(WindowRectProperty, windowAnimation);
-			}
-			else if (maxRestMin == 2)
-			{
-				ManageWindowSize(true);
-				var windowTopAnimation = new DoubleAnimation
-				{
-					From = Top,
-					To = SystemParameters.WorkArea.Bottom,
-					Duration = TimeSpan.FromMilliseconds(250)
-				};
-
-				var windowLeftAnimation = new DoubleAnimation
-				{
-					To = _restoreLeft + _restoreWidth,
-					Duration = TimeSpan.FromMilliseconds(500)
-				};
-
-				var windowScaleAnimation = new DoubleAnimation
-				{
-					To = 0,
-					Duration = TimeSpan.FromMilliseconds(250)
-				};
-
-
-				_shadowWindow.Hide();
-				windowLeftAnimation.Completed += delegate
-				{
-					BeginAnimation(LeftProperty, null);
-					Left = _restoreLeft;
-				};
-				//BeginAnimation(PlexWindow.LeftProperty, WindowLeftAnimation);
-
-				BeginAnimation(WidthProperty, windowScaleAnimation);
-				BeginAnimation(HeightProperty, windowScaleAnimation);
-				windowScaleAnimation.Completed += delegate
-				{
-					BeginAnimation(WidthProperty, null);
-					BeginAnimation(HeightProperty, null);
-					BeginAnimation(OpacityProperty, null);
-					Opacity = 1;
-					Width = _restoreWidth;
-					Height = _restoreHeight;
-				};
-				BeginAnimation(OpacityProperty, windowScaleAnimation);
-
-				windowTopAnimation.Completed += delegate
-				{
-					BeginAnimation(TopProperty, null);
-					Top = _restoreTop;
-					Minimized = true;
-					WindowState = WindowState.Minimized;
-				};
-				BeginAnimation(TopProperty, windowTopAnimation);
-			}
-		}
-
-		public void ManageWindowSize(bool store)
-		{
-			if (store) //Store real values to Restore variables
-			{
-				_restoreLeft = Left;
-				_restoreTop = Top;
-				_restoreWidth = Width;
-				_restoreHeight = Height;
-			}
-			else //Retrieve real values from Restore variables
-			{
-				Left = _restoreLeft;
-				Top = _restoreTop;
-				Width = _restoreWidth;
-				Height = _restoreHeight;
-			}
-		}*/
-
-		protected override void OnStateChanged(EventArgs e)
+        protected override void OnStateChanged(EventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             Screen s = Screen.FromHandle(hwnd);
@@ -812,9 +601,6 @@ namespace Start9.Api.Plex
                 Maximized = true;
                 _maxButton.Visibility = Visibility.Hidden;
                 _restButton.Visibility = Visibility.Visible;
-                //double leftPadding = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.X);
-                //double topPadding = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.Y);
-                //Padding = new Thickness((leftPadding * -1), (topPadding * -1), leftPadding, topPadding);
                 MaxWidth = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.Width);
                 MaxHeight = Tools.DpiManager.ConvertPixelsToWpfUnits(s.WorkingArea.Height);
                 CircleEase circleEase = new CircleEase()
@@ -856,68 +642,13 @@ namespace Start9.Api.Plex
                             WindowState = WindowState.Normal;
                         }
                         PlexWindow_AnimateMinimize();
-                        //_shadowWindow.Visibility = Visibility.Hidden;
                         Minimized = true;
                     }
                 }
                 else
                 {
-                    //_shadowWindow.Visibility = Visibility.Visible;
-                    //SyncShadowToWindow();
                     if (Minimized)
                     {
-                        /*var scaleTransform = (this.RenderTransform as ScaleTransform);
-                        scaleTransform.CenterX = (ActualWidth / 2);
-                        scaleTransform.CenterY = ActualHeight;
-                        CircleEase circleEase = new CircleEase()
-                        {
-                            EasingMode = EasingMode.EaseOut
-                        };
-                        DoubleAnimation windowSizeAnimation = new DoubleAnimation()
-                        {
-                            From = 0,
-                            To = 1,
-                            Duration = animationDuration,
-                            EasingFunction = circleEase
-                        };
-
-                        DoubleAnimation windowTopAnimation = new DoubleAnimation()
-                        {
-                            To = Top,
-                            From = System.Windows.Forms.Screen.FromHandle(new WindowInteropHelper(this).Handle).WorkingArea.Bottom,
-                            Duration = animationDuration,
-                            EasingFunction = circleEase
-                        };
-                        //scaleTransform.CenterX = (ActualWidth / 2);
-                        //scaleTransform.CenterY = (ActualHeight / 2);*/
-                        /*Rect windowRect = WindowRect;
-
-                        DoubleAnimation windowTopAnimation = new DoubleAnimation()
-                        {
-                            To = WindowRect.Top,
-                            Duration = animationDuration,
-                            EasingFunction = circleEase
-                        };*/
-
-                        /*DoubleAnimation windowSizeAnimation = new DoubleAnimation()
-                        {
-                            From = 0,
-                            To = 1,
-                            Duration = animationDuration,
-                            EasingFunction = circleEase
-                        };
-
-                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
-                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);*/
-                        /*windowTopAnimation.Completed += delegate
-                        {
-                            _shadowScaleTimer.Stop();
-                        };
-                        _shadowScaleTimer.Start();
-                        scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
-                        scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
-                        BeginAnimation(PlexWindow.TopProperty, windowTopAnimation);
-                        Minimized = false;*/
                         PlexWindow_AnimateRestoreUp();
                     }
                     else if (Maximized)
@@ -946,65 +677,17 @@ namespace Start9.Api.Plex
                         };
                         Rect windowRect = WindowRect;
 
-                        /*RectAnimation windowRectAnimation = new RectAnimation()
-                        {
-                            To = new Rect(Left, Top, Width, Height),
-                            From = new Rect(Left - 100, Top - 100, Width + 200, Height + 200),
-                            Duration = animationDuration,
-                            EasingFunction = circleEase
-                        };*/
                         windowVertSizeAnimation.Completed += delegate
                         {
                             WindowRect = new Rect(Left + 100, Top + 100, Width - 200, Height - 200);
                             _shadowWindow.Show();
                             ShiftShadowBehindWindow();
-                            //_shadowWindow.Focus();
-                            //_shadowWindow.Activate();
-                            //Focus();
-                            //Activate();
-                            //PlexWindow_Activated(null, null);
-                            //ShiftShadowBehindWindow();
-                            /*Left = Left + 100;
-                            Top = Top + 100;
-                            Width = Width - 200;
-                            Height = Height - 200;*/
                         };
 
 
                         WindowRect = new Rect(Left - 100, Top - 100, Width + 200, Height + 200);
-                        /*Left = Left - 100;
-                        Top = Top - 100;
-                        Width = Width + 200;
-                        Height = Height + 200;*/
                         scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
                         scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowVertSizeAnimation);
-                        //BeginAnimation(PlexWindow.WindowRectProperty, windowRectAnimation);
-
-                        /*int scaleInterval = 0;
-
-                        System.Windows.Forms.Timer scaleTimer = new System.Windows.Forms.Timer()
-                        {
-                            Interval = 1
-                        };
-
-                        scaleTimer.Tick += delegate
-                        {
-                            if (scaleInterval < 375)
-                            {
-                                scaleInterval = scaleInterval + 1;
-                            }
-                            else
-                            {
-                                scaleTimer.Stop();
-                                scaleInterval = 0;
-                                Left = Left + 100;
-                                Top = Top + 100;
-                                Width = Width - 200;
-                                Height = Height - 200;
-                            }
-                        };*/
-                        //scaleTimer.Start();
-                        //375
                     }
                 }
                 Maximized = false;
@@ -1044,11 +727,9 @@ namespace Start9.Api.Plex
             };
             windowTopAnimation.Completed += delegate
             {
-                //_shadowScaleTimer.Stop();
                 Minimized = false;
                 PlexWindow_ResetTransformProperties();
             };
-            //_shadowScaleTimer.Start();
             scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
             scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
             BeginAnimation(PlexWindow.TopProperty, windowTopAnimation);
@@ -1083,13 +764,11 @@ namespace Start9.Api.Plex
             };
             windowTopAnimation.Completed += delegate
             {
-                //_shadowScaleTimer.Stop();
                 Minimized = true;
                 PlexWindow_ResetTransformProperties();
                 WindowRect = windowRect;
                 WindowState = WindowState.Minimized;
             };
-            //_shadowScaleTimer.Start();
             scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
             scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
             BeginAnimation(PlexWindow.TopProperty, windowTopAnimation);
@@ -1126,42 +805,9 @@ namespace Start9.Api.Plex
         public void PlexWindow_Activated(object sender, EventArgs e)
         {
             PlexWindow_ResetTransformProperties();
-
-            if (WindowState == WindowState.Normal)
-            {
-                //_shadowWindow.Visibility = Visibility.Visible;
-                //SyncShadowToWindow();
-                //_shadowWindow.Opacity = 1;
-                //_shadowWindow.Activate();
-                /*_shadowWindow.Topmost = true;
-                _shadowWindow.Topmost = false;
-                Topmost = true;
-                Topmost = false;*/
-                //Activate();
-            }
-            /*if (WindowState == WindowState.Normal)
-                    {
-                        _shadowWindow.Topmost = true;
-                        _shadowWindow.Topmost = false;
-                    }*/
-            //Focus();
-            //Activate();
-            //Topmost = true;
-            //Topmost = false;
-
             if (!Topmost)
             {
                 ShiftShadowBehindWindow();
-                //WinApi.SetForegroundWindow(new WindowInteropHelper(this).Handle);
-                //_shadowWindow.Topmost = true;
-                //_shadowWindow.Topmost = false;
-                //_shadowWindow.Activate();
-                //Topmost = true;
-                //Topmost = false;
-                /*else
-                {
-                    WinApi.SetForegroundWindow(new WindowInteropHelper(_shadowWindow).Handle); 
-                }*/
             }
 		}
 
@@ -1187,7 +833,6 @@ namespace Start9.Api.Plex
         void PlexWindow_Deactivated(object sender, EventArgs e)
 		{
             ShiftShadowBehindWindow();
-            //_shadowWindow.Opacity = 0.5;
 		}
 
 		public void SyncShadowToWindow()
@@ -1227,32 +872,9 @@ namespace Start9.Api.Plex
             }
 		}
 
-		/*void PlexWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
-			if ((Visibility == Visibility.Visible) & (WindowState == WindowState.Normal))
-				_shadowWindow.Visibility = Visibility.Visible;
-			else
-				_shadowWindow.Visibility = Visibility.Hidden;
-		}*/
-
 		void Titlebar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			DragMove();
-			//SyncShadowToWindow();
-			//_shadowTimer.Start();
-		}
-
-		void Titlebar_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-		{
-			//_shadowTimer.Stop();
-		}
-
-		void Titlebar_MouseMove(object sender, MouseEventArgs e)
-		{
-			/*if (System.Windows.Input.Mouse.LeftButton == MouseButtonState.Pressed)
-			{
-			    SyncShadowToWindow();
-			}*/
 		}
 
 		void ThumbBottomRightCorner_DragDelta(object sender, DragDeltaEventArgs e)
@@ -1345,14 +967,6 @@ namespace Start9.Api.Plex
 			SyncShadowToWindowSize();
 		}
 	}
-
-    /*[TemplatePart(Name = PartIcon, Type = typeof(UIElement))]
-    [TemplatePart(Name = PART_RibbonTitleBar, Type = typeof(RibbonTitleBar))]
-    [TemplatePart(Name = PART_WindowCommands, Type = typeof(WindowCommands))]
-    public class PlexRibbonWindow : PlexWindowWindow
-    {
-        const string PartIcon = "PART_Titlebar";
-    }*/
 
     public enum PlexResizeMode
     {
