@@ -68,7 +68,6 @@
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Modules\Module.cs" />
     <Compile Include="Programs\IProgramItem.cs" />
-    <Compile Include="Tools\WinApi.cs" />
     <Compile Include="Tools\MainTools.cs" />
     <Compile Include="Plex\PlexWindow.cs" />
     <Compile Include="Programs\ProgramWindow.cs" />
@@ -78,6 +77,7 @@
     </Compile>
     <Compile Include="Programs\WindowEventArgs.cs" />
     <Compile Include="Tools\SystemPowerTools.cs" />
+    <Compile Include="Tools\WinApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Plex\PlexStyles.xaml">

@@ -7,8 +7,8 @@
                 xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
                 mc:Ignorable="d"
                 Title="Start9 Settings" Height="512" Width="768"
-                ResizeMode="CanResizeWithGrip" Visibility="Visible"
-                Style="{DynamicResource PlexWindowStyle}">
+                ResizeMode="CanResize" Visibility="Visible"
+                Style="{DynamicResource PlexWindowStyle}" TitleBarHeight="48">
     <plex:PlexWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
