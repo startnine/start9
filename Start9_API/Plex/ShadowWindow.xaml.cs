@@ -50,6 +50,24 @@ namespace Start9.Api.Plex
             };
             BindingOperations.SetBinding(this, ShadowWindow.OpacityProperty, shadowOpacityBinding);
 
+            Binding topmostBinding = new Binding()
+            {
+                Source = PlexWindow,
+                Path = new PropertyPath("Topmost"),
+                Mode = BindingMode.OneWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(this, ShadowWindow.TopmostProperty, topmostBinding);
+
+            Binding visibilityBinding = new Binding()
+            {
+                Source = PlexWindow,
+                Path = new PropertyPath("Visibility"),
+                Mode = BindingMode.OneWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(this, ShadowWindow.VisibilityProperty, visibilityBinding);
+
             Loaded += (sender, e) =>
             {
                 PlexWindow.ShiftShadowBehindWindow();
@@ -66,11 +84,11 @@ namespace Start9.Api.Plex
         protected override void OnSourceInitialized(EventArgs e)
 		{
 			base.OnSourceInitialized(e);
-			
 			//Set the window style to noactivate.
 			var helper = new WindowInteropHelper(this);
 			WinApi.SetWindowLong(helper.Handle, WinApi.GwlExstyle, new IntPtr(WinApi.GetWindowLong(helper.Handle, WinApi.GwlExstyle).ToInt32() | 0x00000080 | 0x00000020));
-		}
+            PlexWindow.ShiftShadowBehindWindow();
+        }
 	}
 
     /*public class RawOpacityToMultipliedOpacityConverter : IValueConverter

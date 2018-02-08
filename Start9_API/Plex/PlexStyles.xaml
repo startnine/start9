@@ -1957,7 +1957,7 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Padding" Value="5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
@@ -2033,7 +2033,7 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.0625" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -2188,7 +2188,10 @@
                         </Border>
                     </Border>
                 </Border>
-                <ContentPresenter Name="Content" Margin="{TemplateBinding Padding}" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Label x:Name="Check" FontFamily="Marlett" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0" Foreground="{TemplateBinding Foreground}" Visibility="Hidden">b</Label>
+                <Grid x:Name="CheckOffsetGrid" Margin="0">
+                    <ContentPresenter Name="Content" Margin="{TemplateBinding Padding}" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Grid>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
@@ -2214,6 +2217,12 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="#FFC0C0FF" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsCheckable" Value="True">
+                <Setter TargetName="CheckOffsetGrid" Property="Margin" Value="12,0,0,0"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
