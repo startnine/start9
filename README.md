@@ -1,8 +1,8 @@
 # Start9
-Start9 is a *work in progress* extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
+Start9 is a WIP extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
 
 ## Planned Modules
-*We're planning to package Start9 with 14 modules built in, each module functioning like a familiar user interface.*:
+*Start9 is planned with with 14 modules pre-installed, each module functioning like a familiar user interface.*:
 ### Start Menus / Screens
 - Windows 8.1 (build 9600)  
 - Windows 10 (build 9795)  
@@ -16,16 +16,16 @@ Start9 is a *work in progress* extensible, customizable shell supplement for Win
 - Windows XP (3790)  
 - windows Vista (6000)  
 - Windows 7 (7601)  
+- macOS Dock
 
 ### Misc.
-- macOS Dock
 - Windows Longhorn (build 4074) Sidebar  
 - Windows 10 (build 9888) Notification Center  
 - Windows 10 (build 10240) Notification Center  
 
+## Compatability
 *As Start9 is still in the early stages of development, compatibility isn't a big concern right now*
 <!--
-## Compatability
 *Ranking: Excellent, Good, Satisfactory, Needs Improvement, Broken*
 | OS            | Compatability | Notes |
 | ------------- |---------------|---|
