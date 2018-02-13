@@ -11,15 +11,15 @@ namespace Start9.Api.Tools
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 
-        public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong) => IntPtr.Size == 8
+        public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong) => IntPtr.Size == 8
             ? SetWindowLongPtr64(hWnd, nIndex, dwNewLong)
-            : SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32());
+            : SetWindowLong32(hWnd, nIndex, dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
         static extern IntPtr SetWindowLong32(IntPtr hWnd, int nIndex, int dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
-        static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+        static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, int dwNewLong);
 
         public static IntPtr GetWindowLong(IntPtr hWnd, int nIndex) => IntPtr.Size == 8
             ? GetWindowLong64(hWnd, nIndex)
@@ -204,7 +204,10 @@ namespace Start9.Api.Tools
         public const int GwlStyle = -16;
         public const int GwlExstyle = -20;
         public const int Taskstyle = 0x10000000 | 0x00800000;
+        public const int WsExTransparent = 0x00000020;
         public const int WsExToolwindow = 0x00000080;
+        public const int WsExLayered = 0x00080000;
+        public const int WsExAppWindow = 0x00040000;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct ShFileInfo

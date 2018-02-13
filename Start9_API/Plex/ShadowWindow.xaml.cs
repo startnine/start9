@@ -86,7 +86,7 @@ namespace Start9.Api.Plex
 			base.OnSourceInitialized(e);
 			//Set the window style to noactivate.
 			var helper = new WindowInteropHelper(this);
-			WinApi.SetWindowLong(helper.Handle, WinApi.GwlExstyle, new IntPtr(WinApi.GetWindowLong(helper.Handle, WinApi.GwlExstyle).ToInt32() | 0x00000080 | 0x00000020));
+			WinApi.SetWindowLong(helper.Handle, WinApi.GwlExstyle, (int)(WinApi.GetWindowLong(helper.Handle, WinApi.GwlExstyle)) | 0x00000080 | 0x00000020);
             PlexWindow.ShiftShadowBehindWindow();
         }
 	}

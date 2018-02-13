@@ -4,16 +4,164 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-
+using Start9;
+using Start9.Api;
 using System.Windows.Media;
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace Start9.Api.Objects.Controls
+namespace Start9.Api.Controls
 {
     public partial class NineGridCanvas : Canvas
     {
+        /*public Thickness SizingMargin
+        {
+            get => (Thickness)GetValue(SizingMarginProperty);
+            set => SetValue(SizingMarginProperty, value);
+        }
+
+        public static readonly DependencyProperty SizingMarginProperty = DependencyProperty.RegisterAttached(
+        "SizingMargin", typeof(Thickness), typeof(NineGridCanvas), new FrameworkPropertyMetadata(new Thickness(0, 0, 0, 0), FrameworkPropertyMetadataOptions.AffectsRender, OnSizingMarginChanged));
+
+        private static void OnSizingMarginChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as NineGridCanvas).InsetResizeBackground();
+        }
+
+        new public BitmapImage Background
+        {
+
+            get =>  (BitmapImage)GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
+        }
+
+        new public static readonly DependencyProperty BackgroundProperty = DependencyProperty.RegisterAttached(
+        "Background", typeof(BitmapImage), typeof(NineGridCanvas), new FrameworkPropertyMetadata(Start9.Api.Tools.MiscTools.GetBitmapImageFromSysDrawingBitmap(Start9.Api.Properties.Resources.FallbackImage), FrameworkPropertyMetadataOptions.AffectsRender, OnBackgroundChanged));
+
+        private static void OnBackgroundChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as NineGridCanvas).InsetResizeBackground();
+        }
+
+        private void InsetResizeBackground()
+        {
+            base.Background = new ImageBrush(Start9.Api.Tools.MiscTools.GetBitmapImageFromSysDrawingBitmap(InsetResize(Background)));
+        }
+
+        private void InsetResizeOpacityMask()
+        {
+            base.OpacityMask = new ImageBrush(Start9.Api.Tools.MiscTools.GetBitmapImageFromSysDrawingBitmap(InsetResize(Background)));
+        }
+
+        private Bitmap InsetResize(BitmapImage sourceBitmapImage)
+        {
+            int width = (int)Width;
+            if (width <= 0)
+            {
+                width = 1;
+            }
+
+            int height = (int)Height;
+            if (height <= 0)
+            {
+                height = 1;
+            }
+
+            //Rect sizingMargin = new Rect(SizingMargin.Left, SizingMargin.Top, SizingMargin.Right, SizingMargin.Bottom);
+
+            Bitmap outputBitmap = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage(outputBitmap))
+            {
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+
+                g.DrawRectangle(new System.Drawing.Pen(System.Drawing.Color.FromArgb(0, 0, 0, 0)), 0, 0, height, height);
+
+                var inset = new Rectangle((int)SizingMargin.Left, (int)SizingMargin.Top, width, height);
+
+                var sourceBitmap = Start9.Api.Tools.MiscTools.ConvertBitmapImageToBitmap(sourceBitmapImage);
+
+                g.DrawImage(sourceBitmap,
+                  new System.Drawing.Rectangle(inset.Left, inset.Top, width - (inset.Left + inset.Right), height - (inset.Top + inset.Bottom)),     //destination
+                  new System.Drawing.Rectangle(inset.Left, inset.Top, sourceBitmap.Width - (inset.Left + inset.Right), sourceBitmap.Height - (inset.Top + inset.Bottom)), //source
+                  GraphicsUnit.Pixel);
+
+                if (inset.Top > 0) //Top
+                {
+                    g.DrawImage(sourceBitmap,
+                        new System.Drawing.Rectangle(inset.Left, 0, width - (inset.Left + inset.Right), inset.Top), //destination
+                        new System.Drawing.Rectangle(inset.Left, 0, sourceBitmap.Width - (inset.Left + inset.Right), inset.Top), //source
+                        GraphicsUnit.Pixel);
+                }
+
+                if (inset.Bottom > 0)
+                {
+                    g.DrawImage(sourceBitmap,
+                   new System.Drawing.Rectangle(inset.Left, height - inset.Bottom, width - (inset.Left + inset.Right), inset.Bottom),     //destination
+                   new System.Drawing.Rectangle(inset.Left, sourceBitmap.Height - inset.Bottom, sourceBitmap.Width - (inset.Left + inset.Right), inset.Bottom), //source
+                   GraphicsUnit.Pixel);
+                }
+
+                if (inset.Left > 0)
+                {
+                    //left
+                    g.DrawImage(sourceBitmap,
+                       new System.Drawing.Rectangle(0, inset.Top, inset.Left, height - (inset.Top + inset.Bottom)),     //destination
+                       new System.Drawing.Rectangle(0, inset.Top, inset.Left, sourceBitmap.Height - (inset.Top + inset.Bottom)), //source
+                       GraphicsUnit.Pixel);
+
+                    //top left
+                    if (inset.Top > 0)
+                    {
+                        g.DrawImage(sourceBitmap,
+                            new System.Drawing.Rectangle(0, 0, inset.Left, inset.Top), //destination
+                            new System.Drawing.Rectangle(0, 0, inset.Left, inset.Top), //source
+                            GraphicsUnit.Pixel);
+                    }
+
+                    //bottom left
+                    if (inset.Bottom > 0)
+                    {
+                        g.DrawImage(sourceBitmap,
+                        new System.Drawing.Rectangle(0, height - inset.Bottom, inset.Left, inset.Bottom),     //destination
+                        new System.Drawing.Rectangle(0, sourceBitmap.Height - inset.Bottom, inset.Left, inset.Bottom), //source
+                        GraphicsUnit.Pixel);
+                    }
+                }
+
+                if (inset.Right > 0) //Right
+                {
+                    g.DrawImage(sourceBitmap,
+                       new System.Drawing.Rectangle(width - inset.Right, inset.Top, inset.Right, height - (inset.Top + inset.Bottom)),     //destination
+                       new System.Drawing.Rectangle(sourceBitmap.Width - inset.Right, inset.Top, inset.Right, sourceBitmap.Height - (inset.Top + inset.Bottom)), //source
+                       GraphicsUnit.Pixel);
+
+                    //top right
+                    if (inset.Top > 0)
+                    {
+                        g.DrawImage(sourceBitmap,
+                            new System.Drawing.Rectangle(width - inset.Right, 0, inset.Right, inset.Top), //destination
+                            new System.Drawing.Rectangle(sourceBitmap.Width - inset.Right, 0, inset.Right, inset.Top), //source
+                            GraphicsUnit.Pixel);
+                    }
+
+                    //bottom right
+                    if (inset.Bottom > 0)
+                    {
+                        g.DrawImage(sourceBitmap,
+                        new System.Drawing.Rectangle(width - inset.Right, height - inset.Bottom, inset.Right, inset.Bottom),     //destination
+                        new System.Drawing.Rectangle(sourceBitmap.Width - inset.Right, sourceBitmap.Height - inset.Bottom, inset.Right, inset.Bottom), //source
+                        GraphicsUnit.Pixel);
+                    }
+                }
+            }
+            return outputBitmap;
+        }*/
+
         System.Drawing.Color CanvasColor = System.Drawing.Color.FromArgb(255, 0, 0, 0);
 
         public NineGridCanvas()
@@ -37,11 +185,24 @@ namespace Start9.Api.Objects.Controls
 
         public BitmapImage SizingImage
         {
-            get => (BitmapImage)GetValue(SizingImageProperty);
-            set => SetValue(SizingImageProperty, value);
+            get
+            {
+                return (BitmapImage)GetValue(SizingImageProperty);
+            }
+            set
+            {
+                try
+                {
+                    SetValue(SizingImageProperty, value);
+                }
+                catch
+                {
+                    SetValue(SizingImageProperty, Start9.Api.Tools.MiscTools.GetBitmapImageFromSysDrawingBitmap(Start9.Api.Properties.Resources.FallbackImage));
+                }
+            }
         }
         public static readonly DependencyProperty SizingImageProperty = DependencyProperty.RegisterAttached(
-        "SizingImage", typeof(BitmapImage), typeof(NineGridCanvas), new FrameworkPropertyMetadata(new BitmapImage(new Uri(Environment.ExpandEnvironmentVariables(@"%windir%\Web\Wallpaper\Windows\img0.jpg"), UriKind.RelativeOrAbsolute)), FrameworkPropertyMetadataOptions.AffectsRender, OnSizingImageChanged));
+        "SizingImage", typeof(BitmapImage), typeof(NineGridCanvas), new FrameworkPropertyMetadata(Start9.Api.Tools.MiscTools.GetBitmapImageFromSysDrawingBitmap(Start9.Api.Properties.Resources.FallbackImage), FrameworkPropertyMetadataOptions.AffectsRender, OnSizingImageChanged));
 
 
         private static void OnSizingImageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)

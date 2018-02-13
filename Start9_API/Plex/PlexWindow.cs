@@ -96,15 +96,15 @@ namespace Start9.Api.Plex
 
             if (((window.ResizeMode == PlexResizeMode.Manual) & (!(window.ShowMaxRestButton))) | ((window.ResizeMode == PlexResizeMode.CanResize) | (window.ResizeMode == PlexResizeMode.CanResizeWithGrip)))
             {
-                WinApi.SetWindowLong(hwnd, GWL_STYLE, new IntPtr(0x16CF0000));
+                WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16CF0000);
             }
             else if (((window.ResizeMode == PlexResizeMode.Manual) & (window.ShowMinButton)) | (window.ResizeMode == PlexResizeMode.CanMinimize))
             {
-                WinApi.SetWindowLong(hwnd, GWL_STYLE, new IntPtr(0x16CA0000));
+                WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16CA0000);
             }
             else
             {
-                WinApi.SetWindowLong(hwnd, GWL_STYLE, new IntPtr(0x16C80000));
+                WinApi.SetWindowLong(hwnd, GWL_STYLE, 0x16C80000);
             }
         }
 
@@ -233,12 +233,56 @@ namespace Start9.Api.Plex
         TimeSpan AnimateMidDuration = TimeSpan.FromMilliseconds(500);
         TimeSpan AnimateOutDuration = TimeSpan.FromMilliseconds(1000);
 
+        /*static PlexWindow()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PlexWindow), new FrameworkPropertyMetadata(typeof(PlexWindow)));
+        }*/
+
         /// <summary>
         ///     Interaction logic for PlexWindow.xaml
         /// </summary>
         public PlexWindow()
         {
-            Opacity = 0;
+            /*ResourceDictionary genericStyles = new ResourceDictionary()
+            {
+                Source = new Uri("/Start9.Api;component/Themes/Generic.xaml", UriKind.Relative)
+            };*/
+
+            ResourceDictionary plexStyles = new ResourceDictionary()
+            {
+                Source = new Uri("/Start9.Api;component/Themes/Generic.xaml", UriKind.Relative)
+            };
+
+            if (!(Resources.MergedDictionaries.Contains(plexStyles)))
+            {
+                Resources.MergedDictionaries.Add(plexStyles);
+                Style = (Style)Resources["PlexWindowStyle"];
+            }
+
+            /*bool doesNotHavePlexStyles = false;
+            bool doesNotHaveGenericStyles = false;
+
+            if (!(Resources.MergedDictionaries.Contains(plexStyles)))
+            {
+                Resources.MergedDictionaries.Add(plexStyles);
+                doesNotHavePlexStyles = true;
+            }
+
+            if (!(Resources.MergedDictionaries.Contains(genericStyles)))
+            {
+                Resources.MergedDictionaries.Add(genericStyles);
+                doesNotHaveGenericStyles = true;
+            }
+
+            if (doesNotHavePlexStyles | doesNotHaveGenericStyles | (doesNotHavePlexStyles & doesNotHaveGenericStyles))
+            {
+
+                Style = (Style)Resources["PlexWindowStyle"];
+            }*/
+
+            //DefaultStyleKeyProperty.OverrideMetadata(typeof(PlexWindow), new FrameworkPropertyMetadata(typeof(PlexWindow)));
+
+            //Opacity = 0;
             _shadowWindow = new ShadowWindow(this);
             WindowStyle = WindowStyle.None;
             AllowsTransparency = true;
@@ -250,11 +294,11 @@ namespace Start9.Api.Plex
                 ScaleY = 1
             };
             RenderTransform = ScaleTransform;
-            Opacity = 0;
+            //Opacity = 0;
             Loaded += PlexWindow_Loaded;
             IsVisibleChanged += PlexWindow_IsVisibleChanged;
-            Activated += PlexWindow_Activated;
-            Deactivated += PlexWindow_Deactivated;
+            Activated += PlexWindow_WindowFocusChanged;
+            Deactivated += PlexWindow_WindowFocusChanged;
             var restoreMinSettings = new RoutedCommand();
             restoreMinSettings.InputGestures.Add(new KeyGesture(Key.Down, ModifierKeys.Windows));
             CommandBindings.Add(new CommandBinding(restoreMinSettings, RestoreMinimizeWindow));
@@ -470,6 +514,7 @@ namespace Start9.Api.Plex
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, windowSizeAnimation);
                 scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, windowSizeAnimation);
                 BeginAnimation(Window.OpacityProperty, windowOpacityAnimation);
+                ShiftShadowBehindWindow();
             }
             else
             {
@@ -480,64 +525,112 @@ namespace Start9.Api.Plex
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            try
             {
                 _titlebar = GetTemplateChild(PartTitlebar) as Grid;
                 _titlebar.MouseLeftButtonDown += Titlebar_MouseLeftButtonDown;
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("TITLEBAR \n" + ex);
+            }
 
-                _minButton = GetTemplateChild(PartMinimizeButton) as Button;
-                _minButton.Click += delegate { WindowState = WindowState.Minimized; };
+            try
+            {
+            _minButton = GetTemplateChild(PartMinimizeButton) as Button;
+            _minButton.Click += delegate { WindowState = WindowState.Minimized; };
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("MINBUTTON \n" + ex);
+            }
 
-                _maxButton = GetTemplateChild(PartMaximizeButton) as Button;
-                _maxButton.Click += delegate {
-                    WindowState = WindowState.Maximized;
-                };
+            try
+            {
+            _maxButton = GetTemplateChild(PartMaximizeButton) as Button;
+            _maxButton.Click += delegate
+            {
+                WindowState = WindowState.Maximized;
+            };
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("MAXBUTTON \n" + ex);
+            }
 
-                _restButton = GetTemplateChild(PartRestoreButton) as Button;
-                _restButton.Click += delegate {
-                    WindowState = WindowState.Normal;
-                };
+            try
+            {
+            _restButton = GetTemplateChild(PartRestoreButton) as Button;
+            _restButton.Click += delegate
+            {
+                WindowState = WindowState.Normal;
+            };
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("RESTBUTTON \n" + ex);
+            }
 
-                _closeButton = GetTemplateChild(PartCloseButton) as Button;
-                _closeButton.Click += delegate
-                {
-                    Close();
-                };
-
-
-                _thumbBottom = GetTemplateChild(PartThumbBottom) as Thumb;
-                _thumbBottom.DragDelta += ThumbBottom_DragDelta;
-
-
-                _thumbTop = GetTemplateChild(PartThumbTop) as Thumb;
-                _thumbTop.DragDelta += ThumbTop_DragDelta;
-
-
-                _thumbBottomRightCorner = GetTemplateChild(PartThumbBottomRightCorner) as Thumb;
-                _thumbBottomRightCorner.DragDelta += ThumbBottomRightCorner_DragDelta;
-
-
-                _resizeGrip = GetTemplateChild(PartResizeGrip) as Thumb;
-                _resizeGrip.DragDelta += ThumbBottomRightCorner_DragDelta;
-
-
-                _thumbTopRightCorner = GetTemplateChild(PartThumbTopRightCorner) as Thumb;
-                _thumbTopRightCorner.DragDelta += ThumbTopRightCorner_DragDelta;
-
-
-                _thumbTopLeftCorner = GetTemplateChild(PartThumbTopLeftCorner) as Thumb;
-                _thumbTopLeftCorner.DragDelta += ThumbTopLeftCorner_DragDelta;
-
-
-                _thumbBottomLeftCorner = GetTemplateChild(PartThumbBottomLeftCorner) as Thumb;
-                _thumbBottomLeftCorner.DragDelta += ThumbBottomLeftCorner_DragDelta;
-
-
-                _thumbRight = GetTemplateChild(PartThumbRight) as Thumb;
-                _thumbRight.DragDelta += ThumbRight_DragDelta;
+            try
+            {
+            _closeButton = GetTemplateChild(PartCloseButton) as Button;
+            _closeButton.Click += delegate
+            {
+                Close();
+            };
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("CLOSEBUTTON \n" + ex);
+            }
 
 
-                _thumbLeft = GetTemplateChild(PartThumbLeft) as Thumb;
-                _thumbLeft.DragDelta += ThumbLeft_DragDelta;
+            try
+            {
+            _thumbBottom = GetTemplateChild(PartThumbBottom) as Thumb;
+            _thumbBottom.DragDelta += ThumbBottom_DragDelta;
+
+
+            _thumbTop = GetTemplateChild(PartThumbTop) as Thumb;
+            _thumbTop.DragDelta += ThumbTop_DragDelta;
+
+
+            _thumbBottomRightCorner = GetTemplateChild(PartThumbBottomRightCorner) as Thumb;
+            _thumbBottomRightCorner.DragDelta += ThumbBottomRightCorner_DragDelta;
+
+
+            _thumbTopRightCorner = GetTemplateChild(PartThumbTopRightCorner) as Thumb;
+            _thumbTopRightCorner.DragDelta += ThumbTopRightCorner_DragDelta;
+
+
+            _thumbTopLeftCorner = GetTemplateChild(PartThumbTopLeftCorner) as Thumb;
+            _thumbTopLeftCorner.DragDelta += ThumbTopLeftCorner_DragDelta;
+
+
+            _thumbBottomLeftCorner = GetTemplateChild(PartThumbBottomLeftCorner) as Thumb;
+            _thumbBottomLeftCorner.DragDelta += ThumbBottomLeftCorner_DragDelta;
+
+
+            _thumbRight = GetTemplateChild(PartThumbRight) as Thumb;
+            _thumbRight.DragDelta += ThumbRight_DragDelta;
+
+
+            _thumbLeft = GetTemplateChild(PartThumbLeft) as Thumb;
+            _thumbLeft.DragDelta += ThumbLeft_DragDelta;
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("THUMBS \n" + ex);
+            }
+
+            try
+            {
+            _resizeGrip = GetTemplateChild(PartResizeGrip) as Thumb;
+            _resizeGrip.DragDelta += ThumbBottomRightCorner_DragDelta;
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine("RESIZEGRIP \n" + ex);
             }
         }
 
@@ -874,23 +967,13 @@ namespace Start9.Api.Plex
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            PlexWindow_Activated(this, null);
+            PlexWindow_WindowFocusChanged(this, null);
         }
 
         protected override void OnGotFocus(RoutedEventArgs e)
         {
             base.OnGotFocus(e);
-            PlexWindow_Activated(this, null);
-        }
-
-        public void PlexWindow_Activated(object sender, EventArgs e)
-        {
-            PlexWindow_ResetTransformProperties();
-
-            if (!Topmost)
-            {
-                ShiftShadowBehindWindow();
-            }
+            PlexWindow_WindowFocusChanged(this, null);
         }
 
         public void ShiftShadowBehindWindow()
@@ -904,7 +987,7 @@ namespace Start9.Api.Plex
         }
 
 
-        void PlexWindow_Deactivated(object sender, EventArgs e)
+        void PlexWindow_WindowFocusChanged(object sender, EventArgs e)
         {
             ShiftShadowBehindWindow();
         }

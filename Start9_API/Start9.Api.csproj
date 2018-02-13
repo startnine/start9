@@ -57,10 +57,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CommandLinkButton.cs" />
     <Compile Include="Controls\NineGridCanvas.cs" />
+    <Compile Include="Controls\Planerator.cs" />
+    <Compile Include="Controls\ToggleSwitch.cs" />
     <Compile Include="Controls\VariableSizedWrapGrid.cs" />
     <Compile Include="Controls\VariableSizedWrapGridView.cs" />
     <Compile Include="Modules\Message.cs" />
+    <Compile Include="Objects\WidthToOffsetMarginConverter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\DwmTools.cs" />
     <Compile Include="Objects\ImageBrushNineGridConverter.cs" />
     <Compile Include="Objects\NineGridImageBrush.cs" />
@@ -88,10 +97,37 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Colors\PlexGreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Colors\PlexBlue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Plex.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FallbackImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Start9_IceIconFrame_v2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
