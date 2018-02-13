@@ -13,17 +13,109 @@ using System.Windows.Shapes;
 using Start9.Api.Plex;
 using System.Windows.Controls.Primitives;
 using Start9.Api.Tools;
+using Start9.Api.Programs;
+using System.Diagnostics;
+using Start9.Api.Controls;
 
 namespace Start9.Windows
 {
     /// <summary>
     /// Interaction logic for TaskbarStylesTest.xaml
     /// </summary>
-    public partial class TaskbarStylesTest : PlexWindow
+    public partial class TaskbarStylesTest : Window
     {
+        public List<string> RunningProcesses = new List<string>();
+
+        public System.Timers.Timer ClockTimer = new System.Timers.Timer(1);
+
         public TaskbarStylesTest()
         {
             InitializeComponent();
+            Left = 0;
+            Top = SystemParameters.PrimaryScreenHeight - 40;
+            Width = SystemParameters.PrimaryScreenWidth;
+            WinApi.ShowWindow(WinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Shell_TrayWnd", null), 0);
+
+            ClockTimer.Start();
+
+            ClockTimer.Elapsed += delegate
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    var active = WinApi.GetForegroundWindow();
+                    /*foreach (TaskbarGroupStackPanel t in Taskband.Children)
+                        try
+                        {
+                            if (t.ForceCombine | (Config.GroupingMode == TaskbarGroupingMode.Combine))
+                            {
+                                var isAnythingActive = false;
+                                foreach (var b in t.ProgramWindowsList)
+                                    if (b.Hwnd == active)
+                                        isAnythingActive = true;
+                                if (isAnythingActive)
+                                    t.RunningBackgroundButton.IsActiveWindow = true;
+                                else
+                                    t.RunningBackgroundButton.IsActiveWindow = false;
+                            }
+                            else
+                            {
+                                foreach (TaskItemButton b in t.Buttons.Children)
+                                    if ((b.Tag as ProgramWindow).Hwnd == active)
+                                        b.IsActiveWindow = true;
+                                    else
+                                        b.IsActiveWindow = false;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex);
+                        }*/
+                }));
+            };
+            ClockTimer.Start();
+
+            InitialPopulateTaskbar();
+        }
+
+        public void InitialPopulateTaskbar()
+        {
+            foreach (var wind in ProgramWindow.ProgramWindows)
+                try
+                {
+                    if (!RunningProcesses.Contains(wind.Process.MainModule.FileName))
+                        RunningProcesses.Add(wind.Process.MainModule.FileName);
+                }
+                catch
+                {
+                    Debug.WriteLine("Process not added to list");
+                }
+
+            foreach (var s in RunningProcesses)
+            {
+                var programStackPanel = new TaskItemGroup(s);
+                Taskband.Children.Add(programStackPanel);
+            }
+
+            foreach (var wind in ProgramWindow.ProgramWindows) //ProgramWindow.UserPerceivedProgramWindows is broken or something, I think
+                foreach (TaskItemGroup t in Taskband.Children)
+                    try
+                    {
+                        if (wind.Process.MainModule.FileName == t.Tag.ToString())
+                            t.ProcessWindows.Add(wind);
+                    }
+                    catch
+                    {
+                    }
+
+            foreach (TaskItemGroup t in Taskband.Children)
+            {
+                //if (Taskband.ActualWidth >= Width)
+                if (t.ProcessWindows.Count > 3)
+                {
+                    t.CombineButtons = true;
+                }
+                //t.CreateButtons();
+            }
         }
 
         private void TextClock_Loaded(object sender, RoutedEventArgs e)
@@ -67,6 +159,11 @@ namespace Start9.Windows
         {
             TrayFlyout.Hide();
             TrayFlyoutToggleButton.IsChecked = false;
+        }
+
+        private void TrayFlyout_Loaded(object sender, RoutedEventArgs e)
+        {
+            TrayFlyout.Resources.Add(Resources["TrayIconButton"], Resources["TrayIconButton"]);
         }
     }
 }

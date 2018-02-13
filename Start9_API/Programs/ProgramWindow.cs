@@ -72,11 +72,48 @@ namespace Start9.Api.Programs
 			}
 		}
 
-		public static IEnumerable<ProgramWindow> UserPerceivedProgramWindows => ProgramWindows.Where(
-			hwnd => TASKSTYLE == (TASKSTYLE & WinApi.GetWindowLong(hwnd.Hwnd, GWL_STYLE).ToInt32()) &&
-					(WinApi.GetWindowLong(hwnd.Hwnd, GWL_EXSTYLE).ToInt32() & WS_EX_TOOLWINDOW) != WS_EX_TOOLWINDOW);
+        /*public static IEnumerable<ProgramWindow> UserPerceivedProgramWindows => ProgramWindows.Where(
+			hwnd => TASKSTYLE == (TASKSTYLE & WinApi.GetWindowLong(hwnd.Hwnd, GWL_STYLE).ToInt32()) &
+					(WinApi.GetWindowLong(hwnd.Hwnd, GWL_EXSTYLE).ToInt32() & WS_EX_TOOLWINDOW) != WS_EX_TOOLWINDOW);*/
+        public static IEnumerable<ProgramWindow> UserPerceivedProgramWindows
+        {
+            get
+            {
+                var collection = new List<IntPtr>();
 
-		static void AddClosedHandler(IntPtr handle)
+                bool Filter(IntPtr hWnd, int lParam)
+                {
+                    var strbTitle = new StringBuilder(WinApi.GetWindowTextLength(hWnd));
+                    WinApi.GetWindowText(hWnd, strbTitle, strbTitle.Capacity + 1);
+                    var strTitle = strbTitle.ToString();
+
+
+                    if (WinApi.IsWindowVisible(hWnd) && string.IsNullOrEmpty(strTitle) == false)
+                        collection.Add(hWnd);
+
+                    return true;
+                }
+
+                if (!WinApi.EnumDesktopWindows(IntPtr.Zero, Filter, IntPtr.Zero)) yield break;
+
+                foreach (var hwnd in collection)
+                {
+                    try
+                    {
+                        if ((TASKSTYLE == (TASKSTYLE & WinApi.GetWindowLong(hwnd, GWL_STYLE).ToInt32())) && ((WinApi.GetWindowLong(hwnd, GWL_EXSTYLE).ToInt32() & WS_EX_TOOLWINDOW) != WS_EX_TOOLWINDOW))
+                        {
+                            yield return new ProgramWindow(hwnd);
+                        }
+                    }
+                    finally
+                    {
+                        
+                    }
+                }
+            }
+        }
+
+        static void AddClosedHandler(IntPtr handle)
 		{
 			Automation.AddAutomationEventHandler(
 				WindowPattern.WindowClosedEvent,
