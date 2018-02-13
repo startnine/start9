@@ -3,7 +3,9 @@
                     xmlns:local="clr-namespace:Start9.Api"
                     xmlns:Fluent="urn:fluent-ribbon"
                     xmlns:FluentClr="clr-namespace:Fluent;assembly=Fluent"
-                    xmlns:plex="clr-namespace:Start9.Api.Plex">
+                    xmlns:plex="clr-namespace:Start9.Api.Plex"
+                    xmlns:controls="clr-namespace:Start9.Api.Controls"
+                    xmlns:obj="clr-namespace:Start9.Api.Objects">
     <!-- Brush Resources -->
 
     <LinearGradientBrush x:Key="ActiveTitlebarBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
@@ -111,8 +113,11 @@
         <Setter Property="Foreground" Value="#FFC4DFFF" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="FontFamily" Value="Marlett"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="Focusable" Value="False" />
         <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="IsManipulationEnabled" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource PlexFocusVisualStyle}" />
         <Setter Property="Effect">
             <Setter.Value>
@@ -123,11 +128,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Margin="0">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Margin="{TemplateBinding Padding}">
                         <Label x:Name="Glyph" HorizontalAlignment="Center" VerticalAlignment="Center"
                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"
-                               FontFamily="Marlett" FontSize="12" RenderOptions.EdgeMode="Aliased" IsTabStop="False"
+                               FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" RenderOptions.EdgeMode="Aliased" IsTabStop="False"
                                Margin="0" Padding="0" />
                         <!--ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Focusable="False" IsTabStop="False"/-->
                     </Grid>
@@ -135,6 +140,9 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
+            <Trigger Property="IsManipulationEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FF89A4D2" />
+            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="White" />
             </Trigger>
@@ -165,200 +173,295 @@
     <Style x:Key="PlexWindowStyle" TargetType="{x:Type plex:PlexWindow}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="Opacity" Value="0"/>
         <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="ResizeMode" Value="CanResize" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
-        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type plex:PlexWindow}">
-                    <Grid x:Name="WindowRoot" Margin="0" >
-                        <DockPanel Margin="{TemplateBinding Padding}" LastChildFill="True" Background="Transparent">
-                            <Grid x:Name="PART_Titlebar" HorizontalAlignment="Stretch" Margin="0"
+                    <!--Grid x:Name="AbsoluteRootGrid">
+                        <Grid.RenderTransform>
+                            <TranslateTransform x:Name="AbsoluteTranslateTransform" X="{TemplateBinding WindowTransitionTranslate}" Y="0"/>
+                        </Grid.RenderTransform>
+                        <controls:Planerator x:Name="RootPlanerator"-->
+                            <Grid x:Name="WindowRoot" Margin="{TemplateBinding Margin}">
+                                <DockPanel Margin="{TemplateBinding Padding}" LastChildFill="True" Background="Transparent">
+                                    <Grid x:Name="PART_Titlebar" HorizontalAlignment="Stretch" Margin="0"
                                   Height="{TemplateBinding TitleBarHeight}" Visibility="Visible" Opacity="1"
                                   DockPanel.Dock="Top">
-                                <!-- MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp" -->
-                                <Grid x:Name="ActiveTitlebarBackground" Visibility="Visible">
-                                    <Border x:Name="ActiveTitlebarBorder" CornerRadius="12,12,0,0"
+                                        <!-- MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" MouseLeftButtonUp="TitleBar_MouseLeftButtonUp" -->
+                                        <Grid x:Name="ActiveTitlebarBackground" Visibility="Visible">
+                                            <Border x:Name="ActiveTitlebarBorder" CornerRadius="12,12,0,0"
                                             BorderThickness="0,1,0,0"
                                             Background="{DynamicResource ActiveTitlebarBackgroundBrush}"
                                             BorderBrush="{DynamicResource ActiveTitlebarBorderBrush}"
                                             Margin="0,0,0,-12" Padding="0" />
-                                    <!--Border CornerRadius="12,12,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="12" BorderThickness="0" Background="Transparent" BorderBrush="{DynamicResource ActiveTitlebarBackgroundBrush}" Margin="0,0,0,-12" Padding="0"/-->
-                                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"
+                                            <!--Border CornerRadius="12,12,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="12" BorderThickness="0" Background="Transparent" BorderBrush="{DynamicResource ActiveTitlebarBackgroundBrush}" Margin="0,0,0,-12" Padding="0"/-->
+                                            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"
                                             Margin="12,2,12,0" Background="{DynamicResource ActiveTitlebarBorderBrush}" />
-                                </Grid>
-                                <Grid x:Name="InactiveTitlebarBackground" Visibility="Hidden">
-                                    <Border x:Name="InactiveTitlebarBorder" CornerRadius="12,12,0,0"
+                                        </Grid>
+                                        <Grid x:Name="InactiveTitlebarBackground" Visibility="Hidden">
+                                            <Border x:Name="InactiveTitlebarBorder" CornerRadius="12,12,0,0"
                                             BorderThickness="0,1,0,0"
                                             Background="{DynamicResource InactiveTitlebarBackgroundBrush}"
                                             BorderBrush="{DynamicResource InactiveTitlebarBorderBrush}"
                                             Margin="0,0,0,-12" Padding="0" />
-                                    <!--Border CornerRadius="12,12,0,0" VerticalAlignment="Bottom" Height="12" BorderThickness="0" Background="Transparent" BorderBrush="{DynamicResource InactiveTitlebarBackgroundBrush}" Margin="0,0,0,-12" Padding="0"/-->
-                                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"
+                                            <!--Border CornerRadius="12,12,0,0" VerticalAlignment="Bottom" Height="12" BorderThickness="0" Background="Transparent" BorderBrush="{DynamicResource InactiveTitlebarBackgroundBrush}" Margin="0,0,0,-12" Padding="0"/-->
+                                            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1"
                                             Margin="12,2,12,0"
                                             Background="{DynamicResource InactiveTitlebarBorderBrush}" />
-                                </Grid>
-                                <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="16"
+                                        </Grid>
+                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Height="16" Width="16"
                                         Margin="3">
-                                    <Canvas.Background>
-                                        <ImageBrush ImageSource="{TemplateBinding Icon}" />
-                                    </Canvas.Background>
-                                </Canvas>
-                                <Label Content="{TemplateBinding Title}" HorizontalAlignment="Stretch"
+                                            <Canvas.Background>
+                                                <ImageBrush ImageSource="{TemplateBinding Icon}" />
+                                            </Canvas.Background>
+                                        </Canvas>
+                                        <Label x:Name="TitleText" Content="{TemplateBinding Title}" HorizontalAlignment="Stretch"
                                        VerticalAlignment="Top" HorizontalContentAlignment="Center"
                                        VerticalContentAlignment="Center" Height="26" Margin="0,-2"
                                        FontFamily="Segoe UI" FontSize="12" Foreground="White">
-                                    <Label.Effect>
-                                        <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="320"
+                                            <Label.Effect>
+                                                <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="320"
                                                           ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
-                                    </Label.Effect>
-                                </Label>
-                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top"
+                                            </Label.Effect>
+                                        </Label>
+                                        <StackPanel x:Name="CaptionButtons" HorizontalAlignment="Right" VerticalAlignment="Top"
                                             Orientation="Horizontal" Height="22" Margin="5,0">
-                                    <Button x:Name="PART_MinimizeButton" Width="18" VerticalAlignment="Stretch"
+                                            <Button x:Name="PART_MinimizeButton" Width="18" VerticalAlignment="Stretch"
                                             Style="{DynamicResource CaptionButtonStyle}">
-                                        0
-                                    </Button>
-                                    <Grid Width="18" VerticalAlignment="Stretch" Margin="1,1,-1,-1">
-                                        <Button x:Name="PART_MaximizeButton" HorizontalAlignment="Stretch"
+                                                0
+                                            </Button>
+                                            <Grid x:Name="MaxRestButtonGrid"  Width="18" VerticalAlignment="Stretch" Margin="1,1,-1,-1">
+                                                <Button x:Name="PART_MaximizeButton" HorizontalAlignment="Stretch"
                                                 VerticalAlignment="Stretch"
                                                 Style="{DynamicResource CaptionButtonStyle}">
-                                            1
-                                        </Button>
-                                        <Button x:Name="PART_RestoreButton" HorizontalAlignment="Stretch"
+                                                    1
+                                                </Button>
+                                                <Button x:Name="PART_RestoreButton" HorizontalAlignment="Stretch"
                                                 VerticalAlignment="Stretch"
                                                 Style="{DynamicResource CaptionButtonStyle}" Visibility="Hidden">
-                                            2
-                                        </Button>
-                                    </Grid>
-                                    <Button x:Name="PART_CloseButton" Width="18" VerticalAlignment="Stretch"
+                                                    2
+                                                </Button>
+                                            </Grid>
+                                            <Button x:Name="PART_CloseButton" Width="18" VerticalAlignment="Stretch"
                                             Style="{DynamicResource CaptionButtonStyle}">
-                                        r
-                                    </Button>
-                                </StackPanel>
-                                <ContentPresenter Content="{TemplateBinding TitleBarContent}" />
-                            </Grid>
-                            <Grid x:Name="ToolBar" HorizontalAlignment="Stretch" Margin="0"
+                                                r
+                                            </Button>
+                                        </StackPanel>
+                                        <ContentPresenter Content="{TemplateBinding TitleBarContent}" />
+                                    </Grid>
+                                    <Grid x:Name="ToolBar" HorizontalAlignment="Stretch" Margin="0"
                                   Height="{TemplateBinding ToolBarHeight}" Visibility="Visible" DockPanel.Dock="Top">
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
-                                    <Grid Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                        <Border x:Name="ToolBarBorder" CornerRadius="8,8,0,0" BorderThickness="1,1,1,0"
+                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                                            <Grid Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                <Border x:Name="ToolBarBorder" CornerRadius="8,8,0,0" BorderThickness="1,1,1,0"
                                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF366AAF" />
-                                                        <GradientStop Offset="0.5" Color="#FF5F9CDA" />
-                                                        <GradientStop Offset="1" Color="#FF366AAF" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                            <Border.BorderBrush>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF4D80C9" />
-                                                        <GradientStop Offset="0.5" Color="#FF85C0FA" />
-                                                        <GradientStop Offset="1" Color="#FF4D80C9" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Border.BorderBrush>
-                                            <Border x:Name="ToolBarSecondaryBorder" CornerRadius="8,8,0,0"
+                                                    <Border.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                            <LinearGradientBrush.GradientStops>
+                                                                <GradientStop Offset="0" Color="#FF366AAF" />
+                                                                <GradientStop Offset="0.5" Color="#FF5F9CDA" />
+                                                                <GradientStop Offset="1" Color="#FF366AAF" />
+                                                            </LinearGradientBrush.GradientStops>
+                                                        </LinearGradientBrush>
+                                                    </Border.Background>
+                                                    <Border.BorderBrush>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                            <LinearGradientBrush.GradientStops>
+                                                                <GradientStop Offset="0" Color="#FF4D80C9" />
+                                                                <GradientStop Offset="0.5" Color="#FF85C0FA" />
+                                                                <GradientStop Offset="1" Color="#FF4D80C9" />
+                                                            </LinearGradientBrush.GradientStops>
+                                                        </LinearGradientBrush>
+                                                    </Border.BorderBrush>
+                                                    <Border x:Name="ToolBarSecondaryBorder" CornerRadius="8,8,0,0"
                                                     BorderThickness="0,1,0,0" Background="#003566A4"
                                                     BorderBrush="#FF3566A4" />
-                                        </Border>
-                                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF366AAF" />
-                                                        <GradientStop Offset="0.5" Color="#FF5F9CDA" />
-                                                        <GradientStop Offset="1" Color="#FF366AAF" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="1">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF5894D3" />
-                                                        <GradientStop Offset="0.5" Color="#FF81BEFC" />
-                                                        <GradientStop Offset="1" Color="#FF5894D3" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="2">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF3C70B5" />
-                                                        <GradientStop Offset="0.5" Color="#FF255898" />
-                                                        <GradientStop Offset="1" Color="#FF3C70B5" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
+                                                </Border>
+                                                <Canvas Height="1" VerticalAlignment="Bottom" Margin="0">
+                                                    <Canvas.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                            <LinearGradientBrush.GradientStops>
+                                                                <GradientStop Offset="0" Color="#FF366AAF" />
+                                                                <GradientStop Offset="0.5" Color="#FF5F9CDA" />
+                                                                <GradientStop Offset="1" Color="#FF366AAF" />
+                                                            </LinearGradientBrush.GradientStops>
+                                                        </LinearGradientBrush>
+                                                    </Canvas.Background>
+                                                </Canvas>
+                                                <Canvas Height="1" VerticalAlignment="Bottom" Margin="1">
+                                                    <Canvas.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                            <LinearGradientBrush.GradientStops>
+                                                                <GradientStop Offset="0" Color="#FF5894D3" />
+                                                                <GradientStop Offset="0.5" Color="#FF81BEFC" />
+                                                                <GradientStop Offset="1" Color="#FF5894D3" />
+                                                            </LinearGradientBrush.GradientStops>
+                                                        </LinearGradientBrush>
+                                                    </Canvas.Background>
+                                                </Canvas>
+                                                <Canvas Height="1" VerticalAlignment="Bottom" Margin="2">
+                                                    <Canvas.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                            <LinearGradientBrush.GradientStops>
+                                                                <GradientStop Offset="0" Color="#FF3C70B5" />
+                                                                <GradientStop Offset="0.5" Color="#FF255898" />
+                                                                <GradientStop Offset="1" Color="#FF3C70B5" />
+                                                            </LinearGradientBrush.GradientStops>
+                                                        </LinearGradientBrush>
+                                                    </Canvas.Background>
+                                                </Canvas>
+                                            </Grid>
+                                            <ContentPresenter Content="{TemplateBinding ToolBarContent}" />
+                                        </Grid>
                                     </Grid>
-                                    <ContentPresenter Content="{TemplateBinding ToolBarContent}" />
-                                </Grid>
-                            </Grid>
-                            <Grid x:Name="Footer" HorizontalAlignment="Stretch" Margin="0"
+                                    <Grid x:Name="Footer" HorizontalAlignment="Stretch" Margin="0"
                                   Height="{TemplateBinding FooterHeight}" Visibility="Visible" DockPanel.Dock="Bottom">
-                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,-12,0,0">
-                                    <Border x:Name="FooterBorder" HorizontalAlignment="Stretch"
+                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,-12,0,0">
+                                            <Border x:Name="FooterBorder" HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch" Background="{TemplateBinding FooterBrush}"
                                             CornerRadius="0,0,12,12" />
-                                    <ContentPresenter Content="{TemplateBinding FooterContent}" />
-                                </Grid>
-                            </Grid>
-                            <Border x:Name="Body" CornerRadius="12" BorderBrush="Transparent" BorderThickness="0"
+                                            <ContentPresenter Content="{TemplateBinding FooterContent}" />
+                                        </Grid>
+                                    </Grid>
+                                    <Border x:Name="Body" CornerRadius="12" BorderBrush="Transparent" BorderThickness="0"
                                     HorizontalAlignment="Stretch" Margin="0" Padding="0"
                                     Background="{TemplateBinding BodyBrush}">
-                                <ContentPresenter Content="{TemplateBinding Content}" />
-                            </Border>
-                        </DockPanel>
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="{TemplateBinding Padding}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Thumb x:Name="PART_ThumbBottom" HorizontalAlignment="Stretch" Cursor="SizeNS"
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                    </Border>
+                                </DockPanel>
+                                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="{TemplateBinding Padding}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Thumb x:Name="PART_ThumbBottom" HorizontalAlignment="Stretch" Cursor="SizeNS"
                                    Grid.Column="0" Background="{x:Null}" Margin="3,0" Grid.ColumnSpan="3" Grid.Row="3"
                                    Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbTop" HorizontalAlignment="Stretch" Cursor="SizeNS" Grid.Column="0"
+                                    <Thumb x:Name="PART_ThumbTop" HorizontalAlignment="Stretch" Cursor="SizeNS" Grid.Column="0"
                                    Background="{x:Null}" Margin="3,0" Grid.ColumnSpan="3" Height="4"
                                    Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbRight" Cursor="SizeWE" Grid.Column="2" Grid.RowSpan="4"
+                                    <Thumb x:Name="PART_ThumbRight" Cursor="SizeWE" Grid.Column="2" Grid.RowSpan="4"
                                    Background="{x:Null}" Margin="0,3" Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbLeft" Cursor="SizeWE" Grid.Column="0" Grid.RowSpan="4"
+                                    <Thumb x:Name="PART_ThumbLeft" Cursor="SizeWE" Grid.Column="0" Grid.RowSpan="4"
                                    HorizontalContentAlignment="Right" Background="{x:Null}" Margin="0,3"
                                    Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbBottomRightCorner" HorizontalAlignment="Right" Cursor="SizeNWSE"
+                                    <Thumb x:Name="PART_ThumbBottomRightCorner" HorizontalAlignment="Right" Cursor="SizeNWSE"
                                    Grid.Row="3" Grid.Column="3" Background="{x:Null}"
                                    Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbTopRightCorner" HorizontalAlignment="Right" Cursor="SizeNESW"
+                                    <Thumb x:Name="PART_ThumbTopRightCorner" HorizontalAlignment="Right" Cursor="SizeNESW"
                                    Grid.Row="0" Grid.Column="2" Background="{x:Null}"
                                    Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbTopLeftCorner" HorizontalAlignment="Left" Cursor="SizeNWSE"
+                                    <Thumb x:Name="PART_ThumbTopLeftCorner" HorizontalAlignment="Left" Cursor="SizeNWSE"
                                    Grid.Row="0" Grid.Column="0" Background="{x:Null}"
                                    Style="{DynamicResource BorderThumb}" />
-                            <Thumb x:Name="PART_ThumbBottomLeftCorner" HorizontalAlignment="Left" Cursor="SizeNESW"
+                                    <Thumb x:Name="PART_ThumbBottomLeftCorner" HorizontalAlignment="Left" Cursor="SizeNESW"
                                    Grid.Row="3" Grid.Column="0" Background="{x:Null}"
                                    Style="{DynamicResource BorderThumb}" />
-                        </Grid>
-                    </Grid>
+                                </Grid>
+                                <Thumb x:Name="PART_ResizeGrip" Style="{DynamicResource ResizeGripThumb}" Visibility="Hidden"/>
+                            </Grid>
+                        <!--/controls:Planerator>
+                    </Grid-->
                     <ControlTemplate.Triggers>
+                        <!--Trigger Property="IsVisible" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="RootPlanerator" Storyboard.TargetProperty="RotationY" BeginTime="0:0:0.0" Duration="0:0:0.500" From="-90" To="0"/>
+                                        <DoubleAnimation Storyboard.TargetName="AbsoluteTranslateTransform" Storyboard.TargetProperty="X" BeginTime="0:0:0.0" Duration="0:0:0.500" From="-250" To="0">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="RootPlanerator" Storyboard.TargetProperty="RotationY" BeginTime="0:0:0.0" Duration="0:0:0.1000" From="0" To="-90"/>
+                                        <DoubleAnimation Storyboard.TargetName="AbsoluteTranslateTransform" Storyboard.TargetProperty="X" BeginTime="0:0:0.0" Duration="0:0:0.1000" From="0" To="-250">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger-->
+                        <Trigger Property="ShowTitle" Value="False">
+                            <Setter TargetName="TitleText" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Manual"/>
+                                <Condition Property="ShowCloseButton" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="PART_CloseButton" Property="Width" Value="0"/>
+                                <Setter TargetName="PART_CloseButton" Property="Height" Value="0"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Manual"/>
+                                <Condition Property="ShowMaxRestButton" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="MaxRestButtonGrid" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="MaxRestButtonGrid" Property="Width" Value="0"/>
+                                <Setter TargetName="MaxRestButtonGrid" Property="Height" Value="0"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Manual"/>
+                                <Condition Property="ShowMinButton" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_MinimizeButton" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="PART_MinimizeButton" Property="Width" Value="0"/>
+                                <Setter TargetName="PART_MinimizeButton" Property="Height" Value="0"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Manual"/>
+                                <Condition Property="ShowResizeEdges" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_ThumbBottom" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbTop" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbBottomRightCorner" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbTopRightCorner" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbTopLeftCorner" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbBottomLeftCorner" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbRight" Property="Visibility" Value="Hidden" />
+                                <Setter TargetName="PART_ThumbLeft" Property="Visibility" Value="Hidden" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ResizeMode" Value="Manual"/>
+                                <Condition Property="ShowResizeGrip" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="PART_ResizeGrip" Property="Visibility" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
                         <Trigger Property="IsActive" Value="True">
                             <Setter TargetName="ActiveTitlebarBackground" Property="Visibility" Value="Visible" />
                             <Setter TargetName="InactiveTitlebarBackground" Property="Visibility" Value="Hidden" />
@@ -554,14 +657,15 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.0" From="0" To="7, 7, -7, -7"/>
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.0" From="0" To="3, 3, -3, -3"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.375" From="7, 7, -7, -7" To="107, 107, 93, 93">
+                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin" BeginTime="0:0:0.0" Duration="0:0:0.375" From="3, 3, -3, -3" To="107, 107, 93, 93">
+                                            <!--7, 7, -7, -7-->
                                             <ThicknessAnimation.EasingFunction>
                                                 <CircleEase EasingMode="EaseOut"/>
                                             </ThicknessAnimation.EasingFunction>
@@ -573,67 +677,57 @@
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
                         </Trigger>
-                        <!--MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Maximized" Value="False"/>
-                                <Condition Property="Minimized" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <MultiTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <!-DoubleAnimation Storyboard.TargetProperty="Width" BeginTime="0:0:0.0" Duration="0:0:0.375" From="{x:Static SystemParameters.PrimaryScreenWidth}" To="{TemplateBinding Width}"/>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" BeginTime="0:0:0.0" Duration="0:0:0.375" From="{x:Static SystemParameters.PrimaryScreenHeight}" To="{TemplateBinding Height}"/->
-                                        <ThicknessAnimation Storyboard.TargetName="WindowRoot" Storyboard.TargetProperty="Margin"
-                 BeginTime="0:0:0.0" Duration="0:0:0.375" From="100" To="0">
-                                            <ThicknessAnimation.EasingFunction>
-                                                <BackEase EasingMode="EaseOut" Amplitude="0.25" />
-                                            </ThicknessAnimation.EasingFunction>
-                                        </ThicknessAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </MultiTrigger.EnterActions>
-                        </MultiTrigger-->
+                        <Trigger Property="ResizeMode" Value="CanMinimize">
+                            <Setter TargetName="MaxRestButtonGrid" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="MaxRestButtonGrid" Property="Width" Value="0"/>
+                            <Setter TargetName="PART_ThumbBottom" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTop" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbBottomRightCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTopRightCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTopLeftCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbBottomLeftCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbRight" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbLeft" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter TargetName="MaxRestButtonGrid" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="MaxRestButtonGrid" Property="Width" Value="0"/>
+                            <Setter TargetName="PART_MinimizeButton" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="PART_MinimizeButton" Property="Width" Value="0"/>
+                            <Setter TargetName="PART_ThumbBottom" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTop" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbBottomRightCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTopRightCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbTopLeftCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbBottomLeftCorner" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbRight" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_ThumbLeft" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                            <Setter TargetName="PART_ResizeGrip" Property="Visibility" Value="Visible" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
-                <!--ControlTemplate TargetType="{x:Type local:PlexWindow}">
-                    <Grid Background="{TemplateBinding Background}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.ColumnSpan="2">
-                            <TextBlock TextAlignment="Center"
-                       Margin="0 10 0 0"
-                       FontSize="22"
-                       FontWeight="DemiBold"
-                       Foreground="RoyalBlue"
-                       Text="{TemplateBinding Title}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="0" Grid.Column="1"
-                      Orientation="Horizontal"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Center"
-                      Margin="0 10 15 0">
-                            <Button Content="+"
-                    Width="25"
-                    Height="22"
-                    Margin="0 0 10 0"/>
-                            <Button Content="X"
-                    Width="25"
-                    Height="22" />
-                        </StackPanel>
-                        - here goes the content -
-                        <ContentPresenter Grid.Row="1"/>
-                    </Grid>
-                </ControlTemplate-->
             </Setter.Value>
         </Setter>
-        <!--Style.Triggers>
-            <Trigger Property="Visibility" Value="Hidden">
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="ShadowOpacity" To="1" Duration="0:0:0.25" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="ShadowOpacity" To="0.5" Duration="0:0:0.25" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <!--Trigger Property="Visibility" Value="Hidden">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
@@ -658,8 +752,8 @@
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
-            </Trigger>
-        </Style.Triggers-->
+            </Trigger-->
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="PlexGlassWindowStyle" TargetType="{x:Type plex:PlexWindow}" BasedOn="{StaticResource PlexWindowStyle}">
@@ -1035,6 +1129,49 @@
     </Style>
 
     <!-- End Window Styles -->
+    
+    
+    <!-- ToolTip Styles -->
+
+    <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border Name="Border" BorderThickness="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0"
+                                 EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Offset="0" Color="White" />
+                                        <GradientStop Offset="1" Color="#FFE4E5F0" />
+                                    </GradientStopCollection>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#FF767676" />
+                        </Border.BorderBrush>
+                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasDropShadow" Value="true">
+                            <Setter TargetName="Border" Property="CornerRadius" Value="4" />
+                            <Setter TargetName="Border" Property="SnapsToDevicePixels" Value="true" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- End ToolTip Styles -->
 
 
     <!-- Thumb Styles -->
@@ -1055,6 +1192,30 @@
         </Setter>
     </Style>
 
+    <!--<ResizeGrip x:Name="PART_ResizeGrip" Style="{DynamicResource {x:Type ResizeGrip}}" Visibility="Hidden"/>-->
+    <Style x:Key="ResizeGripThumb" TargetType="Thumb" BasedOn="{StaticResource BorderThumb}">
+        <Setter Property="Width" Value="18" />
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Cursor" Value="SizeNWSE"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <ResizeGrip x:Name="PART_ResizeGrip" Style="{DynamicResource {x:Type ResizeGrip}}" Visibility="Visible"/>
+                        <Rectangle StrokeThickness="0">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#01000000" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- End Thumb Styles -->
 
 
@@ -1063,14 +1224,19 @@
     <Style x:Key="{x:Type ResizeGrip}" TargetType="{x:Type ResizeGrip}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Foreground" Value="Blue" />
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="#01000000" />
+        <Setter Property="IsHitTestVisible" Value="True" />
         <Setter Property="Width" Value="18" />
         <Setter Property="Height" Value="18" />
-        <Setter Property="Margin" Value="2" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Cursor" Value="SizeNWSE"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ResizeGrip}">
                     <Grid>
+                        
                         <Ellipse HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="5" Height="5"
                                  Fill="White" Stroke="#40000000" StrokeThickness="1" />
                         <Ellipse HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="5" Height="5"
@@ -1087,7 +1253,7 @@
         </Setter>
     </Style>
 
-    <!-- EndResize Grip Styles -->
+    <!-- End Resize Grip Styles -->
 
 
     <!-- Button Styles -->
@@ -1684,9 +1850,699 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PlexToolbarButtonStyle" TargetType="Button">
+        <!--Setter Property="Height" Value="68" /-->
+        <!--Setter Property="Width" Value="Auto" /-->
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="SnapsToDevicePixels" Value="False" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border x:Name="HoverBackground" Background="Transparent" BorderBrush="#40000000"
+                                    BorderThickness="1" CornerRadius="4" Opacity="0">
+                            <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <!--Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FF7DC7F8"/>
+                                                        <GradientStop Offset="1" Color="#407DC7F8"/>
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Border.Background-->
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                            <GradientStop Offset="1" Color="#407FBAE2" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FF68A2CC" />
+                                                <GradientStop Offset="1" Color="#FFB8F2FB" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                                <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                </Border>
+                            </Border>
+                        </Border>
+                        <ContentControl Background="#01000000" Content="{TemplateBinding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Focusable="False" IsTabStop="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground"
+                                                         Storyboard.TargetProperty="Opacity" To="1"
+                                                         Duration="0:0:0.125" />
+                                        <!--ColorAnimation To="#FFFFFFFF" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Duration="0:0:0.125"/-->
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground"
+                                                         Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                                        <!--ColorAnimation To="{DynamicResource PlexRibbonTextColorColor}" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" Duration="0:0:0.5"/-->
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="#FF00007F" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#FFC0C0FF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <Storyboard.TargetProperty="Foreground" To="#FF00007F" Duration="0:0:0.125"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetProperty="Foreground" To="{DynamicResource PlexRibbonTextColorColor}" Duration="0:0:0.5"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+            <Trigger Property="Size" Value="Large">
+                <Setter Property="Height" Value="68" />
+            </Trigger>
+            <Trigger Property="Size" Value="Middle">
+                <Setter Property="Height" Value="22" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Trigger>
+            <Trigger Property="Size" Value="Small">
+                <Setter Property="Height" Value="22" />
+                <Setter Property="Width" Value="22" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Trigger>
+        </Style.Triggers-->
+    </Style>
+
+    <Style x:Key="PlexToolbarToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="False" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border x:Name="SelectedBackground" Background="Transparent" BorderBrush="#40000000"
+                                    BorderThickness="1" CornerRadius="4" Opacity="0">
+                            <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                            <GradientStop Offset="1" Color="#407FBAE2" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FF68A2CC" />
+                                                <GradientStop Offset="1" Color="#FF8BD2DD" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                                <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                </Border>
+                            </Border>
+                        </Border>
+                        <Border x:Name="HoverBackground" Background="Transparent" BorderBrush="#40000000"
+                                    BorderThickness="1" CornerRadius="4" Opacity="0">
+                            <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                            <GradientStop Offset="1" Color="#407FBAE2" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FF68A2CC" />
+                                                <GradientStop Offset="1" Color="#FFB8F2FB" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                                <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                </Border>
+                            </Border>
+                        </Border>
+                        <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Focusable="False" IsTabStop="False" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="#FF00007F" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectedBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectedBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="#FF00007F" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#FFC0C0FF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- End Button Styles -->
 
 
+    <!-- ListView Styles -->
+
+    <Style x:Key="{x:Type ListViewItem}" TargetType="ListViewItem">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Grid>
+                        <Border x:Name="SelectedBackground" Background="Transparent" BorderBrush="#40000000"
+                                    BorderThickness="1" CornerRadius="4" Opacity="0">
+                            <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                            <GradientStop Offset="1" Color="#407FBAE2" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FF68A2CC" />
+                                                <GradientStop Offset="1" Color="#FF8BD2DD" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                                <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                </Border>
+                            </Border>
+                        </Border>
+                        <Border x:Name="HoverBackground" Background="Transparent" BorderBrush="#40000000"
+                                    BorderThickness="1" CornerRadius="4" Opacity="0">
+                            <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                            <GradientStop Offset="1" Color="#407FBAE2" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FF68A2CC" />
+                                                <GradientStop Offset="1" Color="#FFB8F2FB" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                                <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                </Border>
+                            </Border>
+                        </Border>
+                        <Border BorderThickness="0" BorderBrush="Transparent" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.0625" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="#FF00007F" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectedBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectedBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <Setter Property="Foreground" Value="#FF00007F" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- End ListView Styles -->
+
+
+    <!-- ContextMenu Styles -->
+
+    <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Margin" Value="0,4,0,4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Separator">
+                    <Border BorderBrush="Black" BorderThickness="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <ControlTemplate x:Key="{x:Static MenuItem.TopLevelHeaderTemplateKey}" TargetType="MenuItem">
+        <Border Name="Border" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#01000000">
+            <Grid>
+                <Border x:Name="HoverBackground" Background="Transparent" BorderBrush="#40000000" BorderThickness="1" CornerRadius="4" Opacity="0">
+                    <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                    <GradientStop Offset="1" Color="#407FBAE2" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+                        <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF68A2CC" />
+                                        <GradientStop Offset="1" Color="#FFB8F2FB" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                        <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                        </Border>
+                    </Border>
+                </Border>
+                <ContentPresenter Margin="{TemplateBinding Padding}" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center"/>
+                <Path Margin="-7" HorizontalAlignment="Right" VerticalAlignment="Center" Data="M 0 0 L 6 6 L 0 12 L 4 6 Z" Fill="{TemplateBinding Foreground}" />
+                <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                    <Border Name="SubmenuBorder" Background="White" BorderBrush="#FFE4E4E4" BorderThickness="0,0,0,2" CornerRadius="0" Padding="0,5,0,5">
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                </Popup>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+                <Setter Property="Foreground" Value="#FF00007F" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="#FFCCCCCC"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FFC0C0FF" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static MenuItem.TopLevelItemTemplateKey}" TargetType="MenuItem">
+        <Border Name="Border" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#01000000">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Border x:Name="HoverBackground" Background="Transparent" BorderBrush="#40000000" BorderThickness="1" CornerRadius="4" Opacity="0">
+                    <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                    <GradientStop Offset="1" Color="#407FBAE2" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+                        <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF68A2CC" />
+                                        <GradientStop Offset="1" Color="#FFB8F2FB" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                        <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                        </Border>
+                    </Border>
+                </Border>
+                <Label x:Name="Check" FontFamily="Marlett" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0" Foreground="{TemplateBinding Foreground}" Visibility="Hidden">b</Label>
+                <Grid x:Name="CheckOffsetGrid" Margin="0">
+                    <ContentPresenter Name="Content" Margin="{TemplateBinding Padding}" ContentSource="Header" RecognizesAccessKey="True" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+                <Setter Property="Foreground" Value="#FF00007F" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="Border" Property="Background" Value="#FFCCCCCC"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FFC0C0FF" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsCheckable" Value="True">
+                <Setter TargetName="CheckOffsetGrid" Property="Margin" Value="12,0,0,0"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}" TargetType="MenuItem">
+        <Border Name="Border">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
+                    <ColumnDefinition Width="13"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="HoverBackground" Background="Transparent" BorderBrush="#40000000" BorderThickness="1" CornerRadius="4" Opacity="0">
+                    <Border BorderThickness="1" CornerRadius="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0.25,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#FF7FBAE2" />
+                                    <GradientStop Offset="1" Color="#407FBAE2" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+                        <Border BorderThickness="0,1,0,2" CornerRadius="2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF68A2CC" />
+                                        <GradientStop Offset="1" Color="#FFB8F2FB" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FFB8F2FB" />
+                                        <GradientStop Offset="0.75" Color="#FF58BFEA" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                        </Border>
+                    </Border>
+                </Border>
+                <ContentPresenter Name="Icon" Margin="6,0,6,0" VerticalAlignment="Center" ContentSource="Icon"/>
+                <ContentPresenter Name="HeaderHost" Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True"/>
+                <TextBlock x:Name="InputGestureText" Grid.Column="2" Text="{TemplateBinding InputGestureText}" Margin="5,2,2,2" DockPanel.Dock="Right"/>
+                <Path Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 0 7 L 4 3.5 Z" Fill="{StaticResource GlyphBrush}" />
+                <Popup Name="Popup" Placement="Right" HorizontalOffset="-4" IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                    <Border Name="SubmenuBorder" Background="White" BorderBrush="Black" BorderThickness="2">
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+                <Setter Property="Foreground" Value="#FF00007F" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FFC0C0FF" />
+            </Trigger>
+            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="True">
+                <Setter TargetName="SubmenuBorder" Property="CornerRadius" Value="4"/>
+                <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,3,0,3"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type MenuItem}" TargetType="MenuItem">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Background" Value="#01000000" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontStyle" Value="Normal" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="#01000000" />
+        <Setter Property="Padding" Value="10,0" />
+        <Setter Property="Margin" Value="0,0,0,3" />
+        <Style.Triggers>
+            <Trigger Property="Role" Value="TopLevelHeader">
+                <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.TopLevelHeaderTemplateKey}}"/>
+                <Setter Property="Grid.IsSharedSizeScope" Value="true"/>
+            </Trigger>
+            <Trigger Property="Role" Value="TopLevelItem">
+                <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.TopLevelItemTemplateKey}}"/>
+            </Trigger>
+            <Trigger Property="Role" Value="SubmenuHeader">
+                <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.TopLevelHeaderTemplateKey}}"/>
+            </Trigger>
+            <Trigger Property="Role" Value="SubmenuItem">
+                <Setter Property="Template" Value="{StaticResource {x:Static MenuItem.TopLevelItemTemplateKey}}"/>
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" Value="#FFCCCCCC"/>
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#FFCCCCCC"/>
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="PlexMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}"/>
+
+    <Style x:Key="{x:Type ContextMenu}" TargetType="ContextMenu">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Grid.IsSharedSizeScope" Value="True" />
+        <Setter Property="Margin" Value="5,0,0,5"/>
+        <Setter Property="Padding" Value="3,3,3,0"/>
+        <Setter Property="HasDropShadow" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContextMenu">
+                    <Grid Margin="{TemplateBinding Margin}">
+                        <Border IsHitTestVisible="False" Background="Black" BorderBrush="Transparent">
+                            <Border.Effect>
+                                <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="230" ShadowDepth="3" BlurRadius="3" Opacity="0.375"/>
+                            </Border.Effect>
+                        </Border>
+                        <Border BorderThickness="1" CornerRadius="0" Margin="0" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0.25,0" EndPoint="0.75,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF67A4E7"/>
+                                        <GradientStop Offset="0.75" Color="#FF17283D"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0.25,0" EndPoint="0.75,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF3B5774"/>
+                                        <GradientStop Offset="0.75" Color="#FF010101"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- End ContextMenu Styles -->
+    
+    
     <!-- TextBox Styles -->
 
     <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
@@ -1705,195 +2561,197 @@
                         <Grid>
                             <Border CornerRadius="7" BorderThickness="1" Padding="0" Background="White"
                                     BorderBrush="Transparent" ClipToBounds="True">
-                                <Grid>
-                                    <Grid x:Name="IdleEdge" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                <Border CornerRadius="5" BorderThickness="0" Padding="0" Background="Transparent" BorderBrush="Transparent" ClipToBounds="True">
+                                    <Grid ClipToBounds="True" Margin="0">
+                                        <Grid x:Name="IdleEdge" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                           Margin="-1" Opacity="1">
-                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="7" Height="7"
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="11" Height="11"
                                                 Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="7"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="11"
                                                 Margin="2,0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="7"
-                                                Height="7" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="7"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="11"
+                                                Height="11" Margin="0">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="11"
                                                 Margin="0,2">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="7"
-                                                Height="7" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="7"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="11"
+                                                Height="11" Margin="0">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="11"
                                                 Margin="2,0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="7"
-                                                Height="7" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="7"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="11"
+                                                Height="11" Margin="0">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="11"
                                                 Margin="0,2">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FFD5E4F8" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                    </Grid>
-                                    <Grid x:Name="HoverEdge" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FFD5E4F8" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                        </Grid>
+                                        <Grid x:Name="HoverEdge" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                           Margin="-1" Opacity="0">
-                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="3" Height="3"
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="3" Height="3"
                                                 Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="3"
                                                 Margin="2,0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Width="3"
                                                 Height="3" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="3"
                                                 Margin="0,2">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="3"
                                                 Height="3" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="3"
                                                 Margin="2,0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="3"
                                                 Height="3" Margin="0">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                        <Canvas HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="3"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="3"
                                                 Margin="0,2">
-                                            <Canvas.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <LinearGradientBrush.GradientStops>
-                                                        <GradientStop Offset="0" Color="#FF2CC7FE" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush.GradientStops>
-                                                </LinearGradientBrush>
-                                            </Canvas.Background>
-                                        </Canvas>
-                                    </Grid>
-                                    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="4"
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#FF2CC7FE" />
+                                                            <GradientStop Offset="1" Color="Transparent" />
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                        </Grid>
+                                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="4"
                                             Background="White" Margin="1,2,1,0" />
-                                    <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                </Grid>
+                                    </Grid>
+                                </Border>
                             </Border>
                             <Border CornerRadius="7" BorderThickness="1" Padding="0" Background="Transparent">
                                 <Border.BorderBrush>
@@ -3790,6 +4648,11 @@
                                    ViewportSize="{TemplateBinding ViewportWidth}" Grid.Row="1" Orientation="Horizontal"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="VerticalScrollBarVisibility" Value="Visible">
+                            <Setter Property="Padding" Value="4,4,12,4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

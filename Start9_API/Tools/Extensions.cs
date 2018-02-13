@@ -9,9 +9,6 @@ namespace Start9.Api.Tools
 {
 	public static class Extensions
 	{
-		[DllImport("gdi32.dll")]
-		static extern bool DeleteObject(IntPtr hObject);
-
 		public static BitmapSource ToBitmapSource(this Bitmap bitmap)
 		{
 			if (bitmap == null)
@@ -29,7 +26,28 @@ namespace Start9.Api.Tools
 			}
 			finally
 			{
-				DeleteObject(hBitmap);
+				WinApi.DeleteObject(hBitmap);
+			}
+		}
+
+		public static BitmapSource ToBitmapSource(this Icon bitmap)
+		{
+			if (bitmap == null)
+				throw new ArgumentNullException(nameof(bitmap));
+
+			var hBitmap = bitmap.ToBitmap().GetHbitmap();
+
+			try
+			{
+				return Imaging.CreateBitmapSourceFromHBitmap(
+					hBitmap,
+					IntPtr.Zero,
+					Int32Rect.Empty,
+					BitmapSizeOptions.FromEmptyOptions());
+			}
+			finally
+			{
+				WinApi.DeleteObject(hBitmap);
 			}
 		}
 	}
