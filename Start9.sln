@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9", "Start9\Start9.csproj", "{15840142-395D-429A-90E6-4956766FD251}"
 EndProject
@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9.Api", "Start9_API\St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9.SkinDesigner", "Start9_SkinDesigner\Start9.SkinDesigner.csproj", "{EC9BB565-E4AA-4C27-9BC3-18BB259A6356}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFixedModule", "Modules\TestFixedModule\TestFixedModule.csproj", "{D63700C8-501C-4C6F-86E3-C22CC93101A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTaskbarModule", "TestTaskbarModule\TestTaskbarModule.csproj", "{39FBC1B2-63C1-4CB8-903D-BBD439D27FEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTransientModule", "Modules\TestTransientModule\TestTransientModule.csproj", "{CBE133C5-62AF-4C0A-963D-637200DCBF0A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{DC39E900-4059-4559-8E95-5E34C47A4C91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStartMenuModule", "TestStartMenuModule\TestStartMenuModule.csproj", "{1EF61AAF-5334-4354-A8C1-2303169C5053}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,17 +33,21 @@ Global
 		{EC9BB565-E4AA-4C27-9BC3-18BB259A6356}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC9BB565-E4AA-4C27-9BC3-18BB259A6356}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC9BB565-E4AA-4C27-9BC3-18BB259A6356}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D63700C8-501C-4C6F-86E3-C22CC93101A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D63700C8-501C-4C6F-86E3-C22CC93101A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D63700C8-501C-4C6F-86E3-C22CC93101A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D63700C8-501C-4C6F-86E3-C22CC93101A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBE133C5-62AF-4C0A-963D-637200DCBF0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBE133C5-62AF-4C0A-963D-637200DCBF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBE133C5-62AF-4C0A-963D-637200DCBF0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBE133C5-62AF-4C0A-963D-637200DCBF0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39FBC1B2-63C1-4CB8-903D-BBD439D27FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39FBC1B2-63C1-4CB8-903D-BBD439D27FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39FBC1B2-63C1-4CB8-903D-BBD439D27FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39FBC1B2-63C1-4CB8-903D-BBD439D27FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF61AAF-5334-4354-A8C1-2303169C5053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF61AAF-5334-4354-A8C1-2303169C5053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF61AAF-5334-4354-A8C1-2303169C5053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF61AAF-5334-4354-A8C1-2303169C5053}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{39FBC1B2-63C1-4CB8-903D-BBD439D27FEF} = {DC39E900-4059-4559-8E95-5E34C47A4C91}
+		{1EF61AAF-5334-4354-A8C1-2303169C5053} = {DC39E900-4059-4559-8E95-5E34C47A4C91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1481EFDE-D689-4688-A650-4EBD9EAFB195}

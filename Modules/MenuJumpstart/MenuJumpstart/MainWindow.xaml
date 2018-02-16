@@ -1,0 +1,62 @@
+﻿<Window x:Class="MenuJumpstart.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
+        xmlns:local="clr-namespace:MenuJumpstart"
+        mc:Ignorable="d"
+        x:Name="MenuWindow" Margin="-256,0,256,0"
+        Title="MainWindow" Width="263" Height="512" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" Visibility="Visible" Topmost="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MenuJumpstart;component/DefaultSkin.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid x:Name="RootGrid" ClipToBounds="True" Margin="0">
+        <Grid.RenderTransform>
+            <TranslateTransform x:Name="RootTranslateTransform" X="0" Y="0"/>
+        </Grid.RenderTransform>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="{DynamicResource RightColumn}"/>
+        </Grid.ColumnDefinitions>
+        <Grid.OpacityMask>
+            <VisualBrush AlignmentX="Center" AlignmentY="Center">
+                <VisualBrush.Visual>
+                    <Border Background="White" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0" Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" Height="{Binding ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" Margin="0"/>
+                </VisualBrush.Visual>
+            </VisualBrush>
+        </Grid.OpacityMask>
+        <Control Style="{DynamicResource BackgroundStyle}" Grid.ColumnSpan="2"/>
+        <TreeView x:Name="AllAppsTree" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <!--TreeViewItem Header="Root-level Item With Sub-Items" IsExpanded="True">
+                <TreeViewItem.Items>
+                    <TreeViewItem Header="Sub-item With Sub-Items">
+                        <TreeViewItem.Items>
+                            <TreeViewItem Header="Sub-sub-item"/>
+                        </TreeViewItem.Items>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Sub-item"/>
+                </TreeViewItem.Items>
+            </TreeViewItem>
+            <TreeViewItem Header="Root-level Item"/>
+        </TreeView-->
+        <DockPanel x:Name="ToolStrip" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" LastChildFill="False" Margin="0,0,3,0">
+            <StackPanel DockPanel.Dock="Top">
+                <apictrl:IconButton Icon="{DynamicResource ShutdownIcon}" Click="ShutDownButton_Click">Shut down</apictrl:IconButton>
+                <apictrl:IconButton Icon="{DynamicResource RestartIcon}" Click="RestartButton_Click">Restart</apictrl:IconButton>
+                <ToggleButton x:Name="LoadResourceDictionaryButton" Margin="0,50" Click="LoadResourceDictionaryButton_Click">
+                    <TextBlock TextWrapping="Wrap">Load Resource Dictionary</TextBlock>
+                </ToggleButton>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical">
+                <apictrl:IconButton Icon="{DynamicResource SignOutIcon}" Click="SignOutButton_Click">Sign out</apictrl:IconButton>
+                <apictrl:IconButton Icon="{DynamicResource SwitchUserIcon}" Click="SwitchUserButton_Click">Switch user</apictrl:IconButton>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,649 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Start9.Api"
+                    xmlns:Fluent="urn:fluent-ribbon"
+                    xmlns:FluentClr="clr-namespace:Fluent;assembly=Fluent"
+                    xmlns:plex="clr-namespace:Start9.Api.Plex"
+                    xmlns:controls="clr-namespace:Start9.Api.Controls"
+                    xmlns:obj="clr-namespace:Start9.Api.Objects">
+    <!-- Focus Visuals -->
+
+    <SolidColorBrush x:Key="FocusVisualBorderBrush">#FF425284</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="FocusVisualLinearGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40BFE9FF" />
+            <GradientStop Offset="0.25" Color="#40BFE9FF" />
+            <GradientStop Offset="0.5" Color="White" />
+            <GradientStop Offset="0.75" Color="#40BFE9FF" />
+            <GradientStop Offset="1" Color="#40BFE9FF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End Focus Visuals -->
+
+
+    <!-- Window Brushes -->
+
+    <SolidColorBrush x:Key="CaptionButtonActiveIdleBrush">#FFC4DFFF</SolidColorBrush>
+    <!-- #FF425284 -->
+    <SolidColorBrush x:Key="CaptionButtonActiveHoverBrush">White</SolidColorBrush>
+    <SolidColorBrush x:Key="CaptionButtonActivePressedBrush">#FF89A4D2</SolidColorBrush>
+    <SolidColorBrush x:Key="CaptionButtonInactiveIdleBrush">#FF89A4D2</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="DefaultWindowBodyBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="White" />
+            <GradientStop Offset="1" Color="#FFC8D4E7" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="DefaultWindowFooterBrush">#FF5E98D9</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="ActiveTitlebarBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF4D87D4" />
+            <GradientStop Offset="0.5" Color="#FF72B2F5" />
+            <GradientStop Offset="1" Color="#FF4D87D4" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="InactiveTitlebarBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF4478BB" />
+            <GradientStop Offset="0.5" Color="#FF649DD8" />
+            <GradientStop Offset="1" Color="#FF4478BB" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ActiveTitlebarBorderBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF4D87D4" />
+            <GradientStop Offset="0.05" Color="#FF6DA6F2" />
+            <GradientStop Offset="0.5" Color="#FFA8D1F8" />
+            <GradientStop Offset="0.95" Color="#FF6DA6F2" />
+            <GradientStop Offset="1" Color="#FF4D87D4" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="InactiveTitlebarBorderBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF4478BB" />
+            <GradientStop Offset="0.05" Color="#FF76A0D5" />
+            <GradientStop Offset="0.5" Color="#FF8BB2DB" />
+            <GradientStop Offset="0.95" Color="#FF76A0D5" />
+            <GradientStop Offset="1" Color="#FF4478BB" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="WindowToolbarBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF366AAF" />
+            <GradientStop Offset="0.5" Color="#FF5F9CDA" />
+            <GradientStop Offset="1" Color="#FF366AAF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="WindowToolbarBorderBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF4D80C9" />
+            <GradientStop Offset="0.5" Color="#FF85C0FA" />
+            <GradientStop Offset="1" Color="#FF4D80C9" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="WindowToolbarSecondaryBackgroundBrush">#003566A4</SolidColorBrush>
+    <SolidColorBrush x:Key="WindowToolbarSecondaryBorderBrush">#FF3566A4</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="WindowToolbarTertiaryBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF5894D3" />
+            <GradientStop Offset="0.5" Color="#FF81BEFC" />
+            <GradientStop Offset="1" Color="#FF5894D3" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="WindowToolbarQuarternaryBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF3C70B5" />
+            <GradientStop Offset="0.5" Color="#FF255898" />
+            <GradientStop Offset="1" Color="#FF3C70B5" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End Window Brushes -->
+
+
+    <!-- ToolTip Brushes -->
+
+    <LinearGradientBrush x:Key="TooltipBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0" Color="White" />
+                <GradientStop Offset="1" Color="#FFE4E5F0" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="TooltipBorderBrush">#FF767676</SolidColorBrush>
+
+    <!-- End ToolTip Brushes -->
+
+
+    <!-- ResizeGrip Brushes -->
+
+    <SolidColorBrush x:Key="ResizeGripCircleBackgroundBrush">White</SolidColorBrush>
+    <SolidColorBrush x:Key="ResizeGripCircleBorderBrush">#40000000</SolidColorBrush>
+
+    <!-- End Resize Grip Brushes -->
+
+
+    <!-- Button Brushes -->
+
+    <LinearGradientBrush x:Key="StandardButtonIdleBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFAEC2F9" />
+            <GradientStop Offset="0.5" Color="#FFBDD0FF" />
+            <GradientStop Offset="1" Color="#FFCCE6FF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="StandardButtonIdleBorderBrush">#FF425284</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonPressedBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF7C90C7" />
+            <GradientStop Offset="0.5" Color="#FF8B9ECD" />
+            <GradientStop Offset="1" Color="#FF9AB4CD" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="StandardButtonPressedBorderBrush">#FF425284</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonSecondaryBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.5" Color="#FF72A1F8" />
+            <GradientStop Offset="0" Color="#FF72A1F8" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="StandardButtonSecondaryBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFCBDBFF" />
+            <GradientStop Offset="0.25" Color="#FFB6CBFF" />
+            <GradientStop Offset="0.25" Color="#FFA1BCFF" />
+            <GradientStop Offset="0.625" Color="#FF81AEFF" />
+            <GradientStop Offset="1" Color="#FFA5CCFF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonTertiaryBackgroundBrush" StartPoint="0.25,0" EndPoint="0.75,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40C4FFBF" />
+            <GradientStop Offset="0.25" Color="Transparent" />
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#40C4FFBF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="StandardButtonTertiaryBorderBrush">#C0D3E5FF</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonQuarternaryBackgroundBrush" StartPoint="0.75,0" EndPoint="0.25,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40C4FFBF" />
+            <GradientStop Offset="0.25" Color="Transparent" />
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#40C4FFBF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonHoverBorderBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.5" Color="White" />
+            <GradientStop Offset="1" Color="Transparent" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="StandardButtonHoverGlowBrush" GradientOrigin="0.5,1" Center="0.5,1" RadiusX="0.5"
+                                                         RadiusY="0.75">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="White" />
+            <GradientStop Offset="0.25" Color="#FFBFE9FF" />
+            <GradientStop Offset="1" Color="Transparent" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonQuinaryBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.5" Color="#FF72A1F8" />
+            <GradientStop Offset="0" Color="#FF72A1F8" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="StandardButtonSenaryBackgroundBrush">#C0D3E5FF</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonSeptenaryBackgroundBrush" StartPoint="0.25,0" EndPoint="0.75,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40C4FFBF" />
+            <GradientStop Offset="0.25" Color="Transparent" />
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#40C4FFBF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonOctonaryBackgroundBrush" StartPoint="0.75,0" EndPoint="0.25,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40C4FFBF" />
+            <GradientStop Offset="0.25" Color="Transparent" />
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#40C4FFBF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="StandardButtonDisabledPrimaryBorderBrush">#FF525252</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonDisabledPrimaryBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFC2C2C2" />
+            <GradientStop Offset="0.5" Color="#FFCFCFCF" />
+            <GradientStop Offset="1" Color="#FFE1E1E1" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonDisabledSecondaryBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.5" Color="#FF9C9C9C" />
+            <GradientStop Offset="0" Color="#FF9C9C9C" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonDisabledSecondaryBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFDADADA" />
+            <GradientStop Offset="0.25" Color="#FFCACACA" />
+            <GradientStop Offset="0.25" Color="#FFBBBBBB" />
+            <GradientStop Offset="0.625" Color="#FFA9A9A9" />
+            <GradientStop Offset="1" Color="#FFC6C6C6" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="StandardButtonDisabledTertiaryBorderBrush">#C0E2E2E2</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonDisabledTertiaryBackgroundBrush" StartPoint="0.25,0" EndPoint="0.75,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40D5D5D5" />
+            <GradientStop Offset="0.25" Color="Transparent" />
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#40D5D5D5" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StandardButtonDisabledQuarternaryBackgroundBrush" StartPoint="0.75,0" EndPoint="0.25,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#40D5D5D5" />
+            <GradientStop Offset="0.25" Color="Transparent" />
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#40D5D5D5" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    
+    
+
+    <LinearGradientBrush x:Key="RoundButtonIdlePrimaryFillBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFBDD2EE" />
+            <GradientStop Offset="0.5" Color="#FF598ED8" />
+            <GradientStop Offset="1" Color="#FF9DBDEA" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonIdleSecondaryFillBrush" GradientOrigin="0.625,0.375" Center="0.625,0.375">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="1.25" Color="#60BDD2EE" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonIdleTertiaryFillBrush" GradientOrigin="1,0.875" Center="0.5,0.5625">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#60D7E3F3" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <LinearGradientBrush x:Key="RoundButtonHoverPrimaryFillBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFD9EAFF" />
+            <GradientStop Offset="0.5" Color="#FF6EA2EA" />
+            <GradientStop Offset="1" Color="#FFA9CBFB" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonHoverSecondaryFillBrush" GradientOrigin="0.625,0.375" Center="0.625,0.375">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="1.25" Color="#6095BDF6" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonHoverTertiaryFillBrush" GradientOrigin="1,0.875" Center="0.5,0.5625">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#60E6F3FF" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+    <LinearGradientBrush x:Key="RoundButtonPressedPrimaryFillBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFB5C6DF" />
+            <GradientStop Offset="0.5" Color="#FF487CC6" />
+            <GradientStop Offset="1" Color="#FF88A9D8" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonPressedSecondaryFillBrush" GradientOrigin="0.625,0.375" Center="0.625,0.375">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="1.25" Color="#606F98D3" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonPressedTertiaryFillBrush" GradientOrigin="1,0.875" Center="0.5,0.5625">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#60C5D1E1" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+    <LinearGradientBrush x:Key="RoundButtonDisabledPrimaryFillBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#C0E3E8EF" />
+            <GradientStop Offset="0.5" Color="#C098ACC8" />
+            <GradientStop Offset="1" Color="#C0C0CCDD" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonDisabledSecondaryFillBrush" GradientOrigin="0.625,0.375" Center="0.625,0.375">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="1.25" Color="#50B7C4D9" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <RadialGradientBrush x:Key="RoundButtonDisabledTertiaryFillBrush" GradientOrigin="1,0.875" Center="0.5,0.5625">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Offset="0.75" Color="Transparent" />
+            <GradientStop Offset="1" Color="#50E4E8EF" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <SolidColorBrush x:Key="ToolbarButtonHoverPrimaryBorderBrush">#40000000</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="ToolbarButtonHoverSecondaryBorderBrush" StartPoint="0,0" EndPoint="0.25,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF7FBAE2" />
+            <GradientStop Offset="1" Color="#407FBAE2" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+
+    <LinearGradientBrush x:Key="ToolbarButtonHoverTertiaryBackgroundBrush" StartPoint="1,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF68A2CC" />
+            <GradientStop Offset="1" Color="#FFB8F2FB" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ToolbarButtonHoverTertiaryBorderBrush" StartPoint="0,1" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFB8F2FB" />
+            <GradientStop Offset="0.75" Color="#FF58BFEA" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="ToolbarButtonHoverForegroundBrush">#FF00007F</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ToolbarButtonDisabledForegroundBrush">#FFC0C0FF</SolidColorBrush>
+
+    <!-- End Button Brushes -->
+
+
+    <!-- CommandLinkButton Brushes -->
+
+    <SolidColorBrush x:Key="CommandLinkButtonHeaderForegroundBrush">DarkBlue</SolidColorBrush>
+    <SolidColorBrush x:Key="CommandLinkButtonHeaderForegroundHoverBrush">MediumBlue</SolidColorBrush>
+    <SolidColorBrush x:Key="CommandLinkButtonBodyForegroundBrush">#FF505050</SolidColorBrush>
+
+    <SolidColorBrush x:Key="CommandLinkButtonHeaderForegroundDisabledBrush">#FF3F3F7F</SolidColorBrush>
+    <SolidColorBrush x:Key="CommandLinkButtonBodyForegroundDisabledBrush">#FF909090</SolidColorBrush>
+
+    <!-- End CommandLinkButton Brushes -->
+
+
+    <!-- ToggleButton Brushes -->
+
+    <LinearGradientBrush x:Key="ToolbarToggleButtonSelectedBackground" StartPoint="1,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF68A2CC" />
+            <GradientStop Offset="1" Color="#FF8BD2DD" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End ToggleButton Brushes -->
+
+
+    <!-- ListView Brushes -->
+    
+    
+
+    <!-- End ListView Brushes -->
+
+
+    <!-- ContextMenu Brushes -->
+
+    <LinearGradientBrush x:Key="ContextMenuBackgroundBrush" StartPoint="0.25,0" EndPoint="0.75,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF67A4E7"/>
+            <GradientStop Offset="0.75" Color="#FF17283D"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ContextMenuBorderBrush" StartPoint="0.25,0" EndPoint="0.75,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF3B5774"/>
+            <GradientStop Offset="0.75" Color="#FF010101"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End ContextMenu Brushes -->
+
+
+    <!-- TextBox Brushes -->
+
+    <SolidColorBrush x:Key="TextBoxPrimaryBorderBrush">#FF6C8C9F</SolidColorBrush>
+    <SolidColorBrush x:Key="TextBoxPrimaryBackgroundBrush">White</SolidColorBrush>
+    
+    <GradientStopCollection x:Key="TextBoxGlowGradientStops">
+        <GradientStop Offset="0" Color="#FFBECCDD" />
+        <GradientStop Offset="1" Color="Transparent" />
+    </GradientStopCollection>
+
+    <GradientStopCollection x:Key="TextBoxGlowLinearGradientStops">
+        <GradientStop Offset="0" Color="#FFBECCDD" />
+        <GradientStop Offset="0.25" Color="Transparent" />
+        <GradientStop Offset="0.75" Color="Transparent" />
+        <GradientStop Offset="1" Color="#FFBECCDD" />
+    </GradientStopCollection>
+
+    <GradientStopCollection x:Key="TextBoxGlowRadialGradientStops">
+        <GradientStop Offset="0.5" Color="Transparent" />
+        <GradientStop Offset="1" Color="#FFBECCDD" />
+    </GradientStopCollection>
+
+    <GradientStopCollection x:Key="TextBoxHoverGlowGradientStops">
+        <GradientStop Offset="0" Color="#FF2CC7FE" />
+        <GradientStop Offset="1" Color="Transparent" />
+    </GradientStopCollection>
+
+    <GradientStopCollection x:Key="TextBoxHoverGlowLinearGradientStops">
+        <GradientStop Offset="0" Color="#FF2CC7FE" />
+        <GradientStop Offset="0.25" Color="Transparent" />
+        <GradientStop Offset="0.75" Color="Transparent" />
+        <GradientStop Offset="1" Color="#FF2CC7FE" />
+    </GradientStopCollection>
+
+    <GradientStopCollection x:Key="TextBoxHoverGlowRadialGradientStops">
+        <GradientStop Offset="0.5" Color="Transparent" />
+        <GradientStop Offset="1" Color="#FF2CC7FE" />
+    </GradientStopCollection>
+
+    <LinearGradientBrush x:Key="TextBoxSecondaryBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFCECECE" />
+            <GradientStop Offset="1" Color="#FFDBEDF9" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="ShinyTextBoxPrimaryBorderBrush">#FFE5EBEE</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="ShinyTextBoxPrimaryBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFEBF0F2" />
+            <GradientStop Offset="0.15" Color="#FFF2F5F7" />
+            <GradientStop Offset="0.45" Color="#FFF3F7F8" />
+            <GradientStop Offset="0.8" Color="#FFDDE5EA" />
+            <GradientStop Offset="1" Color="#FFE9EFF1" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ShinyTextBoxSecondaryBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="Transparent" />
+            <GradientStop Offset="0.25" Color="#FF2CC7FE" />
+            <GradientStop Offset="1" Color="Transparent" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+
+    <LinearGradientBrush x:Key="AddressBoxBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF315784" />
+            <GradientStop Offset="1" Color="#FF87BCF0" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="AddressBoxSecondaryBorderBrush">#FFE5EBEE</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="AddressBoxSecondaryBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF4275AC" />
+            <GradientStop Offset="1" Color="#FF4A84C4" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AddressBoxIdleFillBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFE0EAF4" />
+            <GradientStop Offset="1" Color="#FFB1C4DD" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AddressBoxHoverFillBackgroundBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFEAF4FF" />
+            <GradientStop Offset="1" Color="#FFBBCFE8" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End TextBox Brushes -->
+
+
+    <!-- Checkbox Brushes -->
+
+    <SolidColorBrush x:Key="CheckBoxBorderBrush">#FFB1BDC7</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="CheckBoxSecondaryBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFD8E1E5" />
+            <GradientStop Offset="1" Color="White" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="CheckBoxSecondaryBorderBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FFF0F3F4" />
+            <GradientStop Offset="1" Color="White" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="CheckBoxCheckMarkBrush">#FF6EB043</SolidColorBrush>
+
+    <!-- Checkbox Brushes -->
+
+
+    <!-- Vertical ScrollBar Brushes -->
+
+    <LinearGradientBrush x:Key="VerticalScrollbarArrowIdleFillBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.5" Color="#FFEDF0F2" />
+            <GradientStop Offset="1" Color="#FFCFD6E0" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="VerticalScrollbarArrowIdleStrokeBrush" StartPoint="0.375,0" EndPoint="0.625,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF788DA8" />
+            <GradientStop Offset="1" Color="#FFA7B3C1" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="VerticalScrollbarArrowHoverFillBrush" StartPoint="0.375,0" EndPoint="0.625,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.5" Color="#FFF2F5F7" />
+            <GradientStop Offset="1" Color="#FFDEE5EF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="VerticalScrollbarArrowHoverStrokeBrush" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0" Color="#FF5481BD" />
+            <GradientStop Offset="1" Color="#FF86A0BF" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End Vertical ScrollBar Brushes -->
+
+
+    <!-- Horizontal ScrollBar Brushes -->
+
+    <!-- End Horizontal ScrollBar Brushes -->
+
+
+    <!-- ScrollBar and ScrollViewer Brushes -->
+
+    <!-- End ScrollBar and ScrollViewer Brushes -->
+    
+    
+    <!-- Path Brushes -->
+
+    <SolidColorBrush x:Key="IconPathStrokeBrush">#FF7A9BCA</SolidColorBrush>
+
+    <LinearGradientBrush x:Key="IconPathFillBrush" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Color="#FFD0D8E3" Offset="0" />
+            <GradientStop Color="#FFF8F9FA" Offset="0.25" />
+            <GradientStop Color="#FFF8F9FA" Offset="0.5625" />
+            <GradientStop Color="#FFB7C5DA" Offset="1" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- End Path Brushes -->
+
+
+    <!-- Ribbon Brushes -->
+
+    <SolidColorBrush x:Key="PlexRibbonTextColorBrush">#FF73AEF0</SolidColorBrush>
+
+    <!-- End Ribbon Brushes-->
+
+
+</ResourceDictionary>

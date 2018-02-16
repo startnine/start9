@@ -7,40 +7,31 @@ using System.Text;
 
 namespace Start9.Api.Tools
 {
-    class SystemPowerTools
+    public class SystemPowerTools
     {
-        [DllImport("user32")]
-        static extern void LockWorkStation();
-
-        [DllImport("user32")]
-        static extern bool ExitWindowsEx(uint Flag, uint Reason);
-
-        [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        static extern bool SetSuspendState(bool hiberate, bool forceCritical, bool disableWakeEvent);
-
         public static void LockUserAccount()
         {
-            LockWorkStation();
+            WinApi.LockWorkStation();
         }
 
-        public static void SignOutUserAccount()
+        public static void SignOut()
         {
-            ExitWindowsEx(0, 0);
+            WinApi.ExitWindowsEx(WinApi.ExitWindowsAction.Force, 0);
         }
 
         public static void SleepSystem()
         {
-            SetSuspendState(false, true, true);
+            WinApi.SetSuspendState(false, true, true);
         }
 
         public static void ShutDownSystem()
         {
-            Process.Start("shutdown", "/s /t 0");
+			WinApi.ExitWindowsEx(WinApi.ExitWindowsAction.Shutdown, 0);
         }
 
-        public static void RestartSystem()
+		public static void RestartSystem()
         {
-            Process.Start("shutdown", "/r /t 0");
+			WinApi.ExitWindowsEx(WinApi.ExitWindowsAction.Reboot, 0);
         }
-    }
+	}
 }
