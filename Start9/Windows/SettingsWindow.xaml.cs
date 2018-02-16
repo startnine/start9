@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Start9.Api.Plex;
 using Start9.Api.Tools;
+using Start9.Pages;
 using System.Windows.Interop;
 using System;
 using System.Windows.Controls;
@@ -17,61 +18,32 @@ namespace Start9.Windows
             InitializeComponent();
             Resources["TestBitmapImage"] = Start9.Api.Tools.MiscTools.GetBitmapImageFromBitmapSource(Start9.Api.Tools.MiscTools.GetBitmapSourceFromSysDrawingBitmap(Start9.Api.Properties.Resources.FallbackImage));
             MainTools.SettingsWindow = this;
+            SettingsFrame.Navigate(new Home());
         }
 
-		void TitleBarCheckBox_Checked(object sender, RoutedEventArgs e)
-		{
-			ShowTitleBar = true;
-		}
-
-		void TitleBarCheckBox_Unchecked(object sender, RoutedEventArgs e)
-		{
-			ShowTitleBar = false;
-		}
-
-		void ToolBarCheckBox_Checked(object sender, RoutedEventArgs e)
-		{
-			ShowToolBar = true;
-		}
-
-		void ToolBarCheckBox_Unchecked(object sender, RoutedEventArgs e)
-		{
-			ShowToolBar = false;
-		}
-
-		void FooterCheckBox_Checked(object sender, RoutedEventArgs e)
-		{
-			ShowFooter = true;
-		}
-
-		void FooterCheckBox_Unchecked(object sender, RoutedEventArgs e)
-		{
-			ShowFooter = false;
-		}
-
-        private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
+		private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
         {
             //DwmTools.GetThumbnail(WinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, null, "Progman"), ShowThumbnailButton);
         }
 
-        private void ColouresButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            ResourceDictionary coloures = new ResourceDictionary();
+            SettingsFrame.NavigationService.GoBack();
+        }
 
-            if ((sender as System.Windows.Controls.Primitives.ToggleButton).IsChecked == true)
+        private void SettingsFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            /*if (SettingsFrame.CanGoBack)
             {
-                coloures.Source = new Uri("/Start9.Api;component/Themes/Colors/PlexGreen.xaml", UriKind.Relative);
+                BackButton.IsEnabled = true;
             }
             else
             {
-                coloures.Source = new Uri("/Start9.Api;component/Themes/Colors/PlexBlue.xaml", UriKind.Relative);
-            }
-
-            Resources.MergedDictionaries.Add(coloures);
-            //BodyBrush = (System.Windows.Media.Brush)(BodyRoot.Resources["DefaultWindowBodyBrush"]);
+                BackButton.IsEnabled = false;
+            }*/
         }
 
-        private void PlexTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
+        /*private void PlexTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
         {
             GoToPage(0, 0);
         }
@@ -123,6 +95,6 @@ namespace Start9.Windows
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             GoHome();
-        }
+        }*/
     }
 }

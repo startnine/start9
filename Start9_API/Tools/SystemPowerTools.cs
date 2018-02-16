@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Start9.Api.Tools
 {
-    class SystemPowerTools
+    public class SystemPowerTools
     {
         public static void LockUserAccount()
         {

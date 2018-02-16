@@ -8,7 +8,7 @@
                 xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
                 xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
                 mc:Ignorable="d"
-                Title="Start9 Settings" Height="510" Width="740"
+                Title="Start9 Settings" Height="510" Width="740" ShowToolBar="True"
                 ResizeMode="CanResize" Visibility="Visible"
                 TitleBarHeight="48">
     <plex:PlexWindow.Resources>
@@ -34,7 +34,7 @@
                     </LinearGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
-            <Button x:Name="BackButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3" Padding="-1,0,1,0" Style="{DynamicResource RoundButtonStyle}" Content="{DynamicResource SmallBackArrowPathIcon}" Click="BackButton_Click"/>
+            <Button x:Name="BackButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3" Padding="-1,0,1,0" Style="{DynamicResource RoundButtonStyle}" Content="{DynamicResource SmallBackArrowPathIcon}" Click="BackButton_Click" IsEnabled="{Binding CanGoBack, Source={x:Reference SettingsFrame}}"/>
         </Grid>
     </plex:PlexWindow.TitleBarContent>
     <plex:PlexWindow.ToolBarContent>
@@ -42,14 +42,24 @@
                  Style="{DynamicResource AddressBox}" />
     </plex:PlexWindow.ToolBarContent>
     <plex:PlexWindow.Content>
-        <Grid x:Name="Root" Margin="0,2,0,0">
+        <Grid Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Rectangle x:Name="SizingAid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="1" IsHitTestVisible="False"/>
+            <Frame x:Name="SettingsFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Visible" Navigated="SettingsFrame_Navigated" NavigationUIVisibility="Hidden">
+                <Frame.OpacityMask>
+                    <VisualBrush AlignmentX="Center" AlignmentY="Center">
+                        <VisualBrush.Visual>
+                            <Border Background="Black" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0,0,12,12" Width="{Binding ActualWidth, Source={x:Reference SizingAid}, FallbackValue=25}" Height="{Binding ActualHeight, Source={x:Reference SizingAid}, FallbackValue=25}"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Frame.OpacityMask>
+            </Frame>
+        </Grid>
+        <!--Grid x:Name="Root" Margin="0,2,0,0">
             <Grid x:Name="HomePage" Visibility="Visible">
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
                         <apictrl:CommandLinkButton x:Name="PlexTestCommandLinkButton" Height="192" Style="{DynamicResource IceIconCommandLinkButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Plex Styles Test" Click="PlexTestCommandLinkButton_Click">
                             <apictrl:CommandLinkButton.Icon>
-                                <!--Canvas Background="Red" Width="48" Height="48"/-->
-                                <!--Path Data="M 0 0 L 48 0 L 24 48 L 0 48 L 0 0" Style="{DynamicResource IconPathStyle}"/-->
                                 <Canvas>
                                     <Canvas.RenderTransform>
                                         <TranslateTransform X="-60" Y="-15"/>
@@ -75,8 +85,6 @@
                         </apictrl:CommandLinkButton>
                         <apictrl:CommandLinkButton x:Name="ModuleFrontEndTestCommandLinkButton" Height="192" Style="{DynamicResource IceIconCommandLinkButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Module Front End Test" Click="ModuleFrontEndTestCommandLinkButton_Click">
                             <apictrl:CommandLinkButton.Icon>
-                                <!--Canvas Background="Red" Width="48" Height="48"/-->
-                                <!--Path Data="M 0 0 L 48 0 L 24 48 L 0 48 L 0 0" Style="{DynamicResource IconPathStyle}"/-->
                                 <Canvas>
                                     <Canvas.RenderTransform>
                                         <TranslateTransform X="-52" Y="-130"/>
@@ -116,16 +124,7 @@
                                         <StackPanel Width="259" HorizontalAlignment="Left" VerticalAlignment="Stretch" Orientation="Vertical">
                                             <Button x:Name="ShowThumbnailButton" Width="86" Height="24" Content="This is a button"/>
                                             <ToggleButton x:Name="ColouresButton" Width="172" Height="36" Padding="5" Content="Release the  C O L O U R E S" Click="ColouresButton_Click"/>
-                                            <!--Grid Margin="5">
-                                        <apictrl:NineGridCanvas Width="{Binding Width, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, FallbackValue=10}" Height="{Binding Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, FallbackValue=10}" HorizontalAlignment="Center" VerticalAlignment="Center" SizingMargin="10" TargetWidth="{Binding Width, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, FallbackValue=10}" TargetHeight="{Binding Height, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, FallbackValue=10}" SizingImage="{DynamicResource TestBitmapImage}"/-->
-                                            <!--apictrl:NineGridCanvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SizingMargin="10">
-                                            <apictrl:NineGridCanvas.Background>
-                                                <BitmapImage UriSource="C:\Users\Splitwirez\Documents\TesstImage.png"/>
-                                            </apictrl:NineGridCanvas.Background>
-                                        </apictrl:NineGridCanvas>
-                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5">Medium Test Button</TextBlock>
-                                    </Grid>
-                                </Button-->
+                                            
                                             <ToggleButton Style="{DynamicResource PlexToolbarToggleButtonStyle}" Width="225" Height="36" Padding="5" Content="This ToggleButton has a Context Menu">
                                                 <ToggleButton.ContextMenu>
                                                     <ContextMenu Style="{DynamicResource {x:Type ContextMenu}}">
@@ -166,13 +165,11 @@
                                             <CheckBox VerticalAlignment="Top" Margin="10" />
                                             <CheckBox VerticalAlignment="Top" IsChecked="True" Margin="10" />
                                             <CheckBox VerticalAlignment="Top" IsThreeState="True" IsChecked="{x:Null}" Margin="10" />
-                                            <!--TextBox Width="350" VerticalAlignment="Center" Height="11" Text="Test Text Box" /-->
                                             <Canvas Width="350" Height="22" Background="Transparent" />
                                             <TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Test Text Box" />
                                             <Canvas Width="350" Height="22" Background="Transparent" />
                                             <TextBox Width="350" VerticalAlignment="Center" Height="44" Text="Test Text Box" />
-                                            <Canvas Width="350" Height="22" Background="Transparent" />
-                                            <!--TextBox Width="350" VerticalAlignment="Center" Height="88" Text="Test Text Box" /-->
+                                            <Canvas Width="350" Height="22" Background="Transparent" />\
                                             <Canvas Width="350" Height="22" Background="Transparent" />
                                             <TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Shiny Test Text Box"
                                          Style="{DynamicResource ShinyTextBox}" />
@@ -181,7 +178,6 @@
                                             <apictrl:ToggleSwitch IsThreeState="False" IsChecked="False"/>
                                             <TextBlock Margin="50,20,0,0">Three-State ToggleSwitch</TextBlock>
                                             <apictrl:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}"/>
-                                            <!--Style="{DynamicResource {x:Type apictrl:ToggleSwitch}}"-->
                                             <apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This is a Command Link Button." Icon="{DynamicResource LargeBackArrowPathIcon}">It has a title and a custom icon, and you can click it to make it do something. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton>
                                             <apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This Command Link Button is Disabled." IsEnabled="False">As a result , clicking it will have absolutely no effect at all. Coincidentally, it also uses the default icon. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton>
                                         </StackPanel>
@@ -195,7 +191,7 @@
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </Grid-->
     </plex:PlexWindow.Content>
     <plex:PlexWindow.FooterContent>
         <Grid x:Name="FooterRoot">
