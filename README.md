@@ -1,4 +1,4 @@
-# Start9
+# Start9 ![Start9](https://startnine.github.io/assets/img/iconsmol.png)
 Start9 is a WIP extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
 
 ## Planned Modules
