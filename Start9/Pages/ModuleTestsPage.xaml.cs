@@ -27,7 +27,7 @@ namespace Start9.Pages
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			var calculator = _calculators[Calculators.SelectedIndex is -1 ? 0 : Calculators.SelectedIndex].Activate<ICalculator>(AddInSecurityLevel.Internet);
+			var calculator = _calculators[Calculators.SelectedIndex is -1 ? 0 : Calculators.SelectedIndex].Activate<ICalculator>(new AddInProcess(), AddInSecurityLevel.Internet);
 
 			(double result, bool success) = AddInManager.RunCalculator(calculator, Calculation.Text);
 
