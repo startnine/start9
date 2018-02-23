@@ -1,12 +1,14 @@
-﻿namespace Start9
-{
-	//Can we obliterate this later
-	public static class Globals
-	{
-		//public static Taskbar Taskbar;
-		public static Windows.SettingsWindow SettingsWindow;
+﻿using Start9.Windows;
 
-		//public static ModuleManager ModuleManager;
-		//public static 
-	}
+namespace Start9
+{
+    //Can we obliterate this later
+    public static class Globals
+    {
+        //public static Taskbar Taskbar;
+        public static SettingsWindow SettingsWindow;
+
+        //public static ModuleManager ModuleManager;
+        //public static 
+    }
 }

@@ -1,32 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Start9.Api.Plex;
-using System.Windows.Controls.Primitives;
-using Start9.Api.Tools;
-using Start9.Api.Programs;
 using System.Diagnostics;
+using System.Timers;
+using System.Windows;
 using Start9.Api.Controls;
+using Start9.Api.Programs;
+using Start9.Api.Tools;
 
 namespace Start9.Windows
 {
     /// <summary>
-    /// Interaction logic for TaskbarStylesTest.xaml
+    ///     Interaction logic for TaskbarStylesTest.xaml
     /// </summary>
     public partial class TaskbarStylesTest : Window
     {
+        public Timer ClockTimer = new Timer(1);
         public List<string> RunningProcesses = new List<string>();
-
-        public System.Timers.Timer ClockTimer = new System.Timers.Timer(1);
 
         public TaskbarStylesTest()
         {
@@ -38,12 +27,10 @@ namespace Start9.Windows
 
             ClockTimer.Start();
 
-            ClockTimer.Elapsed += delegate
+            ClockTimer.Elapsed += (sender, args) => Dispatcher.Invoke(new Action(() =>
             {
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    var active = WinApi.GetForegroundWindow();
-                    /*foreach (TaskbarGroupStackPanel t in Taskband.Children)
+                var active = WinApi.GetForegroundWindow();
+                /*foreach (TaskbarGroupStackPanel t in Taskband.Children)
                         try
                         {
                             if (t.ForceCombine | (Config.GroupingMode == TaskbarGroupingMode.Combine))
@@ -70,8 +57,7 @@ namespace Start9.Windows
                         {
                             Debug.WriteLine(ex);
                         }*/
-                }));
-            };
+            }));
             ClockTimer.Start();
 
             InitialPopulateTaskbar();
@@ -96,39 +82,33 @@ namespace Start9.Windows
                 Taskband.Children.Add(programStackPanel);
             }
 
-            foreach (var wind in ProgramWindow.ProgramWindows) //ProgramWindow.UserPerceivedProgramWindows is broken or something, I think
-                foreach (TaskItemGroup t in Taskband.Children)
-                    try
-                    {
-                        if (wind.Process.MainModule.FileName == t.Tag.ToString())
-                            t.ProcessWindows.Add(wind);
-                    }
-                    catch
-                    {
-                    }
+            foreach (var wind in ProgramWindow.ProgramWindows
+            ) //ProgramWindow.UserPerceivedProgramWindows is broken or something, I think
+            foreach (TaskItemGroup t in Taskband.Children)
+                try
+                {
+                    if (wind.Process.MainModule.FileName == t.Tag.ToString())
+                        t.ProcessWindows.Add(wind);
+                }
+                catch
+                {
+                }
 
             foreach (TaskItemGroup t in Taskband.Children)
-            {
                 //if (Taskband.ActualWidth >= Width)
                 if (t.ProcessWindows.Count > 3)
-                {
                     t.CombineButtons = true;
-                }
-                //t.CreateButtons();
-            }
+            //t.CreateButtons();
         }
 
         private void TextClock_Loaded(object sender, RoutedEventArgs e)
         {
-            var clockTimer = new System.Timers.Timer(1);
-            clockTimer.Elapsed += delegate
-            {
-                Dispatcher.Invoke(new Action(() =>
+            var clockTimer = new Timer(1);
+            clockTimer.Elapsed += (o, args) => Dispatcher.Invoke(new Action(() =>
                 {
                     TextClock.Text = DateTime.Now.ToShortTimeString() + "\n" + DateTime.Now.ToShortDateString();
                 }
-                ));
-            };
+            ));
             clockTimer.Start();
         }
 
@@ -139,9 +119,12 @@ namespace Start9.Windows
             if (TrayFlyoutToggleButton.IsChecked == true)
             {
                 var nonScaledButtonPoint = TrayFlyoutToggleButton.PointToScreen(new Point(0, 0));
-                var buttonPoint = new Point(DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.X), DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.Y));
-                double targetLeftPos = (buttonPoint.X + (TrayFlyoutToggleButton.Width / 2)) - (TrayFlyout.ActualWidth / 2);
-                double targetTopPos = ((DpiManager.ConvertPixelsToWpfUnits(TaskbarRootGrid.PointToScreen(new Point(0, 0)).Y)) - 10) - TrayFlyout.ActualHeight;
+                var buttonPoint = new Point(DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.X),
+                    DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.Y));
+                var targetLeftPos = buttonPoint.X + TrayFlyoutToggleButton.Width / 2 - TrayFlyout.ActualWidth / 2;
+                var targetTopPos =
+                    DpiManager.ConvertPixelsToWpfUnits(TaskbarRootGrid.PointToScreen(new Point(0, 0)).Y) - 10 -
+                    TrayFlyout.ActualHeight;
                 TrayFlyout.Left = targetLeftPos;
                 TrayFlyout.Top = targetTopPos;
                 TrayFlyout.Show();

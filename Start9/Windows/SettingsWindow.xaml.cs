@@ -1,27 +1,27 @@
 ﻿using System.Windows;
+using System.Windows.Navigation;
 using Start9.Api.Plex;
 using Start9.Api.Tools;
 using Start9.Pages;
-using System.Windows.Interop;
-using System;
-using System.Windows.Controls;
 
 namespace Start9.Windows
 {
-	/// <summary>
-	///     Interaction logic for SettingsWindow.xaml
-	/// </summary>
-	public partial class SettingsWindow : PlexWindow
-	{
-		public SettingsWindow()
+    /// <summary>
+    ///     Interaction logic for SettingsWindow.xaml
+    /// </summary>
+    public partial class SettingsWindow : PlexWindow
+    {
+        public SettingsWindow()
         {
             InitializeComponent();
-            Resources["TestBitmapImage"] = Start9.Api.Tools.MiscTools.GetBitmapImageFromBitmapSource(Start9.Api.Tools.MiscTools.GetBitmapSourceFromSysDrawingBitmap(Start9.Api.Properties.Resources.FallbackImage));
+            Resources["TestBitmapImage"] =
+                MiscTools.GetBitmapImageFromBitmapSource(
+                    MiscTools.GetBitmapSourceFromSysDrawingBitmap(Api.Properties.Resources.FallbackImage));
             MainTools.SettingsWindow = this;
             SettingsFrame.Navigate(new Home());
         }
 
-		private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
+        private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
         {
             //DwmTools.GetThumbnail(WinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, null, "Progman"), ShowThumbnailButton);
         }
@@ -31,7 +31,7 @@ namespace Start9.Windows
             SettingsFrame.NavigationService.GoBack();
         }
 
-        private void SettingsFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private void SettingsFrame_Navigated(object sender, NavigationEventArgs e)
         {
             /*if (SettingsFrame.CanGoBack)
             {

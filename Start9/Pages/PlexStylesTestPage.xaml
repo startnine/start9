@@ -1,12 +1,12 @@
 ﻿<Page x:Class="Start9.Pages.PlexStylesTestPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Start9.Pages"
       xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
       xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="300" d:DesignWidth="300"
       Title="PlexStylesTestPage">
     <Page.Resources>
@@ -19,27 +19,30 @@
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
             <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
-                        Margin="0">
+                    Margin="0">
                 <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+                              VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
                     <Grid Height="768" Width="768">
-                        <StackPanel Width="259" HorizontalAlignment="Left" VerticalAlignment="Stretch" Orientation="Vertical">
-                            <Button x:Name="ShowThumbnailButton" Width="86" Height="24" Content="This is a button"/>
-                            <ToggleButton x:Name="ColouresButton" Width="172" Height="36" Padding="5" Content="Release the  C O L O U R E S" Click="ColouresButton_Click"/>
+                        <StackPanel Width="259" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                    Orientation="Vertical">
+                            <Button x:Name="ShowThumbnailButton" Width="86" Height="24" Content="This is a button" />
+                            <ToggleButton x:Name="ColouresButton" Width="172" Height="36" Padding="5"
+                                          Content="Release the  C O L O U R E S" Click="ColouresButton_Click" />
 
-                            <ToggleButton Style="{DynamicResource PlexToolbarToggleButtonStyle}" Width="225" Height="36" Padding="5" Content="This ToggleButton has a Context Menu">
+                            <ToggleButton Style="{DynamicResource PlexToolbarToggleButtonStyle}" Width="225"
+                                          Height="36" Padding="5" Content="This ToggleButton has a Context Menu">
                                 <ToggleButton.ContextMenu>
                                     <ContextMenu Style="{DynamicResource {x:Type ContextMenu}}">
-                                        <MenuItem Header="Item 1"/>
+                                        <MenuItem Header="Item 1" />
                                         <MenuItem Header="Item 2">
-                                            <MenuItem Header="Sub-item 1"/>
+                                            <MenuItem Header="Sub-item 1" />
                                             <MenuItem Header="Sub-item 2">
-                                                <MenuItem Header="Sub-sub-item 1"/>
-                                                <MenuItem Header="Sub-sub-item 2" IsEnabled="False"/>
+                                                <MenuItem Header="Sub-sub-item 1" />
+                                                <MenuItem Header="Sub-sub-item 2" IsEnabled="False" />
                                             </MenuItem>
-                                            <MenuItem Header="Sub-item 3" IsEnabled="False"/>
+                                            <MenuItem Header="Sub-item 3" IsEnabled="False" />
                                         </MenuItem>
-                                        <MenuItem Header="Item 3" IsEnabled="False"/>
+                                        <MenuItem Header="Item 3" IsEnabled="False" />
                                     </ContextMenu>
                                 </ToggleButton.ContextMenu>
                             </ToggleButton>
@@ -48,22 +51,23 @@
                             <StackPanel Width="192" Orientation="Vertical" Margin="20,0,0,0">
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox Checked="TitleBarCheckBox_Checked"
-                                                  Unchecked="TitleBarCheckBox_Unchecked" IsChecked="True" />
+                                              Unchecked="TitleBarCheckBox_Unchecked" IsChecked="True" />
                                     <Label Content="Show TitleBar" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox Checked="ToolBarCheckBox_Checked"
-                                                  Unchecked="ToolBarCheckBox_Unchecked" IsChecked="True" />
+                                              Unchecked="ToolBarCheckBox_Unchecked" IsChecked="True" />
                                     <Label Content="Show ToolBar" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox Checked="FooterCheckBox_Checked" Unchecked="FooterCheckBox_Unchecked"
-                                                  IsChecked="True" />
+                                              IsChecked="True" />
                                     <Label Content="Show Footer" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Width="384" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                        <StackPanel Orientation="Vertical" Width="384" HorizontalAlignment="Right"
+                                    VerticalAlignment="Stretch">
                             <CheckBox VerticalAlignment="Top" Margin="10" />
                             <CheckBox VerticalAlignment="Top" IsChecked="True" Margin="10" />
                             <CheckBox VerticalAlignment="Top" IsThreeState="True" IsChecked="{x:Null}" Margin="10" />
@@ -73,14 +77,22 @@
                             <TextBox Width="350" VerticalAlignment="Center" Height="44" Text="Test Text Box" />
                             <Canvas Width="350" Height="22" Background="Transparent" />
                             <Canvas Width="350" Height="22" Background="Transparent" />
-                            <TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Shiny Test Text Box" Style="{DynamicResource ShinyTextBox}" />
+                            <TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Shiny Test Text Box"
+                                     Style="{DynamicResource ShinyTextBox}" />
 
                             <TextBlock Margin="50,30,0,0">Two-State ToggleSwitch</TextBlock>
-                            <apictrl:ToggleSwitch IsThreeState="False" IsChecked="False"/>
+                            <apictrl:ToggleSwitch IsThreeState="False" IsChecked="False" />
                             <TextBlock Margin="50,20,0,0">Three-State ToggleSwitch</TextBlock>
-                            <apictrl:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}"/>
-                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This is a Command Link Button." Icon="{DynamicResource LargeBackArrowPathIcon}">It has a title and a custom icon, and you can click it to make it do something. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton>
-                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This Command Link Button is Disabled." IsEnabled="False">As a result , clicking it will have absolutely no effect at all. Coincidentally, it also uses the default icon. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton>
+                            <apictrl:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}" />
+                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch"
+                                                       Header="This is a Command Link Button."
+                                                       Icon="{DynamicResource LargeBackArrowPathIcon}">
+                                It has a title and a custom icon, and you can click it to make it do something. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.
+                            </apictrl:CommandLinkButton>
+                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch"
+                                                       Header="This Command Link Button is Disabled." IsEnabled="False">
+                                As a result , clicking it will have absolutely no effect at all. Coincidentally, it also uses the default icon. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.
+                            </apictrl:CommandLinkButton>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
