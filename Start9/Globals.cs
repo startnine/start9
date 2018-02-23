@@ -2,13 +2,13 @@
 
 namespace Start9
 {
-    //Can we obliterate this later
-    public static class Globals
-    {
-        //public static Taskbar Taskbar;
-        public static SettingsWindow SettingsWindow;
+	//Can we obliterate this later
+	public static class Globals
+	{
+		//public static Taskbar Taskbar;
+		public static SettingsWindow SettingsWindow;
 
-        //public static ModuleManager ModuleManager;
-        //public static 
-    }
+		//public static ModuleManager ModuleManager;
+		//public static 
+	}
 }
