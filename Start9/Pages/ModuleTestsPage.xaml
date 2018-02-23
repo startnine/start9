@@ -14,7 +14,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
-        <Button Width="500" Height="100" Click="TaskbarModule1Button_Click">Taskbar Module Test 1</Button>
-    </Grid>
+    <StackPanel>
+        <ListView Margin="5"  Name="Calculators" />
+        <TextBox Margin="5"  Name="Calculation" />
+        <Button Click="Button_Click">Calculate!</Button>
+    </StackPanel>
 </Page>
