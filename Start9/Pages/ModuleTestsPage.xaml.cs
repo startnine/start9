@@ -1,43 +1,67 @@
-﻿using System.AddIn.Hosting;
+﻿using System;
+using System.AddIn.Hosting;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Start9.Host.AddInView;
-using Start9.Windows;
 
 namespace Start9.Pages
 {
 	/// <summary>
-	///		Interaction logic for ModuleTestsPage.xaml
+	///     Interaction logic for ModuleTestsPage.xaml
 	/// </summary>
 	public partial class ModuleTestsPage : Page
 	{
+		private readonly Collection<AddInToken> _addins;
+
 		public ModuleTestsPage()
 		{
 			InitializeComponent();
 
-			foreach (AddInToken calculator in _calculators)
+			var (addins, warnings) = AddInManager.LoadAddins();
+
+			_addins = addins;
+
+			foreach (string warning in warnings)
 			{
-				Calculators.Items.Add(new ListViewItem { Content = calculator.Name });
+				MessageBox.Show(warning, "Add-in Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+			}
+
+			foreach (AddInToken addin in _addins)
+			{
+				Addins.Items.Add(new ListViewItem {Content = addin.Name});
 			}
 		}
 
-		private readonly Collection<AddInToken> _calculators = AddInManager.LoadAddins();
-
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			var calculator = _calculators[Calculators.SelectedIndex is -1 ? 0 : Calculators.SelectedIndex].Activate<ICalculator>(new AddInProcess(), AddInSecurityLevel.Internet);
+			var manager = _addins[Addins.SelectedIndex].Activate<LibraryManager>(new AddInProcess(), AddInSecurityLevel.FullTrust);
 
-			(double result, bool success) = AddInManager.RunCalculator(calculator, Calculation.Text);
+			IList<BookInfo> books = AddInManager.CreateBooks();
+			books.Add(manager.BestSeller);
+			manager.ProcessBooks(books);
+			foreach (BookInfo book in books)
+			{
+				var item = new ListViewItem {Content = $"{book.Title}: {book.Author}"};
+				item.MouseDoubleClick += (o, args) =>
+					MessageBox.Show(
+						$@"{book.Description}
+Genre: {book.Genre}
+Published on: {book.PublishDate}
+Price: ${book.Price}",
+						$"Info about {book.Title} by {book.Author}", MessageBoxButton.OK, MessageBoxImage.Information);
 
-			if (success)
-			{
-				MessageBox.Show($"The result is {result}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-			}
-			else
-			{
-				MessageBox.Show("Invalid calculation");
+				if (string.Equals(book.Id, manager.BestSeller.Id, StringComparison.Ordinal))
+				{
+					item.Resources.MergedDictionaries.Add(new ResourceDictionary
+					{
+						Source = new Uri("/Start9.Api;component/Themes/Colors/PlexGreen.xaml", UriKind.Relative)
+					});
+
+				}
+
+				Books.Items.Add(item);
 			}
 		}
 	}

@@ -15,8 +15,9 @@
         </ResourceDictionary>
     </Page.Resources>
     <StackPanel>
-        <ListView Margin="5"  Name="Calculators" />
-        <TextBox Margin="5"  Name="Calculation" />
-        <Button Click="Button_Click">Calculate!</Button>
+        <Label>Choose an add-in:</Label>
+        <ListView Margin="5" Name="Addins" />
+        <Button Click="Button_Click">Get books</Button>
+        <ListView Margin="5" Name="Books" />
     </StackPanel>
 </Page>

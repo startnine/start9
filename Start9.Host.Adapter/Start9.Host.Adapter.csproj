@@ -31,8 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Start9.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Start9.Api.Contracts.1.0.0-CI00011\lib\net40\Start9.Api.Contracts.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\Start9.Api.Contracts.1.0.0-CI00020\lib\net40\Start9.Api.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AddIn" />
