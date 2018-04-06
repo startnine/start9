@@ -4,13 +4,13 @@ Start9 is a WIP extensible, customizable shell supplement for Windows, one which
 ## Planned Modules
 *Start9 is planned with with 14 modules pre-installed, each module functioning like a familiar user interface.*:
 ### Start Menus / Screens
-- Windows 8.1 (build 9600)  
-- Windows 10 (build 9795)  
-- Windows 10 (build 9879)  
-- Windows 10 (build 9926)  
-- Windows 10 (build 10240)  
-- Windows 10 (build 14393)  
-- Windows 10 (build 15063)  
+- Windows 8.1 (9600)  
+- Windows 10 (9795)  
+- Windows 10 (9879)  
+- Windows 10 (9926)  
+- Windows 10 (10240)  
+- Windows 10 (14393)  
+- Windows 10 (15063)  
 
 ### Taskbars
 - Windows XP (2600)  
