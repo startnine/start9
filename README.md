@@ -13,8 +13,8 @@ Start9 is a WIP extensible, customizable shell supplement for Windows, one which
 - Windows 10 (build 15063)  
 
 ### Taskbars
-- Windows XP (3790)  
-- windows Vista (6000)  
+- Windows XP (2600)  
+- Windows Vista (6000)  
 - Windows 7 (7601)  
 - macOS Dock
 
