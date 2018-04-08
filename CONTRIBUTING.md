@@ -8,7 +8,8 @@ We use GitHub issue tracking to manage problems and suggestions with Start9. If 
 ![A screenshot of a mouse pointer hovering over the link for the GitHub issues page.](https://i.imgur.com/xfGsft6.png)
 
 ### Security Issue 
-Please contact **rob55rod/Splitwirez** as soon as possible with information on how to reproduce the problem. He can be found on Discord or GitHub.
+- **Do not report the issue using GitHub**
+- Contact a Core Developer privately on [Discord](https://discord.gg/6cpvxBS) in a [responsible manner](https://en.wikipedia.org/wiki/Responsible_disclosure).
 
 ### Non-security related isuse 
 1. Please check if the issue has been already posted on the issues page 
