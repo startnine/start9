@@ -11,11 +11,6 @@ Start9 is a WIP extensible, customizable shell supplement for Windows, one which
 - Superbar
 - macOS Dock
 
-### Misc.
-- Windows Longhorn (build 4074) Sidebar  
-- Windows 10 (build 9888) Notification Center  
-- Windows 10 (build 10240) Notification Center  
-
 <!-- ## Compatability
 *As Start9 is still in the early stages of development, compatibility isn't a big concern right now*
 *Ranking: Excellent, Good, Satisfactory, Needs Improvement, Broken*
