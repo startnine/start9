@@ -2,7 +2,7 @@
 Start9 is a WIP extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
 
 ## Planned Modules
-*Start9 is planned with with 7 modules pre-installed, each module functioning like a familiar user interface.*:
+*Start9 is planned with with 7 modules bundled, with more in the Module Marketplace. The default modules list includes*:
 - Classic Start Menu
 - Windows XP Start Menu 
 - Windows 7 Start Menu
