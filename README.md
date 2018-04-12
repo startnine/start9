@@ -26,6 +26,7 @@ Start9 is a WIP extensible, customizable shell supplement for Windows, one which
 | ReactOS       | Broken        |  Crashes silently on startup|
 -->
 
+---
 # Start9.Host
 A beautiful and simple front-end for managing Start9 modules.
 
