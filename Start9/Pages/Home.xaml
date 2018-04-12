@@ -93,6 +93,10 @@
                     </apictrl:CommandLinkButton.Icon>
                     View and test various Front-end experiments for potential Modules (TEMPORARY)
                 </apictrl:CommandLinkButton>
+                <!--apictrl:CommandLinkButton x:Name="MarketTestCommandLinkButton" Height="192"
+                                           Style="{DynamicResource IceIconCommandLinkButtonStyle}"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                           Header="Market Front-End Test" Click="MarketTestCommandLinkButton_Click"/-->
             </StackPanel>
         </ScrollViewer>
     </Page.Content>

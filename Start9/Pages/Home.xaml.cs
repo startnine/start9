@@ -22,5 +22,10 @@ namespace Start9.Pages
 		{
 			NavigationService.Navigate(new ModuleTestsPage());
 		}
-	}
+
+        private void MarketTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new MarketplaceTestPage());
+        }
+    }
 }

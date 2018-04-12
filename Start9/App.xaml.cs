@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Automation;
-using Start9.Api.Modules;
+//using Start9.Api.Modules; //Why did this break
 using Start9.Windows;
 
 namespace Start9
@@ -13,9 +13,9 @@ namespace Start9
 		public App()
 		{
 			Globals.SettingsWindow = new SettingsWindow();
-			Module.Poke();
+            //Module.Poke(); //Why did this also break
 
-			Exit += (sender, args) => { Automation.RemoveAllEventHandlers(); };
+            Exit += (sender, args) => { Automation.RemoveAllEventHandlers(); };
 		}
 	}
 
