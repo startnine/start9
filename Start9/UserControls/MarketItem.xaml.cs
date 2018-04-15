@@ -97,12 +97,12 @@ namespace Start9.UserControls
             Perspective.BeginAnimation(Planerator.RotationYProperty, resetRotationAnim);
         }
 
-        private void MarketItem_Loaded(object sender, RoutedEventArgs e)
+        private void MarketItem_Loaded(Object sender, RoutedEventArgs e)
         {
             SetBorder();
         }
 
-        private void MarketItem_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void MarketItem_SizeChanged(Object sender, SizeChangedEventArgs e)
         {
             SetBorder();
         }
@@ -115,8 +115,8 @@ namespace Start9.UserControls
 
         public void SetBorder()
         {
-            double width = this.ActualWidth - (24);
-            double height = this.ActualHeight - (24);
+            Double width = this.ActualWidth - (24);
+            Double height = this.ActualHeight - (24);
 
             PathSegmentCollection pathSegments = new PathSegmentCollection()
             {
@@ -197,7 +197,7 @@ namespace Start9.UserControls
             };
         }
 
-        private void MarketItem_MouseEnter(object sender, MouseEventArgs e)
+        private void MarketItem_MouseEnter(Object sender, MouseEventArgs e)
         {
             var point = GetPerspectiveRotation();
             DoubleAnimation xRotationAnim = new DoubleAnimation()
@@ -222,19 +222,19 @@ namespace Start9.UserControls
             Perspective.BeginAnimation(Planerator.RotationYProperty, yRotationAnim);
         }
 
-        private void MarketItem_MouseLeave(object sender, MouseEventArgs e)
+        private void MarketItem_MouseLeave(Object sender, MouseEventArgs e)
         {
             RotateTimer.Stop();
             ResetPerspective();
         }
 
-        private void MarketItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void MarketItem_MouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
         {
             Scaler.BeginAnimation(ScaleTransform.ScaleXProperty, scaleDownAnim);
             Scaler.BeginAnimation(ScaleTransform.ScaleYProperty, scaleDownAnim);
         }
 
-        private void MarketItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void MarketItem_MouseLeftButtonUp(Object sender, MouseButtonEventArgs e)
         {
             Scaler.BeginAnimation(ScaleTransform.ScaleXProperty, scaleUpAnim);
             Scaler.BeginAnimation(ScaleTransform.ScaleYProperty, scaleUpAnim);

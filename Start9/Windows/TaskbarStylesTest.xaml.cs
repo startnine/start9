@@ -15,7 +15,7 @@ namespace Start9.Windows
 	public partial class TaskbarStylesTest : Window
 	{
 		public Timer ClockTimer = new Timer(1);
-		public List<string> RunningProcesses = new List<string>();
+		public List<String> RunningProcesses = new List<String>();
 
 		public TaskbarStylesTest()
 		{
@@ -78,7 +78,7 @@ namespace Start9.Windows
 				}
 			}
 
-			foreach (string s in RunningProcesses)
+			foreach (String s in RunningProcesses)
 			{
 				var programStackPanel = new TaskItemGroup(s);
 				Taskband.Children.Add(programStackPanel);
@@ -108,7 +108,7 @@ namespace Start9.Windows
 			//t.CreateButtons();
 		}
 
-		private void TextClock_Loaded(object sender, RoutedEventArgs e)
+		private void TextClock_Loaded(Object sender, RoutedEventArgs e)
 		{
 			var clockTimer = new Timer(1);
 			clockTimer.Elapsed += (o, args) => Dispatcher.Invoke(new Action(
@@ -117,7 +117,7 @@ namespace Start9.Windows
 			clockTimer.Start();
 		}
 
-		private void TrayFlyoutToggleButton_Click(object sender, RoutedEventArgs e)
+		private void TrayFlyoutToggleButton_Click(Object sender, RoutedEventArgs e)
 		{
 			//var targetToggleButton = sender as ToggleButton;
 			//var targetWindow = targetToggleButton.Tag as PlexWindow;
@@ -126,8 +126,8 @@ namespace Start9.Windows
 				Point nonScaledButtonPoint = TrayFlyoutToggleButton.PointToScreen(new Point(0, 0));
 				var buttonPoint = new Point(DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.X),
 					DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.Y));
-				double targetLeftPos = buttonPoint.X + TrayFlyoutToggleButton.Width / 2 - TrayFlyout.ActualWidth / 2;
-				double targetTopPos =
+                Double targetLeftPos = buttonPoint.X + TrayFlyoutToggleButton.Width / 2 - TrayFlyout.ActualWidth / 2;
+                Double targetTopPos =
 					DpiManager.ConvertPixelsToWpfUnits(TaskbarRootGrid.PointToScreen(new Point(0, 0)).Y) - 10 -
 					TrayFlyout.ActualHeight;
 				TrayFlyout.Left = targetLeftPos;
@@ -143,13 +143,13 @@ namespace Start9.Windows
 			}
 		}
 
-		private void TrayFlyout_Deactivated(object sender, EventArgs e)
+		private void TrayFlyout_Deactivated(Object sender, EventArgs e)
 		{
 			TrayFlyout.Hide();
 			TrayFlyoutToggleButton.IsChecked = false;
 		}
 
-		private void TrayFlyout_Loaded(object sender, RoutedEventArgs e)
+		private void TrayFlyout_Loaded(Object sender, RoutedEventArgs e)
 		{
 			TrayFlyout.Resources.Add(Resources["TrayIconButton"], Resources["TrayIconButton"]);
 		}

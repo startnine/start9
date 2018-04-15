@@ -19,7 +19,7 @@ namespace Start9.Pages
 			ParentWindow = Window.GetWindow(this) as PlexWindow;
 		}
 
-		private void TitleBarCheckBox_Checked(object sender, RoutedEventArgs e)
+		private void TitleBarCheckBox_Checked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -30,7 +30,7 @@ namespace Start9.Pages
 			}
 		}
 
-		private void TitleBarCheckBox_Unchecked(object sender, RoutedEventArgs e)
+		private void TitleBarCheckBox_Unchecked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -41,7 +41,7 @@ namespace Start9.Pages
 			}
 		}
 
-		private void ToolBarCheckBox_Checked(object sender, RoutedEventArgs e)
+		private void ToolBarCheckBox_Checked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -52,7 +52,7 @@ namespace Start9.Pages
 			}
 		}
 
-		private void ToolBarCheckBox_Unchecked(object sender, RoutedEventArgs e)
+		private void ToolBarCheckBox_Unchecked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -63,7 +63,7 @@ namespace Start9.Pages
 			}
 		}
 
-		private void FooterCheckBox_Checked(object sender, RoutedEventArgs e)
+		private void FooterCheckBox_Checked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -74,7 +74,7 @@ namespace Start9.Pages
 			}
 		}
 
-		private void FooterCheckBox_Unchecked(object sender, RoutedEventArgs e)
+		private void FooterCheckBox_Unchecked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
@@ -85,7 +85,7 @@ namespace Start9.Pages
 			}
 		}
 
-		private void ColouresButton_Click(object sender, RoutedEventArgs e)
+		private void ColouresButton_Click(Object sender, RoutedEventArgs e)
 		{
 			var coloures = new ResourceDictionary();
 

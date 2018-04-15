@@ -27,12 +27,12 @@ namespace Start9.Windows
             MarketFrame.Navigate(new MarketplaceTestPage());
 		}
 
-		private void ShowThumbnailButton_Click(object sender, RoutedEventArgs e)
+		private void ShowThumbnailButton_Click(Object sender, RoutedEventArgs e)
 		{
 			//DwmTools.GetThumbnail(WinApi.FindWindowEx(IntPtr.Zero, IntPtr.Zero, null, "Progman"), ShowThumbnailButton);
 		}
 
-		private void BackButton_Click(object sender, RoutedEventArgs e)
+		private void BackButton_Click(Object sender, RoutedEventArgs e)
 		{
             if (SettingsGrid.IsVisible)
             {
@@ -44,7 +44,7 @@ namespace Start9.Windows
             }
 		}
 
-		private void SettingsFrame_Navigated(object sender, NavigationEventArgs e)
+		private void SettingsFrame_Navigated(Object sender, NavigationEventArgs e)
 		{
 			/*if (SettingsFrame.CanGoBack)
 			{
@@ -56,7 +56,7 @@ namespace Start9.Windows
 			}*/
 		}
 
-        private void MarketFrame_Navigated(object sender, NavigationEventArgs e)
+        private void MarketFrame_Navigated(Object sender, NavigationEventArgs e)
         {
 
         }
@@ -68,7 +68,7 @@ namespace Start9.Windows
 
         Duration gridAnimTime = TimeSpan.FromMilliseconds(400);
 
-        public void AnimateGrid(Grid grid, bool goRight, bool hide)
+        public void AnimateGrid(Grid grid, Boolean goRight, Boolean hide)
         {
             DoubleAnimation opacityAnim = new DoubleAnimation()
             {
@@ -117,11 +117,11 @@ namespace Start9.Windows
             (grid.RenderTransform as TranslateTransform).BeginAnimation(TranslateTransform.XProperty, animation);
         }
 
-        private void ToolbarHeader_Click(object sender, RoutedEventArgs e)
+        private void ToolbarHeader_Click(Object sender, RoutedEventArgs e)
         {
-            bool goingRight = false;
+            Boolean goingRight = false;
 
-            int prevIndex = 0;
+            Int32 prevIndex = 0;
 
             foreach (Grid g in RootGrid.Children)
             {
@@ -133,7 +133,7 @@ namespace Start9.Windows
 
             var source = (sender as ToggleButton);
 
-            int index = ToolbarGrid.Children.IndexOf(source);
+            Int32 index = ToolbarGrid.Children.IndexOf(source);
 
             if (index > prevIndex)
             {

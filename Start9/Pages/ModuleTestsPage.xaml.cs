@@ -1,10 +1,13 @@
-﻿using System;
+﻿//using Start9.Host.View;
+using Start9.Host.View;
+using System;
 using System.AddIn.Hosting;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
-using Start9.Host.AddInView;
 
 namespace Start9.Pages
 {
@@ -13,56 +16,40 @@ namespace Start9.Pages
 	/// </summary>
 	public partial class ModuleTestsPage : Page
 	{
-		private readonly Collection<AddInToken> _addins;
+        Collection<AddInToken> _addins;
 
-		public ModuleTestsPage()
+        public ModuleTestsPage()
 		{
 			InitializeComponent();
 
-			var (addins, warnings) = AddInManager.LoadAddins();
+            var addInRoot = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
 
-			_addins = addins;
+            // Update the cache files of the pipeline segments and add-ins.
+            var warnings = AddInStore.Update(addInRoot);
+            foreach (String warning in warnings)
+            {
+                MessageBox.Show(warning);
+            }
 
-			foreach (string warning in warnings)
-			{
-				MessageBox.Show(warning, "Add-in Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-			}
+            // Search for add-ins of type ICalculator (the host view of the add-in).
+            _addins = AddInStore.FindAddIns(typeof(ICalculator), addInRoot);
 
-			foreach (AddInToken addin in _addins)
-			{
-				Addins.Items.Add(new ListViewItem {Content = addin.Name});
-			}
-		}
+            foreach(var token in _addins)
+            {
+                Addins.Items.Add(token.Name);
+            }
+        
+        }
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(Object sender, RoutedEventArgs e)
 		{
-			var manager = _addins[Addins.SelectedIndex].Activate<LibraryManager>(new AddInProcess(), AddInSecurityLevel.FullTrust);
 
-			IList<BookInfo> books = AddInManager.CreateBooks();
-			books.Add(manager.BestSeller);
-			manager.ProcessBooks(books);
-			foreach (BookInfo book in books)
-			{
-				var item = new ListViewItem {Content = $"{book.Title}: {book.Author}"};
-				item.MouseDoubleClick += (o, args) =>
-					MessageBox.Show(
-						$@"{book.Description}
-Genre: {book.Genre}
-Published on: {book.PublishDate}
-Price: ${book.Price}",
-						$"Info about {book.Title} by {book.Author}", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Activate the selected AddInToken in a new application domain 
+            // with the Internet trust level.
+            ICalculator calc = _addins[Addins.SelectedIndex].Activate<ICalculator>(AddInSecurityLevel.Internet);
 
-				if (string.Equals(book.Id, manager.BestSeller.Id, StringComparison.Ordinal))
-				{
-					item.Resources.MergedDictionaries.Add(new ResourceDictionary
-					{
-						Source = new Uri("/Start9.Api;component/Themes/Colors/PlexGreen.xaml", UriKind.Relative)
-					});
+            MessageBox.Show(calc.Add(2, 2).ToString());
 
-				}
-
-				Books.Items.Add(item);
-			}
-		}
-	}
+        }
+    }
 }

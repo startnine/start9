@@ -51,13 +51,13 @@ namespace Start9
 			ProgressIdekAnymore
 		}
 
-		public const int SwShownormal = 1;
-		public const int SwShowminimized = 2;
-		public const int SwShowmaximized = 3;
+		public const System.Int32 SwShownormal = 1;
+		public const System.Int32 SwShowminimized = 2;
+		public const System.Int32 SwShowmaximized = 3;
 
-		public const int GwlStyle = -16;
-		public const int GwlExstyle = -20;
-		public const int Taskstyle = 0x10000000 | 0x00800000;
-		public const int WsExToolwindow = 0x00000080;
+		public const System.Int32 GwlStyle = -16;
+		public const System.Int32 GwlExstyle = -20;
+		public const System.Int32 Taskstyle = 0x10000000 | 0x00800000;
+		public const System.Int32 WsExToolwindow = 0x00000080;
 	}
 }

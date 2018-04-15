@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D63E78E4-93DD-4851-BCF8-2EB12CEA9654}</ProjectGuid>
+    <ProjectGuid>{C62A9FE0-428A-481F-B6A6-54AD7B9CE6E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Start9.Host.Adapter</RootNamespace>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(userprofile)\AppData\Roaming\Start9\HostSideAdapters\</OutputPath>
+    <OutputPath>$(AppData)\Start9\Pipeline\HostSideAdapters</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Start9.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Start9.Api.Contracts.1.0.0-CI00020\lib\net40\Start9.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Start9.Api.Contracts.1.0.0-CI00047\lib\net40\Start9.Api.Contracts.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AddIn" />
@@ -48,9 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Start9.Host.AddInView\Start9.Host.AddInView.csproj">
-      <Project>{d0c85602-1547-41ba-aecd-ab320569b521}</Project>
-      <Name>Start9.Host.AddInView</Name>
+    <ProjectReference Include="..\Start9.Host.View\Start9.Host.View.csproj">
+      <Project>{a18bf5be-8790-41ff-b639-fc0ae050f0ad}</Project>
+      <Name>Start9.Host.View</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D0C85602-1547-41BA-AECD-AB320569B521}</ProjectGuid>
+    <ProjectGuid>{A18BF5BE-8790-41FF-B639-FC0AE050F0AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Start9.Host.AddInView</RootNamespace>
-    <AssemblyName>Start9.Host.AddInView</AssemblyName>
+    <RootNamespace>Start9.Host.View</RootNamespace>
+    <AssemblyName>Start9.Host.View</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(userprofile)\AppData\Roaming\Start9\AddInViews\</OutputPath>
+    <OutputPath>$(AppData)\Start9\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

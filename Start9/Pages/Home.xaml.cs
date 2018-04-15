@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Printing;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Start9.Pages
@@ -13,17 +14,17 @@ namespace Start9.Pages
 			InitializeComponent();
 		}
 
-		private void PlexTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
+		private void PlexTestCommandLinkButton_Click(System.Object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new PlexStylesTestPage());
-		}
+        }
 
-		private void ModuleFrontEndTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
+        private void ModuleFrontEndTestCommandLinkButton_Click(System.Object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new ModuleTestsPage());
 		}
 
-        private void MarketTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
+        private void MarketTestCommandLinkButton_Click(System.Object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new MarketplaceTestPage());
         }
