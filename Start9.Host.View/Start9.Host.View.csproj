@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IHost.cs" />
     <Compile Include="IConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>

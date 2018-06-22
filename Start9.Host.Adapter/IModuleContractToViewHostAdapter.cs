@@ -20,6 +20,19 @@ namespace Start9.Host.Adapter
             _handle = new ContractHandle(contract);
         }
 
+        public IConfiguration Configuration
+        {
+            get
+            {
+                return IConfigurationHostAdapter.ContractToViewAdapter(_contract.Configuration);
+            }
+        }
+
+        public void HostReceived(IHost host)
+        {
+            _contract.HostReceived(IHostHostAdapter.ViewToContractAdapter(host));
+        }
+
         public IMessage SendMessage(IMessage message) => IMessageHostAdapter.ContractToViewAdapter(_contract.SendMessage(IMessageHostAdapter.ViewToContractAdapter(message)));
 
         internal IModuleContract GetSourceContract() => _contract;

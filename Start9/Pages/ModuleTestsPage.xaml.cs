@@ -15,7 +15,7 @@ namespace Start9.Pages
 	/// </summary>
 	public partial class ModuleTestsPage : Page
 	{
-        List<IModule> ModuleRefs = new List<IModule>();
+        Dictionary<AddInToken, IModule> ModuleRefs = new Dictionary<AddInToken, IModule>();
         public ModuleTestsPage()
 		{
 			InitializeComponent();
@@ -33,7 +33,14 @@ namespace Start9.Pages
 
         private void Button_Click(Object sender, RoutedEventArgs e)
 		{
-            ModuleRefs.Add(((AddInToken)Modules.SelectedItem).Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust));
+            var module = ((AddInToken)Modules.SelectedItem).Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust);
+            module.HostReceived(new Start9Host());
+            ModuleRefs.Add(((AddInToken)Modules.SelectedItem), module);
+        }
+
+        private void Button_Click_1(Object sender, RoutedEventArgs e)
+        {
+            ModuleRefs[((AddInToken)Modules.SelectedItem)].SendMessage(new Message(MessageText.Text));
         }
     }
 }
