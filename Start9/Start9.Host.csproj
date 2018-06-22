@@ -27,7 +27,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>$(AppData)\Start9\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -186,9 +186,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Start9.Host.View\Start9.Host.View.csproj">
-      <Project>{a18bf5be-8790-41ff-b639-fc0ae050f0ad}</Project>
+      <Project>{7BC86905-7687-425D-B288-6ABEB016302A}</Project>
       <Name>Start9.Host.View</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
