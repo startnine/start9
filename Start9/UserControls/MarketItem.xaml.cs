@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 //using System.Timers;
 using Timer = System.Windows.Forms.Timer;
+using Start9.Api;
 using Start9.Api.Tools;
 using Start9.Api.Controls;
 using System.Diagnostics;
@@ -85,10 +86,10 @@ namespace Start9.UserControls
 
         public Point GetPerspectiveRotation()
         {
-            Point point = new Point(MainTools.GetDpiScaledGlobalControlPosition(Perspective).X, MainTools.GetDpiScaledGlobalControlPosition(Perspective).Y);
+            Point point = new Point(0,0);
+            Perspective.PointToScreenInWpfUnits(point);//).X, MainTools.GetDpiScaledGlobalControlPosition(Perspective).Y);
             Point center = new Point(point.X + (Perspective.ActualWidth / 2), point.Y + (Perspective.ActualHeight / 2));
-            Point cursor = new Point(MainTools.GetDpiScaledCursorPosition().X, MainTools.GetDpiScaledCursorPosition().Y);
-            return new Point((cursor.Y - center.Y) / -4, (cursor.X - center.X) / -4);
+            return new Point((SystemScaling.CursorPosition.Y - center.Y) / -4, (SystemScaling.CursorPosition.X - center.X) / -4);
         }
 
         private void ResetPerspective()
