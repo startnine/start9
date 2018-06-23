@@ -25,5 +25,10 @@
             </ListView.ItemTemplate>
         </ListView>
         <Button Click="Button_Click">Launch Module</Button>
+        <Separator Margin="0,10,0,10"/>
+
+        <Label>Message Content</Label>
+        <TextBox x:Name="MessageText" Margin="5"/>
+        <Button Click="Button_Click_1">Send Message</Button>
     </StackPanel>
 </Page>
