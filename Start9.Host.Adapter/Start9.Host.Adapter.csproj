@@ -37,7 +37,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(AppData)\Start9\Pipeline\HostSideAdapters\</OutputPath>
+    <OutputPath>$(AppData)\Start9\Pipeline\HostSideAdapters</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,7 +46,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(AppData)\Start9\Pipeline\HostSideAdapters\</OutputPath>
+    <OutputPath>$(AppData)\Start9\Pipeline\HostSideAdapters</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -60,9 +60,10 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Start9.Api.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Start9.Api.Contracts.1.0.0-CI00100\lib\net40\Start9.Api.Contracts.dll</HintPath>
+      <HintPath>..\packages\Start9.Api.Contracts.1.0.0-CI00109\lib\net40\Start9.Api.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="System.AddIn" />
+    <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.AddIn, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.AddIn.Contract, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.AddIn.Contract\2.0.0.0__b03f5f7f11d50a3a\System.AddIn.Contract.dll</HintPath>
@@ -91,34 +92,100 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IHostContractToViewHostAdapter.cs" />
-    <Compile Include="IConfigurationContractToViewHostAdapter.cs">
+    <Compile Include="Generated Files\IConfigurationContractToViewHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IHostHostAdapter.cs" />
-    <Compile Include="IConfigurationHostAdapter.cs">
+    <Compile Include="Generated Files\IConfigurationEntryContractToViewHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IHostViewToContractHostAdapter.cs" />
-    <Compile Include="IConfigurationViewToContractHostAdapter.cs">
+    <Compile Include="Generated Files\IConfigurationEntryHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMessageContractToViewHostAdapter.cs">
+    <Compile Include="Generated Files\IConfigurationEntryViewToContractHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMessageHostAdapter.cs">
+    <Compile Include="Generated Files\IConfigurationHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMessageViewToContractHostAdapter.cs">
+    <Compile Include="Generated Files\IConfigurationViewToContractHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IModuleContractToViewHostAdapter.cs">
+    <Compile Include="Generated Files\IHostContractToViewHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IModuleHostAdapter.cs">
+    <Compile Include="Generated Files\IHostHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IModuleViewToContractHostAdapter.cs">
+    <Compile Include="Generated Files\IHostViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageContractContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageContractViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageEntryContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageEntryHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageEntryViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageEventHandlerContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageEventHandlerViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IModuleContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IModuleHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IModuleViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverContractContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverContractViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverEntryContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverEntryHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverEntryViewToContractHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\MessageReceivedEventArgsContractToViewHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\MessageReceivedEventArgsHostAdapter.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\MessageReceivedEventArgsViewToContractHostAdapter.g.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

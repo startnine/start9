@@ -1,6 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.AddIn.Hosting;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Automation;
-//using Start9.Api.Modules; //Why did this break
+using Start9.Host.Views;
 using Start9.Windows;
 
 namespace Start9
@@ -12,12 +18,19 @@ namespace Start9
 	{
 		public App()
 		{
-			Globals.SettingsWindow = new SettingsWindow();
-            //Module.Poke(); //Why did this also break
+			new SettingsWindow().Show();
 
-            Exit += (sender, args) => { Automation.RemoveAllEventHandlers(); };
-		}
-	}
+            Exit += (sender, e) => { Automation.RemoveAllEventHandlers(); };
+        
+            var warnings = AddInStore.Update(Module.AddInPipelineRoot);
+            foreach (var warning in warnings)
+            {
+                MessageBox.Show(warning);
+            }
+
+            Module.Modules = new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), Module.AddInPipelineRoot).Select(t => new Module(t)));
+        }
+    }
 
 	public static class TaskbarTools
 	{

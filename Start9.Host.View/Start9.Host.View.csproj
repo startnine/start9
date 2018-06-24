@@ -59,6 +59,8 @@
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.AddIn, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -75,14 +77,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IHost.cs" />
-    <Compile Include="IConfiguration.cs">
+    <Compile Include="Generated Files\IConfiguration.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMessage.cs">
+    <Compile Include="Generated Files\IConfigurationEntry.g.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IModule.cs">
+    <Compile Include="Generated Files\IHost.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessage.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageContract.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IMessageEntry.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IModule.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverContract.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\IReceiverEntry.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated Files\MessageReceivedEventArgs.g.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
