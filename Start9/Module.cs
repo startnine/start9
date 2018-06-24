@@ -13,12 +13,7 @@ namespace Start9
 {
     class Module
     {
-        static Lazy<ObservableCollection<Module>> LazyModules { get; } = 
-            new Lazy<ObservableCollection<Module>>(
-                   () => new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t))), 
-                   true);
-
-        public static ObservableCollection<Module> Modules => LazyModules.Value;
+        public static ObservableCollection<Module> Modules => new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t));
 
         public static String AddInPipelineRoot { get; } = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
 
