@@ -13,7 +13,7 @@ namespace Start9
 {
     class Module
     {
-        public static ObservableCollection<Module> Modules => new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t));
+        public static ObservableCollection<Module> Modules => new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t)));
 
         public static String AddInPipelineRoot { get; } = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
 
