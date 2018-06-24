@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
 using System.Windows;
+using Start9.Api;
 using Start9.Api.Controls;
 using Start9.Api.Programs;
 using Start9.Api.Tools;
+using static Start9.Api.SystemScaling;
 
 namespace Start9.Windows
 {
@@ -124,11 +126,11 @@ namespace Start9.Windows
 			if (TrayFlyoutToggleButton.IsChecked == true)
 			{
 				Point nonScaledButtonPoint = TrayFlyoutToggleButton.PointToScreen(new Point(0, 0));
-				var buttonPoint = new Point(DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.X),
-					DpiManager.ConvertPixelsToWpfUnits(nonScaledButtonPoint.Y));
+				var buttonPoint = new Point(RealPixelsToWpfUnits(nonScaledButtonPoint.X),
+					RealPixelsToWpfUnits(nonScaledButtonPoint.Y));
                 Double targetLeftPos = buttonPoint.X + TrayFlyoutToggleButton.Width / 2 - TrayFlyout.ActualWidth / 2;
                 Double targetTopPos =
-					DpiManager.ConvertPixelsToWpfUnits(TaskbarRootGrid.PointToScreen(new Point(0, 0)).Y) - 10 -
+					RealPixelsToWpfUnits(TaskbarRootGrid.PointToScreen(new Point(0, 0)).Y) - 10 -
 					TrayFlyout.ActualHeight;
 				TrayFlyout.Left = targetLeftPos;
 				TrayFlyout.Top = targetTopPos;
