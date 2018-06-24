@@ -6,13 +6,20 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Start9
 {
     class Module
     {
-        public static ObservableCollection<Module> Modules { get; set; }
+        static Lazy<ObservableCollection<Module>> LazyModules { get; } = 
+            new Lazy<ObservableCollection<Module>>(
+                   () => new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t))), 
+                   true);
+
+        public static ObservableCollection<Module> Modules => LazyModules.Value;
+
         public static String AddInPipelineRoot { get; } = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
 
         public Module(AddInToken token)

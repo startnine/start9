@@ -4,7 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Start9.Api;
 using Start9.Api.Plex;
 using Start9.Api.Tools;
 using Start9.Pages;
@@ -19,9 +21,6 @@ namespace Start9.Windows
 		public SettingsWindow()
 		{
 			InitializeComponent();
-			Resources["TestBitmapImage"] =
-				MiscTools.GetBitmapImageFromBitmapSource(
-					MiscTools.GetBitmapSourceFromSysDrawingBitmap(Api.Properties.Resources.FallbackImage));
 			MainTools.SettingsWindow = this;
 			SettingsFrame.Navigate(new Home());
             MarketFrame.Navigate(new MarketplaceTestPage());

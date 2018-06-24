@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
+using Start9.Api.Plex;
 using Start9.Host.Views;
 using Start9.Windows;
+using MessageBox = Start9.Api.Plex.MessageBox;
 
 namespace Start9
 {
@@ -18,17 +20,16 @@ namespace Start9
 	{
 		public App()
 		{
-			new SettingsWindow().Show();
+            var sw = new SettingsWindow();
+            sw.Show();
 
             Exit += (sender, e) => { Automation.RemoveAllEventHandlers(); };
-        
+
             var warnings = AddInStore.Update(Module.AddInPipelineRoot);
             foreach (var warning in warnings)
             {
-                MessageBox.Show(warning);
+                MessageBox.Show(sw, warning, "Add-In Pipeline Warning");
             }
-
-            Module.Modules = new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), Module.AddInPipelineRoot).Select(t => new Module(t)));
         }
     }
 

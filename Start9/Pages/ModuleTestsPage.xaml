@@ -27,13 +27,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type start9:Module}">
                     <StackPanel>
-                        <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="20"/>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="18"/>
                         <TextBlock Text="{Binding Path=Description, Mode=OneTime}"/>
-                        <TextBlock FontSize="8">
+                        <TextBlock FontSize="10">
                             <Run Text="Version: "/>
                             <Run Text="{Binding Path=Version, Mode=OneTime}"/>
                         </TextBlock>
-                        <TextBlock FontSize="8">
+                        <TextBlock FontSize="10">
                             <Run Text="Publisher: "/>
                             <Run Text="{Binding Path=Publisher, Mode=OneTime}"/>
                         </TextBlock>
@@ -49,7 +49,7 @@
                 <DataTemplate>
                     <TextBlock>
                         <Run Text="Process ID" />
-                        <Run Text="{Binding Converter={StaticResource InstanceToProcessIdConverter}}" />
+                        <Run Text="{Binding Converter={StaticResource InstanceToProcessIdConverter}, Mode=OneTime}" />
                     </TextBlock>
                 </DataTemplate>
             </ListView.ItemTemplate>
