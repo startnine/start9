@@ -68,6 +68,8 @@ namespace Start9.UserControls
                 var point = GetPerspectiveRotation();
                 Perspective.RotationX = point.X;
                 Perspective.RotationY = point.Y;
+                if (!IsMouseOver)
+                    MarketItem_MouseLeave(this, null);
             };
             resetRotationAnim.EasingFunction = rotateEase;
             resetRotationAnim.Duration = rotateTime;
@@ -86,10 +88,10 @@ namespace Start9.UserControls
 
         public Point GetPerspectiveRotation()
         {
-            Point point = new Point(0,0);
-            Perspective.PointToScreenInWpfUnits(point);//).X, MainTools.GetDpiScaledGlobalControlPosition(Perspective).Y);
-            Point center = new Point(point.X + (Perspective.ActualWidth / 2), point.Y + (Perspective.ActualHeight / 2));
-            return new Point((SystemScaling.CursorPosition.Y - center.Y) / -4, (SystemScaling.CursorPosition.X - center.X) / -4);
+            Point point = this.GetOffsetFromCursor();//).X, MainTools.GetDpiScaledGlobalControlPosition(Perspective).Y);
+            //Point center = new Point(point.X + (ActualWidth / 2), point.Y + (ActualHeight / 2));
+            //return new Point((SystemScaling.CursorPosition.Y - center.Y) / -4, (SystemScaling.CursorPosition.X - center.X) / -4);
+            return new Point((point.Y + ((ActualHeight / 2) * -1)) / -4, (point.X + ((ActualWidth / 2) * -1)) / -4);
         }
 
         private void ResetPerspective()

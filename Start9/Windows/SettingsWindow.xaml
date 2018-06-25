@@ -61,8 +61,7 @@
                     <TranslateTransform/>
                 </Grid.RenderTransform>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="225"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.Background>
@@ -73,7 +72,7 @@
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
                 </Grid.Background>
-                <ListView DockPanel.Dock="Left" BorderBrush="Transparent" BorderThickness="0">
+                <ListView DockPanel.Dock="Left" BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" UseLayoutRounding="True">
                     <ListView.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <LinearGradientBrush.GradientStops>
@@ -85,8 +84,11 @@
                     <ListView.Effect>
                         <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="230" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
                     </ListView.Effect>
+                    <ListViewItem>Test</ListViewItem>
+                    <ListViewItem>Test 2</ListViewItem>
+                    <ListViewItem>Test 3</ListViewItem>
                 </ListView>
-                <Grid Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Grid Grid.Column="1"/>
             </Grid>
             <Grid x:Name="MarketGrid" Visibility="Hidden">
                 <Grid.RenderTransform>
