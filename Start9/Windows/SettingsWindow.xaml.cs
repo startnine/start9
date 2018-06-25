@@ -67,7 +67,7 @@ namespace Start9.Windows
 
         Duration gridAnimTime = TimeSpan.FromMilliseconds(400);
 
-        public void AnimateGrid(Grid grid, Boolean goRight, Boolean hide)
+        public void AnimateGrid(Grid grid, Boolean goLeft, Boolean hide)
         {
             DoubleAnimation opacityAnim = new DoubleAnimation()
             {
@@ -88,7 +88,7 @@ namespace Start9.Windows
                 };
                 opacityAnim.To = 0;
 
-                if (goRight)
+                if (!goLeft)
                 {
                     animation.To = Width;
                 }
@@ -102,7 +102,7 @@ namespace Start9.Windows
                 grid.Visibility = Visibility.Visible;
                 opacityAnim.To = 1;
 
-                if (goRight)
+                if (!goLeft)
                 {
                     animation.From = Width * -1;
                 }
