@@ -8,7 +8,7 @@
                  xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
                  xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
                  mc:Ignorable="d"
-                 Title="Start9 Settings" Height="510" Width="740" ShowToolBar="True"
+                 Title="Start9 Settings" Height="610" Width="840" ShowToolBar="True"
                  ResizeMode="CanResize" Visibility="Visible"
                  TitleBarHeight="48">
     <plex:PlexWindow.Resources>
@@ -61,7 +61,7 @@
                     <TranslateTransform/>
                 </Grid.RenderTransform>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="225"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.Background>
@@ -72,7 +72,29 @@
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
                 </Grid.Background>
-                <ListView DockPanel.Dock="Left" BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" UseLayoutRounding="True">
+                <ListView DockPanel.Dock="Left" BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" UseLayoutRounding="True" ItemsSource="{x:Static local:Module.Modules}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:Module}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="18"/>
+                                <TextBlock Text="{Binding Path=Description, Mode=OneTime}" Grid.Row="1" />
+                                <TextBlock FontSize="10" Grid.Row="2">
+                                    <Run Text="Version: "/>
+                                    <Run Text="{Binding Path=Version, Mode=OneTime}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="10" Grid.Row="3">
+                                    <Run Text="Publisher: "/>
+                                    <Run Text="{Binding Path=Publisher, Mode=OneTime}"/>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                     <ListView.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <LinearGradientBrush.GradientStops>
@@ -84,9 +106,6 @@
                     <ListView.Effect>
                         <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="230" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
                     </ListView.Effect>
-                    <ListViewItem>Test</ListViewItem>
-                    <ListViewItem>Test 2</ListViewItem>
-                    <ListViewItem>Test 3</ListViewItem>
                 </ListView>
                 <Grid Grid.Column="1"/>
             </Grid>

@@ -21,7 +21,6 @@ namespace Start9.Windows
 		public SettingsWindow()
 		{
 			InitializeComponent();
-			MainTools.SettingsWindow = this;
 			SettingsFrame.Navigate(new Home());
             MarketFrame.Navigate(new MarketplaceTestPage());
 		}
