@@ -61,7 +61,7 @@
                     <TranslateTransform/>
                 </Grid.RenderTransform>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="280"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.Background>
@@ -72,7 +72,14 @@
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
                 </Grid.Background>
-                <ListView DockPanel.Dock="Left" BorderBrush="Transparent" BorderThickness="0" Grid.Column="0" UseLayoutRounding="True" ItemsSource="{x:Static local:Module.Modules}">
+                <ListView DockPanel.Dock="Left" 
+                          BorderBrush="Transparent" 
+                          BorderThickness="0" 
+                          Grid.Column="0" 
+                          UseLayoutRounding="True" 
+                          ItemsSource="{x:Static local:Module.Modules}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          HorizontalContentAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:Module}">
                             <Grid>
@@ -82,13 +89,13 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="18"/>
-                                <TextBlock Text="{Binding Path=Description, Mode=OneTime}" Grid.Row="1" />
-                                <TextBlock FontSize="10" Grid.Row="2">
+                                <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="18" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Path=Description, Mode=OneTime}" Grid.Row="1" TextWrapping="Wrap"/>
+                                <TextBlock FontSize="10" Grid.Row="2" TextWrapping="Wrap">
                                     <Run Text="Version: "/>
                                     <Run Text="{Binding Path=Version, Mode=OneTime}"/>
                                 </TextBlock>
-                                <TextBlock FontSize="10" Grid.Row="3">
+                                <TextBlock FontSize="10" Grid.Row="3" TextWrapping="Wrap">
                                     <Run Text="Publisher: "/>
                                     <Run Text="{Binding Path=Publisher, Mode=OneTime}"/>
                                 </TextBlock>
