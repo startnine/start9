@@ -1,4 +1,5 @@
-﻿using Start9.Host.Views;
+﻿using Start9.Api.Plex;
+using Start9.Host.Views;
 using System;
 using System.AddIn.Hosting;
 using System.Collections.Generic;
@@ -17,7 +18,11 @@ namespace Start9
         {
             get
             {
-                AddInStore.Update(AddInPipelineRoot);
+                foreach (var warning in AddInStore.Update(AddInPipelineRoot))
+                {
+                    MessageBox.Show(null, warning, "Add-In Pipeline Warning");
+                }
+
                 return new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t)));
             }
         }
@@ -64,18 +69,13 @@ namespace Start9
             AddInController.GetAddInController(module).Shutdown();
         }
 
-        public IModule Launch()
+        public IModule Launch(Boolean initialize = true)
         {
             var m = _token.Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust);
-            m.Initialize(new Start9Host());
-            Instances.Add(m);
-            return m;
-        }
-
-        public IModule LaunchUninitialized()
-        {
-            var m = _token.Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust);
-            //m.Initialize(new Start9Host());
+            if (initialize)
+            {
+                m.Initialize(new Start9Host());
+            }
             Instances.Add(m);
             return m;
         }

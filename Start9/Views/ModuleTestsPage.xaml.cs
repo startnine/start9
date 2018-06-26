@@ -24,7 +24,7 @@ namespace Start9.Pages
 
         private void Button_Click(Object sender, RoutedEventArgs e)
 		{
-            ((Module) Modules.SelectedItem).LaunchUninitialized();
+            ((Module) Modules.SelectedItem).Launch();
         }
 
         private void Button_Click_1(Object sender, RoutedEventArgs e)
@@ -38,6 +38,10 @@ namespace Start9.Pages
         public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
         {
             var module = (IModule) value;
+            if(module == null)
+            {
+                return 0;
+            }
 
             return AddInController.GetAddInController(module).AddInEnvironment.Process.ProcessId;
         }

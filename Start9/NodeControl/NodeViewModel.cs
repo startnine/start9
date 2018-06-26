@@ -27,7 +27,7 @@ namespace Start9.NodeControl
         public ModuleViewModel(Module m)
         {
             Module = m;
-            var instance = m.LaunchUninitialized();
+            var instance = m.Launch(false);
             InputConnectors.AddRange(instance.ReceiverContract?.Entries.Select(e => new EntryViewModel(e)) ?? new EntryViewModel[] { });
             OutputConnectors.AddRange(instance.MessageContract?.Entries.Select(e => new EntryViewModel(e)) ?? new EntryViewModel[] { });
             
