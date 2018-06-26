@@ -13,7 +13,14 @@ namespace Start9
 {
     public class Module
     {
-        public static ObservableCollection<Module> Modules => new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t)));
+        public static ObservableCollection<Module> Modules
+        {
+            get
+            {
+                AddInStore.Update(AddInPipelineRoot);
+                return new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t)));
+            }
+        }
 
         public static String AddInPipelineRoot { get; } = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
 
@@ -57,10 +64,18 @@ namespace Start9
             AddInController.GetAddInController(module).Shutdown();
         }
 
-        public IModule CreateNewInstance()
+        public IModule Launch()
         {
             var m = _token.Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust);
             m.Initialize(new Start9Host());
+            Instances.Add(m);
+            return m;
+        }
+
+        public IModule LaunchUninitialized()
+        {
+            var m = _token.Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust);
+            //m.Initialize(new Start9Host());
             Instances.Add(m);
             return m;
         }

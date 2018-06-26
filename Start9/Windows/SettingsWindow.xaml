@@ -7,6 +7,8 @@
                  xmlns:local="clr-namespace:Start9"
                  xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
                  xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
+                 xmlns:networkui="clr-namespace:NetworkUI;assembly=networkui"
+                 xmlns:nodecontrol="clr-namespace:Start9.NodeControl"
                  mc:Ignorable="d"
                  Title="Start9 Settings" Height="610" Width="840" ShowToolBar="True"
                  ResizeMode="CanResize" Visibility="Visible"
@@ -16,10 +18,155 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Plex.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Colors/PlexGreen.xaml" /-->
-
             <BitmapImage x:Key="TestBitmapImage" UriSource="C:\Windows\Web\Wallpaper\img0.jpg" />
+            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+            <SolidColorBrush x:Key="nodeBorderBrush" Color="Black" />
+            <LinearGradientBrush x:Key="nodeFillBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0" />
+                <GradientStop Color="#7FC9FF" Offset="0.6" />
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="connectionBrush" Color="Black" />
+            <SolidColorBrush x:Key="connectorBackgroundBrush" Color="White"/>
+           
 
+            <Style TargetType="{x:Type networkui:NodeItem}">
+                <Setter Property="X" Value="{Binding X}" />
+                <Setter Property="Y" Value="{Binding Y}" />
+                <Setter Property="ZIndex" Value="{Binding ZIndex}" />
+                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+            </Style>
+            <Style x:Key="DoubleClickStyle" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+            </Style>
+
+            <!--Receiver connector template-->
+            <DataTemplate x:Key="inputConnectorTemplate">
+                <Grid Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <networkui:ConnectorItem 
+                        Grid.Column="0"
+                        Width="15"
+                        Height="15"
+                        Cursor="Hand" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        Text="{Binding Receiver.FriendlyName}"
+                        VerticalAlignment="Center"/>
+                </Grid>
+            </DataTemplate>
+
+            <!--Message connector template-->
+            <DataTemplate x:Key="outputConnectorTemplate">
+                <Grid HorizontalAlignment="Right" Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Text="{Binding Path=Message.FriendlyName}"
+                        VerticalAlignment="Center"
+                        Margin="0,0,5,0"/>
+                    <Grid
+                        Grid.Column="1"
+                        Width="15"
+                        Height="15"
+                        Cursor="Hand">
+                        <networkui:ConnectorItem />
+                        <Ellipse
+                            Visibility="{Binding IsConnectionAttached, Converter={StaticResource booleanToVisibilityConverter}}"
+                            Margin="3"
+                            Fill="{StaticResource connectionBrush}"
+                            IsHitTestVisible="False" />
+                    </Grid>
+                </Grid>
+            </DataTemplate>
+            <nodecontrol:ScaleToPercentConverter 
+                x:Key="scaleToPercentConverter" />
+            
+            <!--Connector dot style-->
+            <Style 
+                TargetType="{x:Type networkui:ConnectorItem}">
+                <Setter 
+                    Property="Hotspot"
+                    Value="{Binding Hotspot, Mode=OneWayToSource}"/>
+                <Setter 
+                    Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate 
+                            TargetType="{x:Type networkui:ConnectorItem}">
+                            <Ellipse
+                                Stroke="{StaticResource nodeBorderBrush}"
+                                Fill="{StaticResource connectorBackgroundBrush}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--Path template-->
+            <DataTemplate
+                DataType="{x:Type nodecontrol:MessagePathViewModel}">
+                <nodecontrol:CurvedArrow
+                        Stroke="{StaticResource connectionBrush}"
+                        StrokeThickness="2"
+                        Fill="{StaticResource connectionBrush}"
+                        Points="{Binding Points}"/>
+            </DataTemplate>
+            
+            <!--Node template-->
+            <DataTemplate DataType="{x:Type nodecontrol:ModuleViewModel}">
+                <Grid
+                        MinWidth="120"
+                        Margin="10,6,10,6"
+                        SizeChanged="Node_SizeChanged">
+                    <Rectangle
+                            Stroke="{StaticResource nodeBorderBrush}"
+                            StrokeThickness="1.3"
+                            RadiusX="4"
+                            RadiusY="4"
+                            Fill="{StaticResource nodeFillBrush}"/>
+                    <Grid
+                            Margin="-6,4,-6,4"
+                            >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" MinWidth="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="2" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Grid.Row="0"
+                                Text="{Binding Module.Name}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                />
+                        <ItemsControl
+                                Grid.Column="0"
+                                Grid.Row="2"
+                                ItemsSource="{Binding InputConnectors}"
+                                ItemTemplate="{StaticResource inputConnectorTemplate}"
+                                Focusable="False"
+                                />
+                        <ItemsControl
+                                Grid.Column="2"
+                                Grid.Row="2"
+                                ItemsSource="{Binding OutputConnectors}"
+                                ItemTemplate="{StaticResource outputConnectorTemplate}"
+                                Focusable="False"
+                                />
+                    </Grid>
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </plex:PlexWindow.Resources>
     <plex:PlexWindow.TitleBarContent>
@@ -40,6 +187,9 @@
                     IsEnabled="{Binding CanGoBack, Source={x:Reference SettingsFrame}}" />
         </Grid>
     </plex:PlexWindow.TitleBarContent>
+    <plex:PlexWindow.DataContext>
+        <nodecontrol:NodeControlPageViewModel />
+    </plex:PlexWindow.DataContext>
     <plex:PlexWindow.ToolBarContent>
         <!--TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="22" Margin="18,0"
                  Style="{DynamicResource AddressBox}" /-->
@@ -76,10 +226,12 @@
                           BorderBrush="Transparent" 
                           BorderThickness="0" 
                           Grid.Column="0" 
+                          x:Name="Modules"
                           UseLayoutRounding="True" 
                           ItemsSource="{x:Static local:Module.Modules}"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          HorizontalContentAlignment="Stretch">
+                          HorizontalContentAlignment="Stretch"
+                          ItemContainerStyle="{StaticResource DoubleClickStyle}">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:Module}">
                             <Grid>
@@ -115,6 +267,22 @@
                     </ListView.Effect>
                 </ListView>
                 <Grid Grid.Column="1"/>
+                <ScrollViewer
+                    CanContentScroll="True"
+                    VerticalScrollBarVisibility="Visible"
+                    HorizontalScrollBarVisibility="Visible"
+                    Focusable="False"
+                    Grid.Column="1">
+                    <networkui:NetworkView
+                        Background="Transparent"
+                        x:Name="networkControl"
+                        NodesSource="{Binding Network.Nodes}"
+                        ConnectionsSource="{Binding Path=Network.Connections}"    
+                        ConnectionDragStarted="networkControl_ConnectionDragStarted"
+                        QueryConnectionFeedback="networkControl_QueryConnectionFeedback"
+                        ConnectionDragging="networkControl_ConnectionDragging"                            
+                        ConnectionDragCompleted="networkControl_ConnectionDragCompleted"/>
+                </ScrollViewer>
             </Grid>
             <Grid x:Name="MarketGrid" Visibility="Hidden">
                 <Grid.RenderTransform>
@@ -156,144 +324,18 @@
                     </Frame.OpacityMask>
                 </Frame>
             </Grid>
-            <!--Grid x:Name="Root" Margin="0,2,0,0">
-            <Grid x:Name="HomePage" Visibility="Visible">
-                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
-                        <apictrl:CommandLinkButton x:Name="PlexTestCommandLinkButton" Height="192" Style="{DynamicResource IceIconCommandLinkButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Plex Styles Test" Click="PlexTestCommandLinkButton_Click">
-                            <apictrl:CommandLinkButton.Icon>
-                                <Canvas>
-                                    <Canvas.RenderTransform>
-                                        <TranslateTransform X="-60" Y="-15"/>
-                                    </Canvas.RenderTransform>
-                                    <Path Style="{DynamicResource IconPathStyle}">
-                                        <Path.Data>
-                                            <PathGeometry Figures="m 15.827115 59.232401 c 0 0 15.977941 -2.415497 19.218502 -8.64833 3.879385 -7.461543 -0.984581 -15.666443 -9.609247 -11.723286 -4.125199 1.886023 -3.090155 10.376667 -9.609255 20.371616 z" FillRule="NonZero"/>
-                                        </Path.Data>
-                                    </Path>
-                                    <Path Style="{DynamicResource IconPathStyle}">
-                                        <Path.Data>
-                                            <PathGeometry Figures="M 39.238314 42.630679 C 38.226119 38.598774 35.853806 35.8226 31.931536 35.043125 l 8.600112 -9.432956 c 3.901435 1.201202 7.031959 3.498466 7.627832 8.53591 z" FillRule="NonZero"/>
-                                        </Path.Data>
-                                    </Path>
-                                    <Path Style="{DynamicResource IconPathStyle}">
-                                        <Path.Data>
-                                            <PathGeometry Figures="m 42.930385 22.826177 c 3.901435 1.201201 7.031959 3.498466 7.627832 8.53591 C 75.260091 10.42282 86.843925 1.0139581 97.82597 -21.945585 c 1.04488 -2.184491 -0.466039 -3.769996 -2.568427 -2.568424 -25.46521 14.554104 -29.657109 21.5250521 -52.327158 47.340186 z" FillRule="NonZero"/>
-                                        </Path.Data>
-                                    </Path>
-                                </Canvas>
-                            </apictrl:CommandLinkButton.Icon>
+            <!--Grid x:Name="Root" Margin="0,2,0,0"><Grid x:Name="HomePage" Visibility="Visible"><ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"><StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical"><apictrl:CommandLinkButton x:Name="PlexTestCommandLinkButton" Height="192" Style="{DynamicResource IceIconCommandLinkButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Plex Styles Test" Click="PlexTestCommandLinkButton_Click"><apictrl:CommandLinkButton.Icon><Canvas><Canvas.RenderTransform><TranslateTransform X="-60" Y="-15"/></Canvas.RenderTransform><Path Style="{DynamicResource IconPathStyle}"><Path.Data><PathGeometry Figures="m 15.827115 59.232401 c 0 0 15.977941 -2.415497 19.218502 -8.64833 3.879385 -7.461543 -0.984581 -15.666443 -9.609247 -11.723286 -4.125199 1.886023 -3.090155 10.376667 -9.609255 20.371616 z" FillRule="NonZero"/></Path.Data></Path><Path Style="{DynamicResource IconPathStyle}"><Path.Data><PathGeometry Figures="M 39.238314 42.630679 C 38.226119 38.598774 35.853806 35.8226 31.931536 35.043125 l 8.600112 -9.432956 c 3.901435 1.201202 7.031959 3.498466 7.627832 8.53591 z" FillRule="NonZero"/></Path.Data></Path><Path Style="{DynamicResource IconPathStyle}"><Path.Data><PathGeometry Figures="m 42.930385 22.826177 c 3.901435 1.201201 7.031959 3.498466 7.627832 8.53591 C 75.260091 10.42282 86.843925 1.0139581 97.82597 -21.945585 c 1.04488 -2.184491 -0.466039 -3.769996 -2.568427 -2.568424 -25.46521 14.554104 -29.657109 21.5250521 -52.327158 47.340186 z" FillRule="NonZero"/></Path.Data></Path></Canvas></apictrl:CommandLinkButton.Icon>
                             View and test various Plex controls and styles (TEMPORARY)
-                        </apictrl:CommandLinkButton>
-                        <apictrl:CommandLinkButton x:Name="ModuleFrontEndTestCommandLinkButton" Height="192" Style="{DynamicResource IceIconCommandLinkButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Module Front End Test" Click="ModuleFrontEndTestCommandLinkButton_Click">
-                            <apictrl:CommandLinkButton.Icon>
-                                <Canvas>
-                                    <Canvas.RenderTransform>
-                                        <TranslateTransform X="-52" Y="-130"/>
-                                    </Canvas.RenderTransform>
-                                    <Path x:Name="ModuleTestsPath" Style="{DynamicResource IconPathStyle}">
-                                        <Path.Data>
-                                            <PathGeometry Figures="m 24.712062 172.77058 h 65.594035 v -17.009 H 28.794205 c 4.100644 5.98211 2.621108 13.69274 -4.082143 17.009 z" FillRule="NonZero"/>
-                                        </Path.Data>
-                                    </Path>
-                                    <Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="9.5" Canvas.Top="153.6" Width="17.7" Height="17.7" Fill="{Binding Fill, Source={x:Reference ModuleTestsPath}}" StrokeThickness="{Binding StrokeThickness, Source={x:Reference ModuleTestsPath}}" Stroke="{Binding Stroke, Source={x:Reference ModuleTestsPath}}" StrokeMiterLimit="4"/>
-                                    <Path Style="{DynamicResource IconPathStyle}">
-                                        <Path.Data>
-                                            <PathGeometry Figures="m 26.148531 153.11575 c -3.720038 -4.06948 -12.835264 -5.82117 -18.1806548 2.64583 L 7.9677171 88.61037 H 28.794717 v 4.24621 h -15.481 v 54.438 h 15.481 l -3.53e-4 5.82117 z" FillRule="NonZero"/>
-                                        </Path.Data>
-                                    </Path>
-                                    <Path Style="{DynamicResource IconPathStyle}">
-                                        <Path.Data>
-                                            <PathGeometry Figures="m 28.265197 153.11558 3.53e-4 -64.505 h 30.766667 v 64.505 z" FillRule="NonZero"/>
-                                        </Path.Data>
-                                    </Path>
-                                </Canvas>
-                            </apictrl:CommandLinkButton.Icon>
+                        </apictrl:CommandLinkButton><apictrl:CommandLinkButton x:Name="ModuleFrontEndTestCommandLinkButton" Height="192" Style="{DynamicResource IceIconCommandLinkButtonStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Module Front End Test" Click="ModuleFrontEndTestCommandLinkButton_Click"><apictrl:CommandLinkButton.Icon><Canvas><Canvas.RenderTransform><TranslateTransform X="-52" Y="-130"/></Canvas.RenderTransform><Path x:Name="ModuleTestsPath" Style="{DynamicResource IconPathStyle}"><Path.Data><PathGeometry Figures="m 24.712062 172.77058 h 65.594035 v -17.009 H 28.794205 c 4.100644 5.98211 2.621108 13.69274 -4.082143 17.009 z" FillRule="NonZero"/></Path.Data></Path><Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="9.5" Canvas.Top="153.6" Width="17.7" Height="17.7" Fill="{Binding Fill, Source={x:Reference ModuleTestsPath}}" StrokeThickness="{Binding StrokeThickness, Source={x:Reference ModuleTestsPath}}" Stroke="{Binding Stroke, Source={x:Reference ModuleTestsPath}}" StrokeMiterLimit="4"/><Path Style="{DynamicResource IconPathStyle}"><Path.Data><PathGeometry Figures="m 26.148531 153.11575 c -3.720038 -4.06948 -12.835264 -5.82117 -18.1806548 2.64583 L 7.9677171 88.61037 H 28.794717 v 4.24621 h -15.481 v 54.438 h 15.481 l -3.53e-4 5.82117 z" FillRule="NonZero"/></Path.Data></Path><Path Style="{DynamicResource IconPathStyle}"><Path.Data><PathGeometry Figures="m 28.265197 153.11558 3.53e-4 -64.505 h 30.766667 v 64.505 z" FillRule="NonZero"/></Path.Data></Path></Canvas></apictrl:CommandLinkButton.Icon>
                             View and test various Front-end experiments for potential Modules (TEMPORARY)
-                        </apictrl:CommandLinkButton>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-            <Grid x:Name="PageLayers" Visibility="Hidden">
-                <Grid>
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
-                            <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
-                        Margin="0">
-                                <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-                                    <Grid Height="768" Width="768">
-                                        <StackPanel Width="259" HorizontalAlignment="Left" VerticalAlignment="Stretch" Orientation="Vertical">
-                                            <Button x:Name="ShowThumbnailButton" Width="86" Height="24" Content="This is a button"/>
-                                            <ToggleButton x:Name="ColouresButton" Width="172" Height="36" Padding="5" Content="Release the  C O L O U R E S" Click="ColouresButton_Click"/>
-                                            
-                                            <ToggleButton Style="{DynamicResource PlexToolbarToggleButtonStyle}" Width="225" Height="36" Padding="5" Content="This ToggleButton has a Context Menu">
-                                                <ToggleButton.ContextMenu>
-                                                    <ContextMenu Style="{DynamicResource {x:Type ContextMenu}}">
-                                                        <MenuItem Header="Item 1"/>
-                                                        <MenuItem Header="Item 2">
-                                                            <MenuItem Header="Sub-item 1"/>
-                                                            <MenuItem Header="Sub-item 2">
-                                                                <MenuItem Header="Sub-sub-item 1"/>
-                                                                <MenuItem Header="Sub-sub-item 2" IsEnabled="False"/>
-                                                            </MenuItem>
-                                                            <MenuItem Header="Sub-item 3" IsEnabled="False"/>
-                                                        </MenuItem>
-                                                        <MenuItem Header="Item 3" IsEnabled="False"/>
-                                                    </ContextMenu>
-                                                </ToggleButton.ContextMenu>
-                                            </ToggleButton>
-                                            <Button Width="86" Height="24" Content="Small Disabled Test Button" IsEnabled="False" />
-                                            <Button Width="172" Height="36" Content="Medium Disabled Test Button" IsEnabled="False" />
-                                            <StackPanel Width="192" Orientation="Vertical" Margin="20,0,0,0">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <CheckBox Checked="TitleBarCheckBox_Checked"
-                                                  Unchecked="TitleBarCheckBox_Unchecked" IsChecked="True" />
-                                                    <Label Content="Show TitleBar" />
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <CheckBox Checked="ToolBarCheckBox_Checked"
-                                                  Unchecked="ToolBarCheckBox_Unchecked" IsChecked="True" />
-                                                    <Label Content="Show ToolBar" />
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <CheckBox Checked="FooterCheckBox_Checked" Unchecked="FooterCheckBox_Unchecked"
-                                                  IsChecked="True" />
-                                                    <Label Content="Show Footer" />
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Vertical" Width="384" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-                                            <CheckBox VerticalAlignment="Top" Margin="10" />
-                                            <CheckBox VerticalAlignment="Top" IsChecked="True" Margin="10" />
-                                            <CheckBox VerticalAlignment="Top" IsThreeState="True" IsChecked="{x:Null}" Margin="10" />
-                                            <Canvas Width="350" Height="22" Background="Transparent" />
-                                            <TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Test Text Box" />
-                                            <Canvas Width="350" Height="22" Background="Transparent" />
-                                            <TextBox Width="350" VerticalAlignment="Center" Height="44" Text="Test Text Box" />
-                                            <Canvas Width="350" Height="22" Background="Transparent" />\
-                                            <Canvas Width="350" Height="22" Background="Transparent" />
-                                            <TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Shiny Test Text Box"
-                                         Style="{DynamicResource ShinyTextBox}" />
-
-                                            <TextBlock Margin="50,30,0,0">Two-State ToggleSwitch</TextBlock>
-                                            <apictrl:ToggleSwitch IsThreeState="False" IsChecked="False"/>
-                                            <TextBlock Margin="50,20,0,0">Three-State ToggleSwitch</TextBlock>
-                                            <apictrl:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}"/>
-                                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This is a Command Link Button." Icon="{DynamicResource LargeBackArrowPathIcon}">It has a title and a custom icon, and you can click it to make it do something. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton>
-                                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This Command Link Button is Disabled." IsEnabled="False">As a result , clicking it will have absolutely no effect at all. Coincidentally, it also uses the default icon. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton>
-                                        </StackPanel>
-                                    </Grid>
-                                </ScrollViewer>
-                            </Border>
-                        </DockPanel>
-                    </Grid>
-                    <Grid>
-                        <Button Width="500" Height="100" Click="TaskbarModule1Button_Click">Taskbar Module Test 1</Button>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid-->
+                        </apictrl:CommandLinkButton></StackPanel></ScrollViewer></Grid><Grid x:Name="PageLayers" Visibility="Hidden"><Grid><Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"><DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True"><Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
+                        Margin="0"><ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible"><Grid Height="768" Width="768"><StackPanel Width="259" HorizontalAlignment="Left" VerticalAlignment="Stretch" Orientation="Vertical"><Button x:Name="ShowThumbnailButton" Width="86" Height="24" Content="This is a button"/><ToggleButton x:Name="ColouresButton" Width="172" Height="36" Padding="5" Content="Release the  C O L O U R E S" Click="ColouresButton_Click"/><ToggleButton Style="{DynamicResource PlexToolbarToggleButtonStyle}" Width="225" Height="36" Padding="5" Content="This ToggleButton has a Context Menu"><ToggleButton.ContextMenu><ContextMenu Style="{DynamicResource {x:Type ContextMenu}}"><MenuItem Header="Item 1"/><MenuItem Header="Item 2"><MenuItem Header="Sub-item 1"/><MenuItem Header="Sub-item 2"><MenuItem Header="Sub-sub-item 1"/><MenuItem Header="Sub-sub-item 2" IsEnabled="False"/></MenuItem><MenuItem Header="Sub-item 3" IsEnabled="False"/></MenuItem><MenuItem Header="Item 3" IsEnabled="False"/></ContextMenu></ToggleButton.ContextMenu></ToggleButton><Button Width="86" Height="24" Content="Small Disabled Test Button" IsEnabled="False" /><Button Width="172" Height="36" Content="Medium Disabled Test Button" IsEnabled="False" /><StackPanel Width="192" Orientation="Vertical" Margin="20,0,0,0"><StackPanel Orientation="Horizontal"><CheckBox Checked="TitleBarCheckBox_Checked"
+                                                  Unchecked="TitleBarCheckBox_Unchecked" IsChecked="True" /><Label Content="Show TitleBar" /></StackPanel><StackPanel Orientation="Horizontal"><CheckBox Checked="ToolBarCheckBox_Checked"
+                                                  Unchecked="ToolBarCheckBox_Unchecked" IsChecked="True" /><Label Content="Show ToolBar" /></StackPanel><StackPanel Orientation="Horizontal"><CheckBox Checked="FooterCheckBox_Checked" Unchecked="FooterCheckBox_Unchecked"
+                                                  IsChecked="True" /><Label Content="Show Footer" /></StackPanel></StackPanel></StackPanel><StackPanel Orientation="Vertical" Width="384" HorizontalAlignment="Right" VerticalAlignment="Stretch"><CheckBox VerticalAlignment="Top" Margin="10" /><CheckBox VerticalAlignment="Top" IsChecked="True" Margin="10" /><CheckBox VerticalAlignment="Top" IsThreeState="True" IsChecked="{x:Null}" Margin="10" /><Canvas Width="350" Height="22" Background="Transparent" /><TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Test Text Box" /><Canvas Width="350" Height="22" Background="Transparent" /><TextBox Width="350" VerticalAlignment="Center" Height="44" Text="Test Text Box" /><Canvas Width="350" Height="22" Background="Transparent" />\
+                                            <Canvas Width="350" Height="22" Background="Transparent" /><TextBox Width="350" VerticalAlignment="Center" Height="22" Text="Shiny Test Text Box"
+                                         Style="{DynamicResource ShinyTextBox}" /><TextBlock Margin="50,30,0,0">Two-State ToggleSwitch</TextBlock><apictrl:ToggleSwitch IsThreeState="False" IsChecked="False"/><TextBlock Margin="50,20,0,0">Three-State ToggleSwitch</TextBlock><apictrl:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}"/><apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This is a Command Link Button." Icon="{DynamicResource LargeBackArrowPathIcon}">It has a title and a custom icon, and you can click it to make it do something. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton><apictrl:CommandLinkButton HorizontalAlignment="Stretch" Header="This Command Link Button is Disabled." IsEnabled="False">As a result , clicking it will have absolutely no effect at all. Coincidentally, it also uses the default icon. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.</apictrl:CommandLinkButton></StackPanel></Grid></ScrollViewer></Border></DockPanel></Grid><Grid><Button Width="500" Height="100" Click="TaskbarModule1Button_Click">Taskbar Module Test 1</Button></Grid></Grid></Grid></Grid-->
         </Grid>
     </plex:PlexWindow.Content>
     <plex:PlexWindow.FooterContent>

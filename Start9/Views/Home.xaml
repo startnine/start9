@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Start9.Pages"
       xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
       mc:Ignorable="d"
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="800" d:DesignWidth="800"
       Title="Home">
     <Page.Resources>
         <ResourceDictionary>

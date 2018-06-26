@@ -24,7 +24,7 @@ namespace Start9.Pages
 
         private void Button_Click(Object sender, RoutedEventArgs e)
 		{
-            ((Module) Modules.SelectedItem).CreateNewInstance();
+            ((Module) Modules.SelectedItem).LaunchUninitialized();
         }
 
         private void Button_Click_1(Object sender, RoutedEventArgs e)
