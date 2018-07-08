@@ -6,6 +6,7 @@ using Utils;
 using Start9.NodeControl;
 using System.Windows;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Start9.NodeControl
 {
@@ -38,7 +39,7 @@ namespace Start9.NodeControl
             {
                 network = value;
 
-                OnPropertyChanged("Network");
+                OnPropertyChanged(nameof(Network));
             }
         }
         public Double ContentScale
@@ -51,7 +52,7 @@ namespace Start9.NodeControl
             {
                 contentScale = value;
 
-                OnPropertyChanged("ContentScale");
+                OnPropertyChanged(nameof(ContentScale));
             }
         }
         public Double ContentOffsetX
@@ -64,7 +65,7 @@ namespace Start9.NodeControl
             {
                 contentOffsetX = value;
 
-                OnPropertyChanged("ContentOffsetX");
+                OnPropertyChanged(nameof(ContentOffsetX));
             }
         }
         public Double ContentOffsetY
@@ -77,7 +78,7 @@ namespace Start9.NodeControl
             {
                 contentOffsetY = value;
 
-                OnPropertyChanged("ContentOffsetY");
+                OnPropertyChanged(nameof(ContentOffsetY));
             }
         }
         public Double ContentWidth
@@ -90,7 +91,7 @@ namespace Start9.NodeControl
             {
                 contentWidth = value;
 
-                OnPropertyChanged("ContentWidth");
+                OnPropertyChanged(nameof(ContentWidth));
             }
         }
         public Double ContentHeight
@@ -103,7 +104,7 @@ namespace Start9.NodeControl
             {
                 contentHeight = value;
 
-                OnPropertyChanged("ContentHeight");
+                OnPropertyChanged(nameof(ContentHeight));
             }
         }
         public Double ContentViewportWidth
@@ -116,7 +117,7 @@ namespace Start9.NodeControl
             {
                 contentViewportWidth = value;
 
-                OnPropertyChanged("ContentViewportWidth");
+                OnPropertyChanged(nameof(ContentViewportWidth));
             }
         }
         public Double ContentViewportHeight
@@ -129,7 +130,7 @@ namespace Start9.NodeControl
             {
                 contentViewportHeight = value;
 
-                OnPropertyChanged("ContentViewportHeight");
+                OnPropertyChanged(nameof(ContentViewportHeight));
             }
         }
         public MessagePathViewModel ConnectionDragStarted(EntryViewModel draggedOutConnector, Point curDragPoint)
@@ -246,11 +247,10 @@ namespace Start9.NodeControl
                 Network = new ModuleNetworkViewModel();
             }
 
-            var node = new ModuleViewModel(m)
-            {
-                X = nodeLocation.X,
-                Y = nodeLocation.Y,
-            };
+            var node = ModuleViewModel.Create(m);
+            node.X = nodeLocation.X;
+            node.Y = nodeLocation.Y;
+
 
 
             if (centerNode)

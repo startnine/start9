@@ -87,12 +87,12 @@ namespace Start9.Pages
 
 		private void ColouresButton_Click(Object sender, RoutedEventArgs e)
 		{
-			var coloures = new ResourceDictionary();
-
-			if ((sender as ToggleButton).IsChecked == true)
-				coloures.Source = new Uri("/Start9.Api;component/Themes/Colors/PlexGreen.xaml", UriKind.Relative);
-			else
-				coloures.Source = new Uri("/Start9.Api;component/Themes/Colors/PlexBlue.xaml", UriKind.Relative);
+			var coloures = new ResourceDictionary
+			{
+				Source = (sender as ToggleButton).IsChecked == true
+				? new Uri("/Start9.Api;component/Themes/Colors/PlexGreen.xaml", UriKind.Relative)
+				: new Uri("/Start9.Api;component/Themes/Colors/PlexBlue.xaml", UriKind.Relative)
+			};
 
 			Resources.MergedDictionaries.Add(coloures);
 			//BodyBrush = (System.Windows.Media.Brush)(BodyRoot.Resources["DefaultWindowBodyBrush"]);

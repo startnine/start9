@@ -129,10 +129,12 @@ namespace Start9.NodeControl
             //
             // Build geometry for the arrow head.
             //
-            PathFigure arrowHeadFig = new PathFigure();
-            arrowHeadFig.IsClosed = true;
-            arrowHeadFig.IsFilled = true;
-            arrowHeadFig.StartPoint = arrowHeadPoints[0];
+            PathFigure arrowHeadFig = new PathFigure
+            {
+                IsClosed = true,
+                IsFilled = true,
+                StartPoint = arrowHeadPoints[0]
+            };
             arrowHeadFig.Segments.Add(new LineSegment(arrowHeadPoints[1], true));
             arrowHeadFig.Segments.Add(new LineSegment(arrowHeadPoints[2], true));
 
@@ -152,10 +154,12 @@ namespace Start9.NodeControl
             if (Points.Count == 2 || Points.Count == 3)
             {
                 // Make a straight line.
-                PathFigure fig = new PathFigure();
-                fig.IsClosed = false;
-                fig.IsFilled = false;
-                fig.StartPoint = Points[0];
+                PathFigure fig = new PathFigure
+                {
+                    IsClosed = false,
+                    IsFilled = false,
+                    StartPoint = Points[0]
+                };
 
                 for (var i = 1; i < Points.Count; ++i)
                 {
@@ -166,8 +170,10 @@ namespace Start9.NodeControl
             }
             else
             {
-                PointCollection adjustedPoints = new PointCollection();
-                adjustedPoints.Add(Points[0]);
+                var adjustedPoints = new PointCollection
+                {
+                    Points[0]
+                };
                 for (var i = 1; i < Points.Count; ++i)
                 {
                     adjustedPoints.Add(Points[i]);
@@ -176,10 +182,12 @@ namespace Start9.NodeControl
                 if (adjustedPoints.Count == 4)
                 {
                     // Make a curved line.
-                    PathFigure fig = new PathFigure();
-                    fig.IsClosed = false;
-                    fig.IsFilled = false;
-                    fig.StartPoint = adjustedPoints[0];
+                    PathFigure fig = new PathFigure
+                    {
+                        IsClosed = false,
+                        IsFilled = false,
+                        StartPoint = adjustedPoints[0]
+                    };
                     fig.Segments.Add(new BezierSegment(adjustedPoints[1], adjustedPoints[2], adjustedPoints[3], true));
 
                     pathGeometry.Figures.Add(fig);
@@ -187,10 +195,12 @@ namespace Start9.NodeControl
                 else if (adjustedPoints.Count >= 5)
                 {
                     // Make a curved line.
-                    PathFigure fig = new PathFigure();
-                    fig.IsClosed = false;
-                    fig.IsFilled = false;
-                    fig.StartPoint = adjustedPoints[0];
+                    PathFigure fig = new PathFigure
+                    {
+                        IsClosed = false,
+                        IsFilled = false,
+                        StartPoint = adjustedPoints[0]
+                    };
 
                     adjustedPoints.RemoveAt(0);
 

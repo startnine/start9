@@ -4,19 +4,24 @@ using Start9.Windows;
 
 namespace Start9
 {
-    /// <summary>
-    ///     Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+	/// <summary>
+	///     Interaction logic for App.xaml
+	/// </summary>
+	public partial class App : Application
 	{
 		public App()
 		{
-            var sw = new SettingsWindow();
-            sw.Show();
+			MainWindow = new SettingsWindow();
+			((SettingsWindow) MainWindow).Show();
 
-            Exit += (sender, e) => { Automation.RemoveAllEventHandlers(); };
-        }
-    }
+			foreach(var module in Module.Modules)
+			{
+                module.Activate();
+			}
+
+			Exit += (sender, e) => { Automation.RemoveAllEventHandlers(); };
+		}
+	}
 
 	public static class TaskbarTools
 	{

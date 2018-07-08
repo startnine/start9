@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using Utils;
 using System.Windows;
+using System.Threading.Tasks;
 
 namespace Start9.NodeControl
 {
@@ -24,18 +25,25 @@ namespace Start9.NodeControl
 
         private Boolean isSelected = false;
 
-        public ModuleViewModel(Module m)
+        public static ModuleViewModel Create(Module m)
         {
-            Module = m;
-            var instance = m.Launch(false);
-            InputConnectors.AddRange(instance.ReceiverContract?.Entries.Select(e => new EntryViewModel(e)) ?? new EntryViewModel[] { });
-            OutputConnectors.AddRange(instance.MessageContract?.Entries.Select(e => new EntryViewModel(e)) ?? new EntryViewModel[] { });
-            
-            //m.Kill(instance); 
-            //wasteful, i know, but we'll figure out a better solution later
+            var mvm = new ModuleViewModel
+            {
+                Module = m
+            };
+
+            mvm.InputConnectors.AddRange(m.ReceiverContract?.Entries.Select(e => new EntryViewModel(m, e)) ?? Array.Empty<EntryViewModel>());
+            mvm.OutputConnectors.AddRange(m.MessageContract?.Entries.Select(e => new EntryViewModel(m, e)) ?? Array.Empty<EntryViewModel>());
+
+            return mvm;
         }
 
-        public Module Module { get; }
+        ModuleViewModel()
+        {
+            
+        }
+
+        public Module Module { get; private set; }
         
         public Double X
         {
@@ -125,7 +133,7 @@ namespace Start9.NodeControl
                 {
                     outputConnectors = new ImpObservableCollection<EntryViewModel>();
                     outputConnectors.ItemsAdded += new EventHandler<CollectionItemsChangedEventArgs>(outputConnectors_ItemsAdded);
-                    outputConnectors.ItemsRemoved += new EventHandler<CollectionItemsChangedEventArgs>(outputConnectors_ItemsRemoved);
+                    outputConnectors.ItemsRemoved += new EventHandler<CollectionItemsChangedEventArgs>(OutputConnectors_ItemsRemoved);
                 }
 
                 return outputConnectors;
@@ -191,7 +199,7 @@ namespace Start9.NodeControl
             }
         }
 
-        private void outputConnectors_ItemsRemoved(Object sender, CollectionItemsChangedEventArgs e)
+        private void OutputConnectors_ItemsRemoved(Object sender, CollectionItemsChangedEventArgs e)
         {
             foreach (EntryViewModel connector in e.Items)
             {

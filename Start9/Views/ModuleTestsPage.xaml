@@ -16,8 +16,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Plex.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <local:InstanceToProcessIdConverter x:Key="InstanceToProcessIdConverter"/>
         </ResourceDictionary>
 
     </Page.Resources>
@@ -46,10 +44,10 @@
         <Label>Instances:</Label>
         <ListView Margin="5" Name="Instances" ItemsSource="{Binding ElementName=Modules, Path=SelectedItem.Instances}">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type start9:ModuleInstance}">
                     <TextBlock>
                         <Run Text="Process ID" />
-                        <Run Text="{Binding Converter={StaticResource InstanceToProcessIdConverter}, Mode=OneTime}" />
+                        <Run Text="{Binding Process.ProcessId, Mode=OneTime}" />
                     </TextBlock>
                 </DataTemplate>
             </ListView.ItemTemplate>

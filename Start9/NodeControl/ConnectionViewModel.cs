@@ -128,8 +128,10 @@ namespace Start9.NodeControl
 
         private void ComputeConnectionPoints()
         {
-            var computedPoints = new PointCollection();
-            computedPoints.Add(this.SourceConnectorHotspot);
+            var computedPoints = new PointCollection
+            {
+                this.SourceConnectorHotspot
+            };
 
             var deltaX = Math.Abs(this.DestConnectorHotspot.X - this.SourceConnectorHotspot.X);
             var deltaY = Math.Abs(this.DestConnectorHotspot.Y - this.SourceConnectorHotspot.Y);

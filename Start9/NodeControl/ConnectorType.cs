@@ -13,6 +13,6 @@ namespace Start9.NodeControl
 
     public static class EntryTypeExtensions
     {
-        public static EntryType GetForEntry(EntryViewModel m) => m.Message == null ? EntryType.Receiver : EntryType.Message;
+        public static EntryType GetForEntry(EntryViewModel m) => m.MessageEntry == null ? EntryType.Receiver : EntryType.Message;
     }
 }

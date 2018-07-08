@@ -6,46 +6,33 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Start9
 {
-    public class Module
+    public sealed class Module : IModuleAssembly
     {
-        public static ObservableCollection<Module> Modules
+        Module(AddInToken t)
         {
-            get
-            {
-                foreach (var warning in AddInStore.Update(AddInPipelineRoot))
-                {
-                    MessageBox.Show(null, warning, "Add-In Pipeline Warning");
-                }
-
-                return new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t)));
-            }
+            _token = t;
         }
 
-        public static String AddInPipelineRoot { get; } = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
-
-        public Module(AddInToken token)
+        readonly AddInToken _token;      
+        static readonly String AddInPipelineRoot = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Start9", "Pipeline");
+        private static Lazy<ObservableCollection<Module>> _modules = new Lazy<ObservableCollection<Module>>(() =>
         {
-            _token = token;
-        }
+            var warnings = AddInStore.Rebuild(AddInPipelineRoot); //AddInStore.Update(AddInPipelineRoot);
+#if DEBUG
+            MessageBox.Show(null, String.Join(Environment.NewLine, warnings), "Add-In Store Warning");
+#endif
+            return new ObservableCollection<Module>(AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot).Select(t => new Module(t)));
+        } );
+        public static ObservableCollection<Module> Modules => _modules.Value;
 
-        public Module(IModule module)
-        {
-            Instances.Add(module);
-        }
-
-        AddInToken _token;
-
-        public ObservableCollection<IModule> Instances { get; } = new ObservableCollection<IModule>();
         public String Name => _token.Name;
-        public IDictionary<AddInSegmentType, IDictionary<String, String>> QualificationData => _token.QualificationData;
         public String Description => _token.Description;
         public String Publisher => _token.Publisher;
+        internal AssemblyName AssemblyName => _token.AssemblyName;
         public Version Version
         {
             get
@@ -54,30 +41,79 @@ namespace Start9
                 return result;
             }
         }
-        public IEnumerable<AddInProcess> Processes => Instances.Select(i => AddInController.GetAddInController(i).AddInEnvironment.Process);
 
+        public ObservableCollection<ModuleInstance> Instances { get; } = new ObservableCollection<ModuleInstance>();
+
+        public IConfiguration SavedConfiguration => throw new NotImplementedException();
+
+        public IConfiguration CurrentConfiguration => Instances.First().Instance.Configuration;
+
+        public IMessageContract MessageContract => Instances.First().Instance.MessageContract;
+
+        public IReceiverContract ReceiverContract => Instances.First().Instance.ReceiverContract;
+
+        IList<IModuleInstance> IModuleAssembly.Instances => throw new NotImplementedException();
+
+        public static void Kill(IModule instance) => AddInController.GetAddInController(instance).Shutdown();
         public void KillAll()
         {
-            foreach(var module in Instances)
+            foreach (var instance in Instances)
             {
-                AddInController.GetAddInController(module).Shutdown();
+                Kill(instance.Instance);
             }
         }
 
-        public void Kill(IModule module)
+        public static void UpdateInstalledModules()
         {
-            AddInController.GetAddInController(module).Shutdown();
+            AddInStore.Update(AddInPipelineRoot);
+            var addins = AddInStore.FindAddIns(typeof(IModule), AddInPipelineRoot);
+            foreach (var token in addins)
+            {
+                if (!Modules.Any(m => m._token.Equals(token)))
+                {
+                    Modules.Add(new Module(token));
+                }
+            }
         }
 
-        public IModule Launch(Boolean initialize = true)
+        public IModule Activate()   
         {
-            var m = _token.Activate<IModule>(new AddInProcess(), AddInSecurityLevel.FullTrust);
-            if (initialize)
-            {
-                m.Initialize(new Start9Host());
-            }
-            Instances.Add(m);
-            return m;
+            var proc = new AddInProcess();
+            var instance = _token.Activate<IModule>(proc, AddInSecurityLevel.FullTrust);
+            instance.Initialize(Start9Host.Instance);
+            Instances.Add(new ModuleInstance(instance, proc));
+            return instance;
+        }
+
+        public static Module GetModuleForInstance(IModule module)
+        {
+            return Modules.First(m => AddInController.GetAddInController(module).Token.Equals(m._token));
+        }
+
+        public void Kill(IModuleInstance instance) => throw new NotImplementedException();
+        void IModuleAssembly.Activate(Boolean initialize) => throw new NotImplementedException();
+
+        private class AddInTokenEqualityComparer : IEqualityComparer<AddInToken>
+        {
+            public Boolean Equals( AddInToken x, AddInToken y) => x.Equals(y);
+            public Int32 GetHashCode(AddInToken obj) => obj.GetHashCode();
         }
     }
+
+    public class ModuleInstance
+    {
+        public ModuleInstance(IModule instance, AddInProcess proc)
+        {
+            Instance = instance;
+            Process = proc;
+            proc.ShuttingDown += (sender, e) =>
+            {
+                Module.GetModuleForInstance(Instance).Instances.Remove(this);
+            };
+        }
+
+        public IModule Instance { get; }
+        public AddInProcess Process { get; }
+    }
+
 }

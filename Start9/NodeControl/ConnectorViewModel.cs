@@ -15,21 +15,25 @@ namespace Start9.NodeControl
 
         private Point hotspot;
 
-        public EntryViewModel(IMessageEntry messageEntry)
+        public EntryViewModel(Module module, IMessageEntry messageEntry)
         {
-            Message = messageEntry ?? throw new ArgumentNullException(nameof(messageEntry));
+            Module = module;
+            Name = messageEntry.FriendlyName;
             Type = EntryType.Message;
         }
 
-        public EntryViewModel(IReceiverEntry receiverEntry)
+        public EntryViewModel(Module module, IReceiverEntry receiverEntry)
         {
-
-            Receiver = receiverEntry ?? throw new ArgumentNullException(nameof(receiverEntry));
+            Module = module;
+            Name = receiverEntry.FriendlyName;
             Type = EntryType.Receiver;
         }
 
-        public IMessageEntry Message { get; }
-        public IReceiverEntry Receiver { get; }
+        String Name { get; }
+
+        public IMessageEntry MessageEntry => Module.MessageContract.Entries.First(e => e.FriendlyName == Name);
+        public IReceiverEntry ReceiverEntry => Module.ReceiverContract.Entries.First(e => e.FriendlyName == Name);
+        public Module Module { get; }
 
         public EntryType Type { get; internal set; }
 

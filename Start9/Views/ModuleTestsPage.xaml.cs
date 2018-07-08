@@ -24,7 +24,7 @@ namespace Start9.Pages
 
         private void Button_Click(Object sender, RoutedEventArgs e)
 		{
-            ((Module) Modules.SelectedItem).Launch();
+            ((Module) Modules.SelectedItem).Activate();
         }
 
         private void Button_Click_1(Object sender, RoutedEventArgs e)
@@ -33,22 +33,4 @@ namespace Start9.Pages
         }
     }
 
-    public sealed class InstanceToProcessIdConverter : IValueConverter
-    {
-        public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
-        {
-            var module = (IModule) value;
-            if(module == null)
-            {
-                return 0;
-            }
-
-            return AddInController.GetAddInController(module).AddInEnvironment.Process.ProcessId;
-        }
-
-        public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException("InstanceToTextConverter can only be used for one way conversion.");
-        }
-    }
 }
