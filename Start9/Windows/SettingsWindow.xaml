@@ -26,6 +26,7 @@
                 <GradientStop Color="#7FC9FF" Offset="0.6" />
             </LinearGradientBrush>
             <SolidColorBrush x:Key="connectionBrush" Color="Black" />
+            <SolidColorBrush x:Key="LinkBrush" Color="#FF40EFFF" />
             <SolidColorBrush x:Key="connectorBackgroundBrush" Color="White"/>
            
 
@@ -35,8 +36,48 @@
                 <Setter Property="ZIndex" Value="{Binding ZIndex}" />
                 <Setter Property="IsSelected" Value="{Binding IsSelected}" />
             </Style>
+
             <Style x:Key="DoubleClickStyle" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
                 <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+            </Style>
+            <Style x:Key="NodeContainerStyle" TargetType="{x:Type networkui:NodeItem}" BasedOn="{StaticResource {x:Type networkui:NodeItem}}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type networkui:NodeItem}">
+                            <Grid>
+                                <ContentPresenter x:Name="PART_ContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                                <Border x:Name="HoverBorder" UseLayoutRounding="True" BorderThickness="0,1" Padding="1" CornerRadius="13" BorderBrush="{DynamicResource LinkBrush}" Opacity="0">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="White" Opacity="1" BlurRadius="7.5" ShadowDepth="0"/>
+                                    </Border.Effect>
+                                    <Border UseLayoutRounding="True" BorderThickness="0,1" CornerRadius="12" BorderBrush="{DynamicResource LinkBrush}"/>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="False"/>
+                                        <Condition Property="IsSelected" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <MultiTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.125" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </MultiTrigger.EnterActions>
+                                    <MultiTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="HoverBorder" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </MultiTrigger.ExitActions>
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <!--Receiver connector template-->
@@ -46,16 +87,8 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <networkui:ConnectorItem 
-                        Grid.Column="0"
-                        Width="15"
-                        Height="15"
-                        Cursor="Hand" />
-                    <TextBlock
-                        Grid.Column="1"
-                        Margin="5,0,0,0"
-                        Text="{Binding ReceiverEntry.FriendlyName}"
-                        VerticalAlignment="Center"/>
+                    <networkui:ConnectorItem Grid.Column="0" Width="25" Height="25" Margin="-5,10,10,10" Cursor="Hand" />
+                    <TextBlock Grid.Column="1" Margin="5,0,0,0" Text="{Binding ReceiverEntry.FriendlyName}" VerticalAlignment="Center"/>
                 </Grid>
             </DataTemplate>
 
@@ -66,105 +99,199 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Grid.Column="0"
-                        Text="{Binding MessageEntry.FriendlyName}"
-                        VerticalAlignment="Center"
-                        Margin="0,0,5,0"/>
-                    <Grid
-                        Grid.Column="1"
-                        Width="15"
-                        Height="15"
-                        Cursor="Hand">
-                        <networkui:ConnectorItem />
-                        <Ellipse
-                            Visibility="{Binding IsConnectionAttached, Converter={StaticResource booleanToVisibilityConverter}}"
-                            Margin="3"
-                            Fill="{StaticResource connectionBrush}"
-                            IsHitTestVisible="False" />
+                    <TextBlock Grid.Column="0" Text="{Binding MessageEntry.FriendlyName}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <Grid Grid.Column="1" Width="25" Height="25" Margin="10,10,-5,10" Cursor="Hand">
+                        <networkui:ConnectorItem/>
+                        <Ellipse Visibility="{Binding IsConnectionAttached, Converter={StaticResource booleanToVisibilityConverter}}" Fill="{DynamicResource LinkBrush}" IsHitTestVisible="False">
+                            <Ellipse.OpacityMask>
+                                <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5">
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Offset="0.25" Color="Black"/>
+                                        <GradientStop Offset="1" Color="Transparent"/>
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </Ellipse.OpacityMask>
+                        </Ellipse>
                     </Grid>
                 </Grid>
             </DataTemplate>
-            <nodecontrol:ScaleToPercentConverter 
-                x:Key="scaleToPercentConverter" />
+            <nodecontrol:ScaleToPercentConverter x:Key="scaleToPercentConverter" />
             
             <!--Connector dot style-->
-            <Style 
-                TargetType="{x:Type networkui:ConnectorItem}">
-                <Setter 
-                    Property="Hotspot"
-                    Value="{Binding Hotspot, Mode=OneWayToSource}"/>
-                <Setter 
-                    Property="Template">
+            <Style TargetType="{x:Type networkui:ConnectorItem}">
+                <Setter Property="Hotspot" Value="{Binding Hotspot, Mode=OneWayToSource}"/>
+                <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate 
-                            TargetType="{x:Type networkui:ConnectorItem}">
-                            <Ellipse
-                                Stroke="{StaticResource nodeBorderBrush}"
-                                Fill="{StaticResource connectorBackgroundBrush}"/>
+                        <ControlTemplate TargetType="{x:Type networkui:ConnectorItem}">
+                            <Ellipse Stroke="Transparent" StrokeThickness="0" Fill="{DynamicResource RoundButtonHoverPrimaryFillBrush}">
+                                <Ellipse.Effect>
+                                    <DropShadowEffect Color="Black" Opacity="0.375" BlurRadius="7.5" ShadowDepth="0"/>
+                                </Ellipse.Effect>
+                            </Ellipse>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
 
             <!--Path template-->
-            <DataTemplate
-                DataType="{x:Type nodecontrol:MessagePathViewModel}">
-                <nodecontrol:CurvedArrow
-                        Stroke="{StaticResource connectionBrush}"
-                        StrokeThickness="2"
-                        Fill="{StaticResource connectionBrush}"
-                        Points="{Binding Points}"/>
+            <DataTemplate DataType="{x:Type nodecontrol:MessagePathViewModel}">
+                <nodecontrol:CurvedArrow Stroke="{DynamicResource LinkBrush}" StrokeThickness="5" Fill="{Binding Stroke, RelativeSource={RelativeSource Mode=Self}}" Points="{Binding Points}" ArrowHeadLength="5" ArrowHeadWidth="10">
+                    <nodecontrol:CurvedArrow.Effect>
+                        <DropShadowEffect Color="White" Opacity="1" BlurRadius="7.5" ShadowDepth="0"/>
+                    </nodecontrol:CurvedArrow.Effect>
+                </nodecontrol:CurvedArrow>
             </DataTemplate>
             
             <!--Node template-->
             <DataTemplate DataType="{x:Type nodecontrol:ModuleViewModel}">
-                <Grid
-                    MinWidth="120"
-                    Margin="10,6,10,6"
-                    SizeChanged="Node_SizeChanged">
-                    <Rectangle
-                        Stroke="{StaticResource nodeBorderBrush}"
-                        StrokeThickness="1.3"
-                        RadiusX="4"
-                        RadiusY="4"
-                        Fill="{StaticResource nodeFillBrush}"/>
-                    <Grid Margin="-6,4,-6,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" MinWidth="10" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="2" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock
-                                Grid.Column="0"
-                                Grid.ColumnSpan="3"
-                                Grid.Row="0"
-                                FontSize="20"
-                                Text="{Binding Module.Name}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                />
-                        <ItemsControl
-                                Grid.Column="0"
-                                Grid.Row="2"
-                                ItemsSource="{Binding InputConnectors}"
-                                ItemTemplate="{StaticResource inputConnectorTemplate}"
-                                Focusable="False"
-                                />
-                        <ItemsControl
-                                Grid.Column="2"
-                                Grid.Row="2"
-                                ItemsSource="{Binding OutputConnectors}"
-                                ItemTemplate="{StaticResource outputConnectorTemplate}"
-                                Focusable="False"
-                                />
-                    </Grid>
-                </Grid>
+                <DockPanel>
+                    <DockPanel.Effect>
+                        <DropShadowEffect Color="Black" Direction="225" ShadowDepth="37.5" BlurRadius="50" Opacity="0.375"/>
+                    </DockPanel.Effect>
+                    <Border Background="#FF5E98D9" Height="40" CornerRadius="0,0,12,12" DockPanel.Dock="Bottom"/>
+                    <Border Background="{DynamicResource DefaultWindowBodyBrush}" CornerRadius="12,12,0,0" UseLayoutRounding="True" SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <apictrl:Planerator Margin="16,7,0,30" Height="{Binding ActualWidth, RelativeSource={RelativeSource Mode=Self}}" Grid.Column="1" UseLayoutRounding="True" SnapsToDevicePixels="True" RotationX="-12" RotationZ="6" RotationY="12">
+                                <apictrl:Planerator.Effect>
+                                    <DropShadowEffect Color="Black" Direction="270" ShadowDepth="50" BlurRadius="50" Opacity="0.25"/>
+                                </apictrl:Planerator.Effect>
+                                <Grid MinWidth="128" MaxWidth="192" SizeChanged="Node_SizeChanged" Background="#01000000">
+                                    <Rectangle x:Name="SizingAid" Fill="#01000000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                    <Border UseLayoutRounding="True" ClipToBounds="True">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStop Offset="0" Color="#FF7FC0FF"/>
+                                                    <GradientStop Offset="1" Color="#FFB0D0FF"/>
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Border.OpacityMask>
+                                            <VisualBrush>
+                                                <VisualBrush.Visual>
+                                                    <Grid Width="{Binding ActualWidth, Source={x:Reference SizingAid}}" Height="{Binding ActualHeight, Source={x:Reference SizingAid}}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="50"/>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="50"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="50"/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition Height="50"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Rectangle Grid.Column="0" Grid.Row="0">
+                                                            <Rectangle.Fill>
+                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                                    <LinearGradientBrush.GradientStops>
+                                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                                        <GradientStop Offset="0.5" Color="Black"/>
+                                                                    </LinearGradientBrush.GradientStops>
+                                                                </LinearGradientBrush>
+                                                            </Rectangle.Fill>
+                                                        </Rectangle>
+                                                        <Rectangle Grid.Column="2" Grid.Row="2">
+                                                            <Rectangle.Fill>
+                                                                <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                                                                    <LinearGradientBrush.GradientStops>
+                                                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                                                        <GradientStop Offset="0.5" Color="Black"/>
+                                                                    </LinearGradientBrush.GradientStops>
+                                                                </LinearGradientBrush>
+                                                            </Rectangle.Fill>
+                                                        </Rectangle>
+                                                        <Border Background="Black" CornerRadius="0,2,0,0" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                                        <Border Background="Black" CornerRadius="0,0,2,0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                                    </Grid>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Border.OpacityMask>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="10"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="10"/>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="10"/>
+                                            </Grid.RowDefinitions>
+                                            <Canvas Background="#40000000" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0"/>
+                                            <Canvas Background="#40000000" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"/>
+                                            <Canvas Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="White"/>
+                                                            <GradientStop Offset="0.25" Color="#40FFFFFF"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas Width="50" HorizontalAlignment="Left" Margin="6,3" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#00FFFFFF"/>
+                                                            <GradientStop Offset="0.05" Color="#7FFFFFFF"/>
+                                                            <GradientStop Offset="0.75" Color="#00FFFFFF"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                                <Canvas.Effect>
+                                                    <BlurEffect Radius="3" KernelType="Gaussian"/>
+                                                </Canvas.Effect>
+                                            </Canvas>
+                                            <Canvas Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="#C0000040"/>
+                                                            <GradientStop Offset="1" Color="#10000040"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas Grid.Column="0" Grid.Row="2">
+                                                <Canvas.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <LinearGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0.5" Color="#10000040"/>
+                                                            <GradientStop Offset="0.5" Color="#10FFFFFF"/>
+                                                        </LinearGradientBrush.GradientStops>
+                                                    </LinearGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                            <Canvas Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2">
+                                                <Canvas.Background>
+                                                    <RadialGradientBrush GradientOrigin="0.5,1" Center="0.5,1" RadiusY="1">
+                                                        <RadialGradientBrush.GradientStops>
+                                                            <GradientStop Offset="0" Color="White"/>
+                                                            <GradientStop Offset="1" Color="#10FFFFFF"/>
+                                                        </RadialGradientBrush.GradientStops>
+                                                    </RadialGradientBrush>
+                                                </Canvas.Background>
+                                            </Canvas>
+                                        </Grid>
+                                    </Border>
+                                    <TextBlock FontSize="24" Foreground="#FF2466BD" Text="{Binding Module.Name}" HorizontalAlignment="Stretch" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect Color="White" Direction="320" ShadowDepth="3" BlurRadius="10" Opacity="1" />
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </Grid>
+                            </apictrl:Planerator>
+                            <ItemsControl Grid.Column="0" VerticalAlignment="Center" Margin="-5,0,0,0" ItemsSource="{Binding InputConnectors}" ItemTemplate="{StaticResource inputConnectorTemplate}" Focusable="False"/>
+                            <ItemsControl Grid.Column="2" VerticalAlignment="Center" Margin="0,0,-5,0" ItemsSource="{Binding OutputConnectors}" ItemTemplate="{StaticResource outputConnectorTemplate}" Focusable="False"/>
+                        </Grid>
+                    </Border>
+                </DockPanel>
             </DataTemplate>
         </ResourceDictionary>
     </plex:PlexWindow.Resources>
@@ -280,7 +407,8 @@
                         ConnectionDragStarted="networkControl_ConnectionDragStarted"
                         QueryConnectionFeedback="networkControl_QueryConnectionFeedback"
                         ConnectionDragging="networkControl_ConnectionDragging"                            
-                        ConnectionDragCompleted="NetworkControl_ConnectionDragCompleted"/>
+                        ConnectionDragCompleted="NetworkControl_ConnectionDragCompleted"
+                        NodeItemContainerStyle="{DynamicResource NodeContainerStyle}"/>
                 </ScrollViewer>
             </Grid>
             <Grid x:Name="MarketGrid" Visibility="Hidden">
@@ -288,7 +416,7 @@
                     <TranslateTransform/>
                 </Grid.RenderTransform>
                 <Frame x:Name="MarketFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
-                   VerticalAlignment="Stretch" Visibility="Visible" Navigated="MarketFrame_Navigated"
+                   VerticalAlignment="Stretch" Visibility="Hidden" Navigated="MarketFrame_Navigated"
                    NavigationUIVisibility="Hidden">
                     <Frame.OpacityMask>
                         <VisualBrush AlignmentX="Center" AlignmentY="Center">
@@ -301,6 +429,7 @@
                         </VisualBrush>
                     </Frame.OpacityMask>
                 </Frame>
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="MarketWindowButton_Click">Show Market Window</Button>
             </Grid>
             <Grid x:Name="SettingsGrid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
                 <Grid.RenderTransform>

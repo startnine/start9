@@ -264,7 +264,12 @@ namespace Start9.Windows
 			ViewModel.CreateNode(Modules.ItemsSource.OfType<Module>().ElementAt(Modules.SelectedIndex), new Point(50, 50), true);
 		}
 
-		/*private void PlexTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
+        private void MarketWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            new MarketWindow().Show();
+        }
+
+        /*private void PlexTestCommandLinkButton_Click(object sender, RoutedEventArgs e)
 		{
 			GoToPage(0, 0);
 		}
@@ -317,5 +322,5 @@ namespace Start9.Windows
 		{
 			GoHome();
 		}*/
-	}
+    }
 }

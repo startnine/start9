@@ -31,7 +31,7 @@ namespace Start9
         {
             Application.Current.Dispatcher.BeginInvoke((Action) (() =>
             {
-                var paths = ((SettingsWindow)Application.Current.MainWindow).ViewModel.Network.Connections.Where(c => c.SourceConnector.MessageEntry.FriendlyName == message.MessageEntry.FriendlyName);
+                  var paths = ((SettingsWindow)Application.Current.MainWindow).ViewModel.Network.Connections.Where(c => c.SourceConnector.MessageEntry.FriendlyName == message.MessageEntry.FriendlyName);
 
                 foreach (var receiver in paths.Select(p => p.DestConnector.ReceiverEntry))
                 {
