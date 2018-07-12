@@ -46,11 +46,11 @@
                         <ControlTemplate TargetType="{x:Type networkui:NodeItem}">
                             <Grid>
                                 <ContentPresenter x:Name="PART_ContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
-                                <Border x:Name="HoverBorder" UseLayoutRounding="True" BorderThickness="0,1" Padding="1" CornerRadius="13" BorderBrush="{DynamicResource LinkBrush}" Opacity="0">
+                                <Border x:Name="HoverBorder" UseLayoutRounding="True" BorderThickness="0,1" Padding="1" CornerRadius="13" BorderBrush="{DynamicResource LinkBrush}" Opacity="0" IsHitTestVisible="False">
                                     <Border.Effect>
                                         <DropShadowEffect Color="White" Opacity="1" BlurRadius="7.5" ShadowDepth="0"/>
                                     </Border.Effect>
-                                    <Border UseLayoutRounding="True" BorderThickness="0,1" CornerRadius="12" BorderBrush="{DynamicResource LinkBrush}"/>
+                                    <Border UseLayoutRounding="True" BorderThickness="0,1" CornerRadius="12" BorderBrush="{DynamicResource LinkBrush}" IsHitTestVisible="False"/>
                                 </Border>
                             </Grid>
                             <ControlTemplate.Triggers>
@@ -102,15 +102,16 @@
                     <TextBlock Grid.Column="0" Text="{Binding MessageEntry.FriendlyName}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                     <Grid Grid.Column="1" Width="25" Height="25" Margin="10,10,-5,10" Cursor="Hand">
                         <networkui:ConnectorItem/>
-                        <Ellipse Visibility="{Binding IsConnectionAttached, Converter={StaticResource booleanToVisibilityConverter}}" Fill="{DynamicResource LinkBrush}" IsHitTestVisible="False">
-                            <Ellipse.OpacityMask>
+                        <Ellipse Visibility="{Binding IsConnectionAttached, Converter={StaticResource booleanToVisibilityConverter}}" IsHitTestVisible="False">
+                            <Ellipse.Fill>
                                 <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5">
                                     <RadialGradientBrush.GradientStops>
-                                        <GradientStop Offset="0.25" Color="Black"/>
+                                        <GradientStop Offset="0.375" Color="#FF40EFFF"/>
+                                        <GradientStop Offset="0.375" Color="#A0FFFFFF"/>
                                         <GradientStop Offset="1" Color="Transparent"/>
                                     </RadialGradientBrush.GradientStops>
                                 </RadialGradientBrush>
-                            </Ellipse.OpacityMask>
+                            </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
                 </Grid>
