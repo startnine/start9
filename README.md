@@ -27,16 +27,16 @@ Start9 is a WIP extensible, customizable shell supplement for Windows, one which
 -->
 
 ---
-# Start9
+## Start9
 A beautiful and simple front-end for managing Start9 modules.
 
-## Contributing and Conduct
+### Contributing and Conduct
 This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
 For more information, see the [Contributor Covenant code of conduct](https://www.contributor-covenant.org/).
 
 In addition, please follow the [contributing guidelines](https://github.com/StartNine/Start9.Host/blob/master/CONTRIBUTING.md) for all Start9 projects.
 
-## Dependencies and Frameworks
+### Dependencies and Frameworks
 - [.NET Framework 4.0](https://www.microsoft.com/en-ca/download/details.aspx?id=17718)
 	- Official builds of Start9 are built with .NET Framework 4.0. However, you may want to retarget it to be able to access newer features and load in modules compiled for later versions of .NET.
 - WPF related assemblies (PresentationFramework, etc.)
