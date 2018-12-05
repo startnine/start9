@@ -46,7 +46,7 @@ In addition, please follow the [contributing guidelines](https://github.com/Star
 - System.AddIn
 	- This represents the Microsoft Addin Framework assembly. We use this in Start9 for the Host-side adapter part of the addin pipeline.
 
-Other, smaller dependencies can be seen in the [csproj file for the project](https://github.com/StartNine/Start9.Host/blob/master/Start9/Start9.csproj#L36). 
+Other, smaller dependencies can be seen in the [csproj file for the project](https://github.com/StartNine/start9/blob/master/Start9/Start9.Host.csproj#L40). 
 
 
 ---
