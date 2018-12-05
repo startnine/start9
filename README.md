@@ -38,7 +38,7 @@ In addition, please follow the [contributing guidelines](https://github.com/Star
 
 ### Dependencies and Frameworks
 - [.NET Framework 4.7.2](https://www.microsoft.com/net/download/dotnet-framework-runtime/net472)
-	- Official builds of Start9 are built with .NET Framework 4.72. However, you may want to retarget it to be able to access newer features and load in modules compiled for later versions of .NET.
+	- Official builds of Start9 are built with .NET Framework 4.7.2. However, you may want to retarget it to be able to access newer features and load in modules compiled for later versions of .NET.
 - WPF related assemblies (PresentationFramework, etc.)
 	- These assemblies make Start9 incompatible with .NET Core and other non-Microsoft .NET implementations. 
 - [Start9 API](https://github.com/StartNine/start9-api)
