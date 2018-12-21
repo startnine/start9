@@ -2,16 +2,17 @@
 Start9 is a WIP extensible, customizable shell supplement for Windows, one which aims to be not only modular, but extends to many needs.
 
 ## Planned Modules
-*Start9 is planned with with 7 modules bundled, with more in the Module Marketplace. The default modules list includes*:
-- Classic Start Menu
-- Windows XP Start Menu 
-- Windows 7 Start Menu
-- Windows 10 AU Start Menu
-- Classic Taskbar
+We're planning on having some modules pre-packaged with Start9. Here's the current list:
+- Double Decker Bar
 - Superbar
-- macOS Dock
-- Longhorn (4074) Sidebar
-- Windows 10 Notifcation Center
+- Experience Menu
+- Origin Menu
+- Ribbon File Manager
+- Superbar
+- Startbeat Menu
+- Most likely others we haven't come up with yet!
+
+Please note that every aspect of this list is subject to change at any time.
 
 <!-- ## Compatability
 *As Start9 is still in the early stages of development, compatibility isn't a big concern right now*
