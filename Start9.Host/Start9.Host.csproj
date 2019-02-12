@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Start9.Host</RootNamespace>
+    <AssemblyName>Start9.Host</AssemblyName>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+	  <UseWpf>true</UseWpf>
+    <AssemblyTitle>Start9.Host</AssemblyTitle>
+    <Product>Start9</Product>
+    <Copyright>Copyright © Start9 Contributors 2019</Copyright>
+    <OutputPath>$(AppData)\Start9\</OutputPath>
+	  <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NetworkView" Version="1.0.0" />
+    <PackageReference Include="Start9.Api" Version="1.0.0-CI00121" />
+  </ItemGroup>
+</Project>

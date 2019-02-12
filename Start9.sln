@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9.Host", "Start9\Start9.Host.csproj", "{15840142-395D-429A-90E6-4956766FD251}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9.Host.Views", "Start9.Host.Views\Start9.Host.Views.csproj", "{60280AE0-7326-423E-AB1B-9D0FAC28FC1B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9.Host.Adapters", "Start9.Host.Adapters\Start9.Host.Adapters.csproj", "{F7B12F6C-199D-4A9E-9835-5DF1E7763FC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Start9.Host", "Start9.Host\Start9.Host.csproj", "{15840142-395D-429A-90E6-4956766FD251}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
