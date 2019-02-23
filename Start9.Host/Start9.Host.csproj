@@ -19,6 +19,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NetworkView" Version="1.0.0" />
-    <PackageReference Include="Start9.Api" Version="1.0.0-CI00121" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Start9.UI.Wpf">
+      <HintPath>..\..\start9-ui\Start9.UI.Wpf\bin\Debug\netcoreapp3.0\Start9.UI.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\superbar\Superbar\bin\Debug\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControls\" />
   </ItemGroup>
 </Project>

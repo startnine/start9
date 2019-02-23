@@ -4,18 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Start9.Host.Pages"
-      xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
-      xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
+      xmlns:ui="clr-namespace:Start9.UI.Wpf;assembly=Start9.UI.Wpf"
       mc:Ignorable="d"
       d:DesignHeight="300" d:DesignWidth="300"
       Title="PlexStylesTestPage">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Plex.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
             <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="0"
@@ -81,18 +73,15 @@
                                      Style="{DynamicResource ShinyTextBox}" />
 
                             <TextBlock Margin="50,30,0,0">Two-State ToggleSwitch</TextBlock>
-                            <apictrl:ToggleSwitch IsThreeState="False" IsChecked="False" />
+                            <ui:ToggleSwitch IsThreeState="False" IsChecked="False" />
                             <TextBlock Margin="50,20,0,0">Three-State ToggleSwitch</TextBlock>
-                            <apictrl:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}" />
-                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch"
-                                                       Header="This is a Command Link Button."
-                                                       Icon="{DynamicResource LargeBackArrowPathIcon}">
+                            <ui:ToggleSwitch IsThreeState="True" IsChecked="{x:Null}" />
+                            <Button HorizontalAlignment="Stretch">
                                 It has a title and a custom icon, and you can click it to make it do something. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.
-                            </apictrl:CommandLinkButton>
-                            <apictrl:CommandLinkButton HorizontalAlignment="Stretch"
-                                                       Header="This Command Link Button is Disabled." IsEnabled="False">
+                            </Button>
+                            <Button HorizontalAlignment="Stretch" IsEnabled="False">
                                 As a result , clicking it will have absolutely no effect at all. Coincidentally, it also uses the default icon. From here on, it's all sample text. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.
-                            </apictrl:CommandLinkButton>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

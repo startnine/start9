@@ -4,25 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Start9.Host.Pages"
-      xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
       mc:Ignorable="d"
       d:DesignHeight="800" d:DesignWidth="800"
       Title="Home">
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Plex.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
     <Page.Content>
         <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
-                <apictrl:CommandLinkButton x:Name="PlexTestCommandLinkButton" Height="192"
-                                           Style="{DynamicResource IceIconCommandLinkButtonStyle}"
-                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                           Header="Plex Styles Test" Click="PlexTestCommandLinkButton_Click">
-                    <apictrl:CommandLinkButton.Icon>
+                <Button x:Name="PlexTestCommandLinkButton" Height="192"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="PlexTestCommandLinkButton_Click">
+                    <!--ui:CommandLinkButton.Icon>
                         <Canvas>
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="-60" Y="-15" />
@@ -49,15 +39,13 @@
                                 </Path.Data>
                             </Path>
                         </Canvas>
-                    </apictrl:CommandLinkButton.Icon>
+                    </ui:CommandLinkButton.Icon-->
                     View and test various Plex controls and styles (TEMPORARY)
-                </apictrl:CommandLinkButton>
-                <apictrl:CommandLinkButton x:Name="ModuleFrontEndTestCommandLinkButton" Height="192"
-                                           Style="{DynamicResource IceIconCommandLinkButtonStyle}"
+                </Button>
+                <Button x:Name="ModuleFrontEndTestCommandLinkButton" Height="192"
                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                           Header="Module Front End Test"
                                            Click="ModuleFrontEndTestCommandLinkButton_Click">
-                    <apictrl:CommandLinkButton.Icon>
+                    <!--apictrl:CommandLinkButton.Icon>
                         <Canvas>
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="-52" Y="-130" />
@@ -90,9 +78,9 @@
                                 </Path.Data>
                             </Path>
                         </Canvas>
-                    </apictrl:CommandLinkButton.Icon>
+                    </apictrl:CommandLinkButton.Icon-->
                     View and test various Front-end experiments for potential Modules (TEMPORARY)
-                </apictrl:CommandLinkButton>
+                </Button>
                 <!--apictrl:CommandLinkButton x:Name="MarketTestCommandLinkButton" Height="192"
                                            Style="{DynamicResource IceIconCommandLinkButtonStyle}"
                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

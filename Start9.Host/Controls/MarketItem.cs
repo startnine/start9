@@ -7,9 +7,9 @@ using System.Windows;
 using System.Windows.Controls;
 using Timer = System.Timers.Timer;
 using System.Windows.Media.Animation;
-using Start9.Api.Controls;
+using Start9.UI.Wpf;
 using System.Windows.Media;
-using static Start9.Api.Extensions;
+using static Start9.UI.Wpf.Statics.Extensions;
 using System.Windows.Input;
 using System.Diagnostics;
 
@@ -103,7 +103,7 @@ namespace Start9.Host.Controls
                 {
                     if ((_perspective != null) && (IsVisible))
                     {
-                        Point offset = this.GetOffsetFromCursor();
+                        Point offset = new Point();
                         var point = new Point((offset.Y + ((ActualHeight / 2) * -1)) * RotationMultiplier, (offset.X + ((ActualWidth / 2) * -1)) * RotationMultiplier);
                         _perspective.RotationX = point.X;
                         _perspective.RotationY = point.Y;

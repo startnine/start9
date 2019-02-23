@@ -9,25 +9,26 @@ using System.Windows.Media.Imaging;
 using System.Linq;
 using System.Windows.Navigation;
 using NetworkUI;
-using Start9.Api;
+/*using Start9.Api;
 using Start9.Api.Plex;
-using Start9.Api.Tools;
+using Start9.Api.Tools;*/
 using Start9.Host.Pages;
 using System.Reflection;
+using Start9.UI.Wpf.Windows;
 
 namespace Start9.Host.Windows
 {
 	/// <summary>
 	///     Interaction logic for SettingsWindow.xaml
 	/// </summary>
-	public partial class SettingsWindow : PlexWindow
+	public partial class SettingsWindow : DecoratableWindow
 	{
 		public SettingsWindow()
 		{
 			InitializeComponent();
 			SettingsFrame.Navigate(new Home());
 			MarketFrame.Navigate(new MarketplaceTestPage());
-		}
+        }
 
         /* 
 		public NodeControlPageViewModel ViewModel
@@ -128,15 +129,16 @@ namespace Start9.Host.Windows
 
         private void BackButton_Click(Object sender, RoutedEventArgs e)
 		{
-			if (SettingsGrid.IsVisible)
+            /*if (SettingsGrid.IsVisible)
 			{
 				SettingsFrame.NavigationService.GoBack();
 			}
 			else if (MarketGrid.IsVisible)
 			{
 				MarketFrame.NavigationService.GoBack();
-			}
-		}
+			}*/
+            System.Windows.Forms.MessageBox.Show("RenderCapability.Tier: " + RenderCapability.Tier.ToString() + "\n" + "CompositionTarget.RenderMode: " + System.Windows.Interop.HwndSource.FromHwnd(new System.Windows.Interop.WindowInteropHelper(this).EnsureHandle()).CompositionTarget.RenderMode.ToString());
+        }
         
 
         private void SettingsFrame_Navigated(Object sender, NavigationEventArgs e)
@@ -266,7 +268,7 @@ namespace Start9.Host.Windows
 
         private void MarketWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            Api.Plex.MessageBox.Show(this, Assembly.GetExecutingAssembly().GetCustomAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>().FrameworkName, "Currently running framework");
+            Start9.UI.Wpf.Windows.MessageBox< Start9.UI.Wpf.Windows.MessageBoxEnums.OkButton>.Show(Assembly.GetExecutingAssembly().GetCustomAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>().FrameworkName, "Currently running framework"); //this, 
             new MarketWindow().Show();
         }
 

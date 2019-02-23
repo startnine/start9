@@ -1,21 +1,20 @@
-﻿<plex:PlexWindow x:Class="Start9.Host.Windows.SettingsWindow"
+﻿<win:DecoratableWindow x:Class="Start9.Host.Windows.SettingsWindow"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:local="clr-namespace:Start9"
-                 xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
-                 xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"
                  xmlns:networkui="clr-namespace:NetworkUI;assembly=networkui"
+                 xmlns:ui="clr-namespace:Start9.UI.Wpf;assembly=Start9.UI.Wpf"
+                 xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf"
                  mc:Ignorable="d"
-                 Title="Start9 Settings" Height="610" Width="840" ShowToolBar="True"
+                 Title="Start9 Settings" Height="610" Width="840"
                  ResizeMode="CanResize" Visibility="Visible"
                  TitleBarHeight="48">
-    <plex:PlexWindow.Resources>
+    <!--xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
+                 xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"-->
+    <win:DecoratableWindow.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Plex.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <BitmapImage x:Key="TestBitmapImage" UriSource="C:\Windows\Web\Wallpaper\img0.jpg" />
             <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
             <SolidColorBrush x:Key="nodeBorderBrush" Color="Black" />
@@ -26,11 +25,11 @@
             <SolidColorBrush x:Key="connectionBrush" Color="Black" />
             <SolidColorBrush x:Key="LinkBrush" Color="#FF40EFFF" />
             <SolidColorBrush x:Key="connectorBackgroundBrush" Color="White"/>
-           
+
         </ResourceDictionary>
-    </plex:PlexWindow.Resources>
-    <plex:PlexWindow.TitleBarContent>
-        <Grid Width="34" Height="34" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0">
+    </win:DecoratableWindow.Resources>
+    <DockPanel>
+        <Grid Width="34" Height="34" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" DockPanel.Dock="Top">
             <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
                 <Ellipse.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -44,13 +43,12 @@
             <Button x:Name="BackButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
                     Padding="-1,0,1,0" Style="{DynamicResource RoundButtonStyle}"
                     Content="{DynamicResource SmallBackArrowPathIcon}" Click="BackButton_Click"
-                    IsEnabled="{Binding CanGoBack, Source={x:Reference SettingsFrame}}" />
+                    />
+            <!--IsEnabled="{Binding CanGoBack, Source={x:Reference SettingsFrame}}"-->
         </Grid>
-    </plex:PlexWindow.TitleBarContent>
-    <plex:PlexWindow.ToolBarContent>
         <!--TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="22" Margin="18,0"
                  Style="{DynamicResource AddressBox}" /-->
-        <Grid x:Name="ToolbarGrid" Margin="0,1">
+        <Grid x:Name="ToolbarGrid" Margin="0,1" DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -60,8 +58,10 @@
             <ToggleButton x:Name="MarketHeader" Style="{DynamicResource PlexGlowToggleButtonStyle}" Grid.Column="1" Click="ToolbarHeader_Click" IsChecked="False">Market (Mart9? Store9?)</ToggleButton>
             <ToggleButton x:Name="SettingsHeader" Style="{DynamicResource PlexGlowToggleButtonStyle}" Grid.Column="2" Click="ToolbarHeader_Click" IsChecked="False">Settings</ToggleButton>
         </Grid>
-    </plex:PlexWindow.ToolBarContent>
-    <plex:PlexWindow.Content>
+        <Grid x:Name="FooterRoot" DockPanel.Dock="Bottom">
+            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Height="24"
+                    Content="Footer Content Test" />
+        </Grid>
         <Grid x:Name="RootGrid">
             <Grid x:Name="InstalledModulesGrid">
                 <Grid.RenderTransform>
@@ -173,11 +173,5 @@
                 </Frame>
             </Grid>
         </Grid>
-    </plex:PlexWindow.Content>
-    <plex:PlexWindow.FooterContent>
-        <Grid x:Name="FooterRoot">
-            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Height="24"
-                    Content="Footer Content Test" />
-        </Grid>
-    </plex:PlexWindow.FooterContent>
-</plex:PlexWindow>
+    </DockPanel>
+</win:DecoratableWindow>

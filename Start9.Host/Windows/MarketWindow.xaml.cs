@@ -11,8 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Start9.Api;
-using Start9.Api.Controls;
+/*using Start9.Api;
+using Start9.Api.Controls;*/
+using Start9.UI.Wpf.Windows;
 
 namespace Start9.Host.Windows
 {

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Start9.Api.Plex;
+//using Start9.Api.Plex;
 
 namespace Start9.Host.Pages
 {
@@ -11,19 +11,19 @@ namespace Start9.Host.Pages
 	/// </summary>
 	public partial class PlexStylesTestPage : Page
 	{
-		private readonly PlexWindow ParentWindow;
+		//private readonly DecoratableWindow ParentWindow;
 
 		public PlexStylesTestPage()
 		{
 			InitializeComponent();
-			ParentWindow = Window.GetWindow(this) as PlexWindow;
+			//ParentWindow = Window.GetWindow(this) as PlexWindow;
 		}
 
 		private void TitleBarCheckBox_Checked(Object sender, RoutedEventArgs e)
 		{
 			try
 			{
-				ParentWindow.ShowTitleBar = true;
+				//ParentWindow.ShowTitleBar = true;
 			}
 			catch
 			{
@@ -34,7 +34,7 @@ namespace Start9.Host.Pages
 		{
 			try
 			{
-				ParentWindow.ShowTitleBar = false;
+				//ParentWindow.ShowTitleBar = false;
 			}
 			catch
 			{
@@ -45,7 +45,7 @@ namespace Start9.Host.Pages
 		{
 			try
 			{
-				ParentWindow.ShowToolBar = true;
+				//ParentWindow.ShowToolBar = true;
 			}
 			catch
 			{
@@ -56,7 +56,7 @@ namespace Start9.Host.Pages
 		{
 			try
 			{
-				ParentWindow.ShowToolBar = false;
+				//ParentWindow.ShowToolBar = false;
 			}
 			catch
 			{
@@ -67,7 +67,7 @@ namespace Start9.Host.Pages
 		{
 			try
 			{
-				ParentWindow.ShowFooter = true;
+				//ParentWindow.ShowFooter = true;
 			}
 			catch
 			{
@@ -78,7 +78,7 @@ namespace Start9.Host.Pages
 		{
 			try
 			{
-				ParentWindow.ShowFooter = false;
+				//ParentWindow.ShowFooter = false;
 			}
 			catch
 			{
