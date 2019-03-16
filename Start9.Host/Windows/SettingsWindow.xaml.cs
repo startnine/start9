@@ -127,7 +127,7 @@ namespace Start9.Host.Windows
 
         */
 
-        private void BackButton_Click(Object sender, RoutedEventArgs e)
+        private void UserEmblemButton_Click(Object sender, RoutedEventArgs e)
 		{
             /*if (SettingsGrid.IsVisible)
 			{
@@ -215,7 +215,7 @@ namespace Start9.Host.Windows
 			(grid.RenderTransform as TranslateTransform).BeginAnimation(TranslateTransform.XProperty, animation);
 		}
 
-		private void ToolbarHeader_Click(Object sender, RoutedEventArgs e)
+		/*private void ToolbarHeader_Click(Object sender, RoutedEventArgs e)
 		{
 			Boolean goingRight = false;
 
@@ -264,7 +264,7 @@ namespace Start9.Host.Windows
 			{
 				source.IsChecked = true;
 			}
-		}
+		}*/
 
         private void MarketWindowButton_Click(object sender, RoutedEventArgs e)
         {

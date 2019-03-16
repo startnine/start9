@@ -4,7 +4,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Start9.UI.Wpf;component/Themes/Shale.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Start9.Host;component/Themes/Shale.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

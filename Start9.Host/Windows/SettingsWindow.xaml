@@ -8,9 +8,7 @@
                  xmlns:ui="clr-namespace:Start9.UI.Wpf;assembly=Start9.UI.Wpf"
                  xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf"
                  mc:Ignorable="d"
-                 Title="Start9 Settings" Height="610" Width="840"
-                 ResizeMode="CanResize" Visibility="Visible"
-                 TitleBarHeight="48">
+                 Title="Start9 Settings" Height="610" Width="840" ResizeMode="CanResize" Visibility="Visible">
     <!--xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
                  xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"-->
     <win:DecoratableWindow.Resources>
@@ -29,57 +27,33 @@
         </ResourceDictionary>
     </win:DecoratableWindow.Resources>
     <DockPanel>
-        <Grid Width="34" Height="34" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" DockPanel.Dock="Top">
-            <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
-                <Ellipse.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Offset="0" Color="#20000000" />
-                            <GradientStop Offset="1" Color="#60FFFFFF" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
-            <Button x:Name="BackButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3"
-                    Padding="-1,0,1,0" Style="{DynamicResource RoundButtonStyle}"
-                    Content="{DynamicResource SmallBackArrowPathIcon}" Click="BackButton_Click"
-                    />
-            <!--IsEnabled="{Binding CanGoBack, Source={x:Reference SettingsFrame}}"-->
-        </Grid>
+        <ContentControl Style="{DynamicResource TitlebarAreaContentControl}" DockPanel.Dock="Top">
+            <Grid>
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Button x:Name="UserEmblemButton" Style="{DynamicResource UserEmblemButtonStyle}" Click="UserEmblemButton_Click" />
+                    <Button x:Name="LoginButton" Style="{DynamicResource LoginButtonStyle}">Log in</Button>
+                    <Button x:Name="RegisterButton" Style="{DynamicResource RegisterButtonStyle}">Register</Button>
+                </StackPanel>
+            </Grid>
+        </ContentControl>
         <!--TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="22" Margin="18,0"
                  Style="{DynamicResource AddressBox}" /-->
-        <Grid x:Name="ToolbarGrid" Margin="0,1" DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <ToggleButton x:Name="ModulesHeader" Style="{DynamicResource PlexGlowToggleButtonStyle}" Click="ToolbarHeader_Click" IsChecked="True">Modules</ToggleButton>
-            <ToggleButton x:Name="MarketHeader" Style="{DynamicResource PlexGlowToggleButtonStyle}" Grid.Column="1" Click="ToolbarHeader_Click" IsChecked="False">Market (Mart9? Store9?)</ToggleButton>
-            <ToggleButton x:Name="SettingsHeader" Style="{DynamicResource PlexGlowToggleButtonStyle}" Grid.Column="2" Click="ToolbarHeader_Click" IsChecked="False">Settings</ToggleButton>
-        </Grid>
-        <Grid x:Name="FooterRoot" DockPanel.Dock="Bottom">
-            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Height="24"
-                    Content="Footer Content Test" />
-        </Grid>
-        <Grid x:Name="RootGrid">
-            <Grid x:Name="InstalledModulesGrid">
-                <Grid.RenderTransform>
-                    <TranslateTransform/>
-                </Grid.RenderTransform>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="280"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Offset="0" Color="#FF588FD0"/>
-                            <GradientStop Offset="1" Color="#00588FD0"/>
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Grid.Background>
-                <ListView DockPanel.Dock="Left" 
+        <TabControl Style="{DynamicResource MainTabControlStyle}">
+            <TabItem Header="Modules">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#FF588FD0"/>
+                                <GradientStop Offset="1" Color="#00588FD0"/>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <ListView DockPanel.Dock="Left" 
                           BorderBrush="Transparent" 
                           BorderThickness="0" 
                           Grid.Column="0" 
@@ -87,7 +61,7 @@
                           UseLayoutRounding="True" 
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           HorizontalContentAlignment="Stretch">
-                    <!--<ListView.ItemTemplate>
+                        <!--<ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:Module}">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -109,69 +83,74 @@
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>-->
-                    <ListView.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <LinearGradientBrush.GradientStops>
-                                <GradientStop Offset="0" Color="#FFD8DDF0"/>
-                                <GradientStop Offset="1" Color="#00D8DDF0"/>
-                            </LinearGradientBrush.GradientStops>
-                        </LinearGradientBrush>
-                    </ListView.Background>
-                    <ListView.Effect>
-                        <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="230" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
-                    </ListView.Effect>
-                </ListView>
-                <Grid Grid.Column="1"/>
-                <ScrollViewer
+                        <ListView.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#FFD8DDF0"/>
+                                    <GradientStop Offset="1" Color="#00D8DDF0"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </ListView.Background>
+                        <ListView.Effect>
+                            <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="230" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
+                        </ListView.Effect>
+                    </ListView>
+                    <Grid Grid.Column="1"/>
+                    <ScrollViewer
                     CanContentScroll="True"
                     VerticalScrollBarVisibility="Visible"
                     HorizontalScrollBarVisibility="Visible"
                     Focusable="False"
                     Grid.Column="1">
 
-                </ScrollViewer>
-            </Grid>
-            <Grid x:Name="MarketGrid" Visibility="Hidden">
-                <Grid.RenderTransform>
-                    <TranslateTransform/>
-                </Grid.RenderTransform>
-                <Frame x:Name="MarketFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Options">
+                <Grid>
+                    <Grid x:Name="MarketGrid" Visibility="Hidden">
+                        <Grid.RenderTransform>
+                            <TranslateTransform/>
+                        </Grid.RenderTransform>
+                        <Frame x:Name="MarketFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch" Visibility="Hidden" Navigated="MarketFrame_Navigated"
                    NavigationUIVisibility="Hidden">
-                    <Frame.OpacityMask>
-                        <VisualBrush AlignmentX="Center" AlignmentY="Center">
-                            <VisualBrush.Visual>
-                                <Border Background="Black" BorderBrush="Transparent" BorderThickness="0"
+                            <Frame.OpacityMask>
+                                <VisualBrush AlignmentX="Center" AlignmentY="Center">
+                                    <VisualBrush.Visual>
+                                        <Border Background="Black" BorderBrush="Transparent" BorderThickness="0"
                                     CornerRadius="0,0,12,12"
                                     Width="{Binding ActualWidth, Source={x:Reference SizingAid}, FallbackValue=25}"
                                     Height="{Binding ActualHeight, Source={x:Reference SizingAid}, FallbackValue=25}" />
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Frame.OpacityMask>
-                </Frame>
-                <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="MarketWindowButton_Click">Show Market Window</Button>
-            </Grid>
-            <Grid x:Name="SettingsGrid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
-                <Grid.RenderTransform>
-                    <TranslateTransform/>
-                </Grid.RenderTransform>
-                <Rectangle x:Name="SizingAid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Frame.OpacityMask>
+                        </Frame>
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="MarketWindowButton_Click">Show Market Window</Button>
+                    </Grid>
+                    <Grid x:Name="SettingsGrid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
+                        <Grid.RenderTransform>
+                            <TranslateTransform/>
+                        </Grid.RenderTransform>
+                        <Rectangle x:Name="SizingAid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                        Opacity="1" IsHitTestVisible="False" />
-                <Frame x:Name="SettingsFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
+                        <Frame x:Name="SettingsFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch" Visibility="Visible" Navigated="SettingsFrame_Navigated"
                    NavigationUIVisibility="Hidden">
-                    <Frame.OpacityMask>
-                        <VisualBrush AlignmentX="Center" AlignmentY="Center">
-                            <VisualBrush.Visual>
-                                <Border Background="Black" BorderBrush="Transparent" BorderThickness="0"
+                            <Frame.OpacityMask>
+                                <VisualBrush AlignmentX="Center" AlignmentY="Center">
+                                    <VisualBrush.Visual>
+                                        <Border Background="Black" BorderBrush="Transparent" BorderThickness="0"
                                     CornerRadius="0,0,12,12"
                                     Width="{Binding ActualWidth, Source={x:Reference SizingAid}, FallbackValue=25}"
                                     Height="{Binding ActualHeight, Source={x:Reference SizingAid}, FallbackValue=25}" />
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Frame.OpacityMask>
-                </Frame>
-            </Grid>
-        </Grid>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Frame.OpacityMask>
+                        </Frame>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </win:DecoratableWindow>

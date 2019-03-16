@@ -18,6 +18,10 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Shale.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.0.1" />
     <PackageReference Include="NetworkView" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -30,5 +34,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UserControls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\Shale.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
