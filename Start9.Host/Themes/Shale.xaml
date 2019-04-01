@@ -182,6 +182,210 @@
 
     <!--#region Market stuff-->
 
+    <Style x:Key="MarketTopToolbarContentControlStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Padding" Value="5,5,0,5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <ControlTemplate.Resources>
+                        <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                            <Setter Property="Margin" Value="0,0,5,0"/>
+                            <!--Setter Property="Margin" Value="0,0,5,-6"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Grid>
+                                            <Border x:Name="IdleBackground" CornerRadius="{Binding Path=(tic:AttachedProperties.CornerCurves), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource CornerCurvesToCornerRadiusConverter}, ConverterParameter='3,3,3,3;0,0,0,0'}" Margin="0,0,0,5" Padding="0" BorderBrush="{DynamicResource ButtonIdleBorderBrush}" BorderThickness="1">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ButtonIdleBackgroundGradientStops}"/>
+                                                </Border.Background>
+                                                <Border x:Name="IdleInnerBackground" CornerRadius="{Binding Path=(tic:AttachedProperties.CornerCurves), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource CornerCurvesToCornerRadiusConverter}, ConverterParameter='2,2,2,2;0,0,0,0'}" Margin="1" Padding="0" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="0"/>
+                                            </Border>
+                                            <Border x:Name="HoverBackground" CornerRadius="{Binding CornerRadius, ElementName=IdleBackground}" Margin="0,0,0,5" Padding="0" BorderBrush="{DynamicResource ButtonHoverBorderBrush}" BorderThickness="1" Opacity="0">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ButtonHoverBackgroundGradientStops}"/>
+                                                </Border.Background>
+                                                <Border CornerRadius="{Binding CornerRadius, ElementName=IdleInnerBackground}" Margin="1" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                                                    <Border.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ButtonHoverSecondaryBackgroundGradientStops}"/>
+                                                    </Border.Background>
+                                                </Border>
+                                            </Border>
+                                            <Border x:Name="PressedBackground" CornerRadius="{Binding Path=(tic:AttachedProperties.CornerCurves), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource CornerCurvesToCornerRadiusConverter}, ConverterParameter='3,3,0,0;0,0,0,0'}" Margin="0" Padding="0" BorderBrush="{DynamicResource ButtonPressedBorderBrush}" BorderThickness="1,1,1,0" Opacity="0">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,1" EndPoint="0,-10" GradientStops="{DynamicResource WindowBackgroundGradientStops}"/>
+                                                </Border.Background>
+                                                <Grid>
+                                                    <Border CornerRadius="{Binding Path=(tic:AttachedProperties.CornerCurves), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource CornerCurvesToCornerRadiusConverter}, ConverterParameter='2,2,0,0;0,0,0,0'}" Margin="0" Padding="0" BorderBrush="Transparent" BorderThickness="1,1,1,0">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush StartPoint="0,1" EndPoint="0,2" GradientStops="{DynamicResource ShadowGradientStops}"/>
+                                                        </Border.Background>
+                                                    </Border>
+                                                    <Border CornerRadius="{Binding Path=(tic:AttachedProperties.CornerCurves), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource CornerCurvesToCornerRadiusConverter}, ConverterParameter='2,2,0,0;0,0,0,0'}" Margin="0" Padding="0" BorderThickness="1,1,1,0">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ButtonPressedSecondaryBackgroundGradientStops}"/>
+                                                        </Border.Background>
+                                                        <Border.BorderBrush>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ButtonPressedBackgroundGradientStops}"/>
+                                                        </Border.BorderBrush>
+                                                        <Border.OpacityMask>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Offset="0" Color="Black"/>
+                                                                    <GradientStop Offset="1" Color="Transparent"/>
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Border.OpacityMask>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                            <Border x:Name="DisabledBackground" CornerRadius="{Binding CornerRadius, ElementName=IdleBackground}" Margin="0,0,0,5" Padding="0" Background="{DynamicResource ButtonDisabledBackgroundBrush}" BorderBrush="{DynamicResource ButtonDisabledBorderBrush}" BorderThickness="1" Opacity="0">
+                                                <Border CornerRadius="{Binding CornerRadius, ElementName=IdleInnerBackground}" Margin="1" Padding="0" BorderBrush="Transparent" BorderThickness="0" Background="{DynamicResource ButtonDisabledSecondaryBackgroundBrush}"/>
+                                            </Border>
+                                            <Border Margin="0,0,0,5" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Focusable="False"/>
+                                            </Border>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                    <Condition Property="IsPressed" Value="False" />
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="HoverBackground"
+                                                         Storyboard.TargetProperty="Opacity" To="1"
+                                                         Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiTrigger.EnterActions>
+                                                <MultiTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="HoverBackground"
+                                                         Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiTrigger.ExitActions>
+                                            </MultiTrigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="PressedBackground"
+                                                         Storyboard.TargetProperty="Opacity" To="1"
+                                                         Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="PressedBackground"
+                                                         Storyboard.TargetProperty="Opacity" To="0"
+                                                         Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Foreground" Value="{DynamicResource ButtonDisabledForegroundBrush}"/>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsEnabled" Value="False"/>
+                                                    <Condition Property="IsChecked" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="DisabledBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiTrigger.EnterActions>
+                                                <MultiTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="DisabledBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiTrigger.ExitActions>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsEnabled" Value="False"/>
+                                                    <Condition Property="IsChecked" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="DisabledBackground" Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiTrigger.EnterActions>
+                                                <MultiTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetName="DisabledBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.125" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </MultiTrigger.ExitActions>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter-->
+                        </Style>
+                    </ControlTemplate.Resources>
+                    <Border Style="{DynamicResource HorizontalBarBorderStyle}" DockPanel.Dock="Top">
+                        <Grid>
+                            <Rectangle x:Name="ShadowRectangle" VerticalAlignment="Bottom" Margin="0,-18" Height="18" IsHitTestVisible="False">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ShadowGradientStops}"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ModuleSearchBoxStyle" TargetType="{x:Type ui:ActionBox}" BasedOn="{StaticResource {x:Type ui:ActionBox}}">
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Margin" Value="0,0,5,0"/>
+        <Setter Property="ButtonContent">
+            <Setter.Value>
+                <Canvas x:Name="SearchIconCanvas" Width="16" Height="16">
+                    <Path Data="M 0 7 L 7 0" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ToggleButton}}}" StrokeThickness="2" Canvas.Top="9"/>
+                    <Ellipse Width="11" Height="11" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ToggleButton}}}" StrokeThickness="2" Canvas.Left="5"/>
+                </Canvas>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="ButtonContent">
+                    <Setter.Value>
+                        <Path x:Name="CancelIconPath" Data="M 0 0 L 16 16 M 0 16 L 16 0" Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ToggleButton}}}" StrokeThickness="2" Visibility="Collapsed"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MarketMainScrollViewerStyle" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource ModulesGraphScrollViewerStyle}">
+        <Setter Property="tic:AttachedProperties.CornerCurves">
+            <Setter.Value>
+                <tic:CornerCurves TopLeft="False" TopRight="False" BottomRight="True" BottomLeft="False"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MarketGroupBoxHeaderComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}"/>
+
     <Style x:Key="{x:Type cont:MarketItem}" TargetType="{x:Type cont:MarketItem}">
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="Auto"/>
@@ -252,7 +456,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="olde" TargetType="cont:MarketItem">
+    <Style x:Key="oldPlexMarketItemStyle" TargetType="cont:MarketItem">
         <!--Setter Property="Width" Value="275"/>
         <Setter Property="Height" Value="175"/-->
         <Setter Property="Width" Value="Auto"/>

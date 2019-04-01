@@ -7,56 +7,115 @@
         xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf"
         xmlns:cont="clr-namespace:Start9.Host.Controls"
         mc:Ignorable="d"
-        Title="MarketWindow" Height="450" Width="800">
-    <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <DockPanel Margin="0,0,-15,0">
-                <Grid Height="215" DockPanel.Dock="Top">
-                    <Grid>
-                        <Border x:Name="ToolBarBorder" CornerRadius="8,8,0,0" BorderThickness="1,1,1,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{DynamicResource WindowToolbarBackgroundBrush}" BorderBrush="{DynamicResource WindowToolbarBorderBrush}">
-                            <Border x:Name="ToolBarSecondaryBorder" CornerRadius="8,8,0,0"
-                                                    BorderThickness="0,1,0,0" Background="{DynamicResource WindowToolbarSecondaryBackgroundBrush}"
-                                                    BorderBrush="{DynamicResource WindowToolbarSecondaryBorderBrush}" />
-                        </Border>
-                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="0" Background="{DynamicResource WindowToolbarBackgroundBrush}"/>
-                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="1" Background="{DynamicResource WindowToolbarTertiaryBackgroundBrush}"/>
-                        <Canvas Height="1" VerticalAlignment="Bottom" Margin="2" Background="{DynamicResource WindowToolbarQuarternaryBackgroundBrush}"/>
-                    </Grid>
-                    <TabControl Background="Transparent" Margin="0,0,15,0">
-                        <TabItem Header="New">
-                            <DockPanel UseLayoutRounding="True">
-                                <cont:MarketItem Width="275" Height="200" VerticalAlignment="Stretch" Title="Double-Decker-Bar" Author="Start9 Team" Description="Insert whatever the hecc the description for DDB was here." DockPanel.Dock="Left">
-                                    <cont:MarketItem.Icon>
-                                        <Canvas Width="48" Height="48" Background="Red"/>
-                                    </cont:MarketItem.Icon>
-                                </cont:MarketItem>
-                                <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                                    <cont:MarketItem Title="Jumpstart Menu" Author="Start9 Team" Description="Jump to any app, anytime." Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Dockintosh" Author="Start9 Team" Description="Apples to apples, docks to docks." Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Wheelie" Author="Start9 Team" Description="*motorcycle noises*" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                    <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
-                                </WrapPanel>
-                            </DockPanel>
-                        </TabItem>
-                        <TabItem Header="Popular">
-
-                        </TabItem>
-                    </TabControl>
-                </Grid>
-                <Grid Height="1024"/>
-            </DockPanel>
-        </ScrollViewer>
-    </Grid>
+        Title="Start9 Market" Height="450" Width="816">
+    <win:DecoratableWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </win:DecoratableWindow.Resources>
+    <DockPanel>
+        <ContentControl Style="{DynamicResource MarketTopToolbarContentControlStyle}" DockPanel.Dock="Top">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <ToggleButton x:Name="GetModulesToggleButton" IsChecked="True">Get Modules</ToggleButton>
+                    <ToggleButton x:Name="SubmitModuleToggleButton">Submit a module</ToggleButton>
+                </StackPanel>
+                <ui:ActionBox x:Name="ModuleSearchBox" Style="{DynamicResource ModuleSearchBoxStyle}" Text="Search" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+        </ContentControl>
+        <Grid Visibility="{Binding IsChecked, ElementName=GetModulesToggleButton, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ScrollViewer Style="{DynamicResource MarketMainScrollViewerStyle}" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Vertical">
+                    <GroupBox Header="Recommended for you or other likely most appealing category">
+                        <DockPanel Height="200" UseLayoutRounding="True">
+                            <cont:MarketItem Width="256" VerticalAlignment="Stretch" Title="Double-Decker-Bar" Author="Start9 Team" Description="Insert whatever the hecc the description for DDB was here." DockPanel.Dock="Left">
+                                <cont:MarketItem.Icon>
+                                    <Canvas Width="48" Height="48" Background="Red"/>
+                                </cont:MarketItem.Icon>
+                            </cont:MarketItem>
+                            <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <cont:MarketItem Title="Jumpstart Menu" Author="Start9 Team" Description="Jump to any app, anytime." Width="128" Height="100"/>
+                                <cont:MarketItem Title="Dockintosh" Author="Start9 Team" Description="Apples to apples, docks to docks." Width="128" Height="100"/>
+                                <cont:MarketItem Title="Wheelie" Author="Start9 Team" Description="*motorcycle noises*" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                            </WrapPanel>
+                        </DockPanel>
+                    </GroupBox>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <ComboBox Style="{DynamicResource MarketGroupBoxHeaderComboBoxStyle}" SelectedIndex="1">
+                                <ComboBoxItem Content="Popular (Today)"/>
+                                <ComboBoxItem Content="Popular (This Week)"/>
+                                <ComboBoxItem Content="Popular (This Month)"/>
+                                <ComboBoxItem Content="Popular (This Year)"/>
+                                <ComboBoxItem Content="Popular (All Time)"/>
+                            </ComboBox>
+                        </GroupBox.Header>
+                        <Grid Height="200">
+                            <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                            </WrapPanel>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <ComboBox Style="{DynamicResource MarketGroupBoxHeaderComboBoxStyle}" SelectedIndex="0">
+                                <ComboBoxItem Content="Recently added or updated"/>
+                                <ComboBoxItem Content="Recently added"/>
+                                <ComboBoxItem Content="Recently updated"/>
+                            </ComboBox>
+                        </GroupBox.Header>
+                        <Grid Height="200">
+                            <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                                <cont:MarketItem Title="Sample Text" Author="Sample Text" Description="Lorem ipsum de Sample Text bla bla bla etc idfk lol something words haha yes" Width="128" Height="100"/>
+                            </WrapPanel>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <Grid Visibility="{Binding IsChecked, ElementName=SubmitModuleToggleButton, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Rectangle Width="200" Height="200" Fill="Red"/>
+        </Grid>
+    </DockPanel>
 </win:DecoratableWindow>
