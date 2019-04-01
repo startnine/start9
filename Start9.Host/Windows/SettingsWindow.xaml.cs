@@ -266,9 +266,8 @@ namespace Start9.Host.Windows
 			}
 		}*/
 
-        private void MarketWindowButton_Click(object sender, RoutedEventArgs e)
+        private void MarketButton_Click(object sender, RoutedEventArgs e)
         {
-            Start9.UI.Wpf.Windows.MessageBox< Start9.UI.Wpf.Windows.MessageBoxEnums.OkButton>.Show(Assembly.GetExecutingAssembly().GetCustomAttribute<System.Runtime.Versioning.TargetFrameworkAttribute>().FrameworkName, "Currently running framework"); //this, 
             new MarketWindow().Show();
         }
 

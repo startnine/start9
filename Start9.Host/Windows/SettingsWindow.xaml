@@ -3,7 +3,6 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:local="clr-namespace:Start9"
                  xmlns:networkui="clr-namespace:NetworkUI;assembly=networkui"
                  xmlns:ui="clr-namespace:Start9.UI.Wpf;assembly=Start9.UI.Wpf"
                  xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf"
@@ -34,33 +33,18 @@
                     <Button x:Name="LoginButton" Style="{DynamicResource LoginButtonStyle}">Log in</Button>
                     <Button x:Name="RegisterButton" Style="{DynamicResource RegisterButtonStyle}">Register</Button>
                 </StackPanel>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button x:Name="MarketButton" Style="{DynamicResource MarketButtonStyle}" ToolTip="Market" Click="MarketButton_Click"/>
+                    <Button x:Name="CommunityButton" Style="{DynamicResource CommunityButtonStyle}" ToolTip="Community"/>
+                </StackPanel>
             </Grid>
         </ContentControl>
         <!--TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="22" Margin="18,0"
                  Style="{DynamicResource AddressBox}" /-->
         <TabControl Style="{DynamicResource MainTabControlStyle}">
             <TabItem Header="Modules">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <LinearGradientBrush.GradientStops>
-                                <GradientStop Offset="0" Color="#FF588FD0"/>
-                                <GradientStop Offset="1" Color="#00588FD0"/>
-                            </LinearGradientBrush.GradientStops>
-                        </LinearGradientBrush>
-                    </Grid.Background>
-                    <ListView DockPanel.Dock="Left" 
-                          BorderBrush="Transparent" 
-                          BorderThickness="0" 
-                          Grid.Column="0" 
-                          x:Name="Modules"
-                          UseLayoutRounding="True" 
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          HorizontalContentAlignment="Stretch">
+                <DockPanel>
+                    <ListView x:Name="Modules" Style="{DynamicResource ModulesListViewStyle}" DockPanel.Dock="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <!--<ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:Module}">
                             <Grid>
@@ -83,28 +67,14 @@
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>-->
-                        <ListView.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <LinearGradientBrush.GradientStops>
-                                    <GradientStop Offset="0" Color="#FFD8DDF0"/>
-                                    <GradientStop Offset="1" Color="#00D8DDF0"/>
-                                </LinearGradientBrush.GradientStops>
-                            </LinearGradientBrush>
-                        </ListView.Background>
-                        <ListView.Effect>
-                            <DropShadowEffect x:Name="DropShadow" Color="Black" Direction="230" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
-                        </ListView.Effect>
                     </ListView>
-                    <Grid Grid.Column="1"/>
-                    <ScrollViewer
+                    <ScrollViewer Style="{DynamicResource ModulesGraphScrollViewerStyle}"
                     CanContentScroll="True"
                     VerticalScrollBarVisibility="Visible"
-                    HorizontalScrollBarVisibility="Visible"
+                    HorizontalScrollBarVisibility="Auto"
                     Focusable="False"
-                    Grid.Column="1">
-
-                    </ScrollViewer>
-                </Grid>
+                    Grid.Column="1"/>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Options">
                 <Grid>
@@ -126,7 +96,7 @@
                                 </VisualBrush>
                             </Frame.OpacityMask>
                         </Frame>
-                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="MarketWindowButton_Click">Show Market Window</Button>
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center">Show Market Window</Button>
                     </Grid>
                     <Grid x:Name="SettingsGrid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
                         <Grid.RenderTransform>

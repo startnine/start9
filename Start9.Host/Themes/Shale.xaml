@@ -1,22 +1,20 @@
 ﻿<ResourceDictionary 
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Start9.Host"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:Start9.Host"
             xmlns:wind="clr-namespace:Start9.Host.Windows"
             xmlns:ui="clr-namespace:Start9.UI.Wpf;assembly=Start9.UI.Wpf"
-            xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf">
+            xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf"
+            xmlns:tic="clr-namespace:Start9.UI.Wpf.Statics;assembly=Start9.UI.Wpf"
+        xmlns:cont="clr-namespace:Start9.Host.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Start9.UI.Wpf;component/Themes/Shale.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="{x:Type wind:SettingsWindow}" TargetType="{x:Type wind:SettingsWindow}" BasedOn="{StaticResource {x:Type win:DecoratableWindow}}">
         <Setter Property="TitlebarHeight" Value="61"/>
-    </Style>
-
-    <Style x:Key="MainTabControlStyle" TargetType="{x:Type TabControl}" BasedOn="{StaticResource LineTabControlStyle}">
-        <Setter Property="Margin" Value="0,-30,0,0"/>
     </Style>
 
     <Style x:Key="TitlebarAreaContentControl" TargetType="{x:Type ContentControl}">
@@ -50,27 +48,400 @@
         </Setter>
     </Style>
 
-    <Style x:Key="LoginRegisterButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource CaptionButtonStyle}">
-        <Setter Property="Width" Value="Auto"/>
+    <Style x:Key="TitlebarButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource CaptionButtonStyle}">
         <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Height" Value="31"/>
+    </Style>
+
+    <Style x:Key="AccountRelatedButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TitlebarButtonStyle}">
         <Setter Property="Padding" Value="12,8"/>
-        <Setter Property="Effect" Value="{x:Null}"/>
-        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
+    <Style x:Key="LoginButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource AccountRelatedButtonStyle}">
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+    </Style>
+    <Style x:Key="RegisterButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource AccountRelatedButtonStyle}"/>
+
+    <Style x:Key="MarketButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TitlebarButtonStyle}">
+        <Setter Property="Content">
+            <Setter.Value>
+                <Grid Width="9" Height="10">
+                    <Border BorderBrush="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" BorderThickness="2,2,2,0" Margin="2,0" VerticalAlignment="Top" Height="3"/>
+                    <Rectangle Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Margin="0,3,0,0"/>
+                </Grid>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CommunityButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource TitlebarButtonStyle}">
+        <Setter Property="Margin" Value="0,0,135,0"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Grid Width="13" Height="13">
+                    <Path Data="M 0 2.5 L 6.5 0 L 13 2.5 L 6.5 5 Z" StrokeThickness="0" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" VerticalAlignment="Top"/>
+                    <Path Data="M 0 0 L 6 2.5 L 6 9 L 0 6.5 Z" StrokeThickness="0" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                    <Path Data="M 6 0 L 0 2.5 L 0 9 L 6 6.5 Z" StrokeThickness="0" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                </Grid>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--#endregion Titlebar stuff-->
+    
+    
+    <!--#region Main content stuff-->
+
+    <Style x:Key="MainTabControlStyle" TargetType="{x:Type TabControl}" BasedOn="{StaticResource LineTabControlStyle}">
+        <Setter Property="Margin" Value="0,-30,0,0"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#01000000" BorderBrush="{DynamicResource TitlebarBorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                        <Label x:Name="Glyph" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" RenderOptions.EdgeMode="Aliased" IsTabStop="False" Margin="0" Padding="0" Effect="{DynamicResource DropShadow}" />
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Margin="0">
+                            <ui:TravellingSelector TargetPanel="{Binding ElementName=HeaderPanel}" SelectedObjectIndex="{TemplateBinding SelectedIndex}" CollectionSize="{Binding Items.Count, RelativeSource={RelativeSource Mode=TemplatedParent}}" AnimationDuration="0:0:0.250" Width="{Binding ActualWidth, ElementName=HeaderPanel}" Height="{Binding ActualHeight, ElementName=HeaderPanel}">
+                                <ui:TravellingSelector.AnimationEase>
+                                    <CubicEase EasingMode="EaseOut"/>
+                                </ui:TravellingSelector.AnimationEase>
+                                <ui:TravellingSelector.Template>
+                                    <ControlTemplate TargetType="{x:Type ui:TravellingSelector}">
+                                        <Grid Background="#01000000">
+                                            <Border x:Name="PART_Selector" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{TemplateBinding SelectionWidth}" Height="{TemplateBinding SelectionHeight}">
+                                                <Border Margin="-2,0,-2,1" ClipToBounds="True">
+                                                    <Border x:Name="SelectedBorder" Margin="4,0" BorderBrush="{DynamicResource SelectedHighlightBrush}" BorderThickness="0,0,0,2" RenderTransformOrigin="0.5,1">
+                                                        <Border.RenderTransform>
+                                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                        </Border.RenderTransform>
+                                                        <Rectangle Fill="{Binding BorderBrush, ElementName=SelectedBorder}" Opacity="1" Height="2" VerticalAlignment="Bottom" Margin="0,-2">
+                                                            <Rectangle.Effect>
+                                                                <BlurEffect Radius="5"/>
+                                                            </Rectangle.Effect>
+                                                        </Rectangle>
+                                                    </Border>
+                                                </Border>
+                                            </Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ui:TravellingSelector.Template>
+                            </ui:TravellingSelector>
+                            <UniformGrid Name="HeaderPanel" Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" Rows="1" Margin="61,0"/>
+                        </Grid>
+                        <Border x:Name="Border" Grid.Row="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" CornerRadius="0" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Rectangle VerticalAlignment="Top" Height="18" IsHitTestVisible="False" Grid.Column="0" Grid.Row="0">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush Opacity="0.75" StartPoint="0,0" EndPoint="0,1" GradientStops="{DynamicResource ShadowGradientStops}"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <ContentPresenter Name="PART_SelectedContentHost" ContentSource="SelectedContent" TextBlock.Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ModulesListViewStyle" TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type ListView}}">
+        <Setter Property="Width" Value="285"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Border CornerRadius="3,4,4,3" UseLayoutRounding="True" Margin="5" Effect="{DynamicResource TertiaryDropShadow}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.75" GradientStops="{DynamicResource ButtonIdleBackgroundGradientStops}"/>
+                        </Border.Background>
+                        <ScrollViewer Focusable="False" CanContentScroll="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="LoginButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource LoginRegisterButtonStyle}">
-        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+    <Style x:Key="ModulesGraphScrollViewerStyle" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+        <Setter Property="tic:AttachedProperties.CornerCurves">
+            <Setter.Value>
+                <tic:CornerCurves TopLeft="False" TopRight="False" BottomRight="True" BottomLeft="False"/>
+            </Setter.Value>
+        </Setter>
     </Style>
-    <Style x:Key="RegisterButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource LoginRegisterButtonStyle}"/>
+
+    <!--#endregion Main content stuff-->
+
+
+    <!--#region Market stuff-->
+
+    <Style x:Key="{x:Type cont:MarketItem}" TargetType="{x:Type cont:MarketItem}">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="cont:MarketItem">
+                    <ControlTemplate.Resources>
+                        <CubicEase x:Key="ScalingEase" EasingMode="EaseOut"/>
+                    </ControlTemplate.Resources>
+                    <Grid x:Name="RootGrid" Margin="10" Background="#01000000" Effect="{DynamicResource TertiaryDropShadow}" UseLayoutRounding="True">
+                        <Grid RenderTransformOrigin="0.5,0.5" UseLayoutRounding="True">
+                            <Border x:Name="SizingAid" Background="#01000000"/>
+                            <Border x:Name="BackgroundBorder" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3" ClipToBounds="True" UseLayoutRounding="True">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.75" GradientStops="{DynamicResource ButtonIdleBackgroundGradientStops}"/>
+                                </Border.Background>
+                                <Grid UseLayoutRounding="True">
+                                    <Border x:Name="SelectedBorder" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3" ClipToBounds="True" UseLayoutRounding="True" Opacity="0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.75" GradientStops="{DynamicResource CardListViewSelectedBackgroundGradientStops}"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <ContentPresenter Content="{TemplateBinding Icon}" Grid.Column="0" Grid.Row="0"/>
+                                        <UniformGrid Columns="1" Margin="5" VerticalAlignment="Center" SnapsToDevicePixels="True" UseLayoutRounding="True" Grid.Column="1" Grid.Row="0">
+                                            <TextBlock Text="{TemplateBinding Title}" TextWrapping="WrapWithOverflow" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <TextBlock Text="By " HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{TemplateBinding Author}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </UniformGrid>
+                                        <TextBlock Text="{TemplateBinding Description}" TextWrapping="WrapWithOverflow" Margin="5,5,5,0" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                    </Grid>
+                                    <!--ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Focusable="False" UseLayoutRounding="True" ClipToBounds="True"/-->
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Margin" To="5" Duration="0:0:0.125" EasingFunction="{StaticResource ScalingEase}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Margin" To="10" Duration="0:0:0.125" EasingFunction="{StaticResource ScalingEase}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="olde" TargetType="cont:MarketItem">
+        <!--Setter Property="Width" Value="275"/>
+        <Setter Property="Height" Value="175"/-->
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="cont:MarketItem">
+                    <!--ControlTemplate.Resources>
+                        <PathGeometry x:Key="PART_OuterPathGeometry" Figures="M 0 0 L 0 275 L 275 175 Z"/>
+                    </ControlTemplate.Resources-->
+                    <Grid Margin="10" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="Scaler" ScaleX="1" ScaleY="1"/>
+                        </Grid.RenderTransform>
+                        <Grid.Effect>
+                            <DropShadowEffect Color="Black" Direction="320" ShadowDepth="1" BlurRadius="3" Opacity="0.375"/>
+                        </Grid.Effect>
+                        <ui:Planerator x:Name="PART_Perspective" UseLayoutRounding="True">
+                            <ContentControl>
+                                <ContentControl.Content>
+                                    <Grid Background="#01000000">
+                                        <Grid>
+                                            <Grid.Background>
+                                                <LinearGradientBrush StartPoint="0,1" EndPoint="0.5,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStopCollection>
+                                                            <GradientStop Color="#FFE8EFF8" Offset="0"/>
+                                                            <GradientStop Color="#FFC4E2F2" Offset="1"/>
+                                                        </GradientStopCollection>
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Grid.Background>
+                                            <Grid.OpacityMask>
+                                                <VisualBrush>
+                                                    <VisualBrush.Visual>
+                                                        <Grid Background="#01000000" Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualWidth}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="10"/>
+                                                                <ColumnDefinition Width="86"/>
+                                                                <ColumnDefinition/>
+                                                                <ColumnDefinition Width="10"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="37"/>
+                                                                <RowDefinition Height="10"/>
+                                                                <RowDefinition/>
+                                                                <RowDefinition Height="10"/>
+                                                            </Grid.RowDefinitions>
+                                                            <Path Data="M 0 37 L 0 10 0 10 Q 2.5,2.5 10,0 L 51 0 Q 58.5,2.5 61,5 L 86 35 Q 88.5,36 96,37 L 0 125 Z" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat" UseLayoutRounding="True" Fill="Black" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
+                                                            <!--Path.Stroke>
+                                                                <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                                                                    <LinearGradientBrush.GradientStops>
+                                                                        <GradientStopCollection>
+                                                                            <GradientStop Color="#FF9FB5C8" Offset="0"/>
+                                                                            <GradientStop Color="#FFC0CAD5" Offset="1"/>
+                                                                        </GradientStopCollection>
+                                                                    </LinearGradientBrush.GradientStops>
+                                                                </LinearGradientBrush>
+                                                            </Path.Stroke>
+                                                            </Path-->
+                                                            <Path Data="M 0 0 Q 7.5,2 10,10 L 0 10 Z" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat" UseLayoutRounding="True" Fill="Black" Grid.Column="3" Grid.Row="1"/>
+                                                            <Path Data="M 10 0 Q 7.5,7.5 0,10 L 0 0 Z" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat" UseLayoutRounding="True" Fill="Black" Grid.Column="3" Grid.Row="3"/>
+                                                            <Path Data="M 10 10 Q 2.5,7.5 0,0 L 10 0 Z" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat" UseLayoutRounding="True" Fill="Black" Grid.Column="0" Grid.Row="3"/>
+                                                            <Rectangle x:Name="HorizontalFill" Fill="#FFFFFFFF" StrokeThickness="0" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2"/>
+                                                            <Rectangle x:Name="VerticalFillA" Fill="#FFFFFFFF" StrokeThickness="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"/>
+                                                            <Rectangle x:Name="VerticalFillB" Fill="#FFFFFFFF" StrokeThickness="0" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2"/>
+                                                        </Grid>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Grid.OpacityMask>
+                                            <Grid.Effect>
+                                                <DropShadowEffect Color="#FFAFBFCE" Direction="0" ShadowDepth="0" BlurRadius="2" Opacity="1"/>
+                                            </Grid.Effect>
+                                        </Grid>
+                                        <ContentPresenter Content="{TemplateBinding Icon}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"/>
+                                        <Border Margin="13,50,15,15" CornerRadius="5" BorderThickness="1">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FFC8CED8"/>
+                                                        <GradientStop Offset="0.5" Color="#E8E8F0D8"/>
+                                                        <GradientStop Offset="1" Color="#FFC8CED8"/>
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Border.BorderBrush>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Offset="0" Color="#FFC2CBD9"/>
+                                                        <GradientStop Offset="1" Color="#FF909FB2"/>
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Border.BorderBrush>
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="Black" Direction="320" ShadowDepth="1" BlurRadius="3" Opacity="0.375"/>
+                                            </Border.Effect>
+                                            <Grid>
+                                                <DockPanel>
+                                                    <TextBlock Text="{TemplateBinding Title}" DockPanel.Dock="Top" Margin="5"/>
+                                                    <Border DockPanel.Dock="Top" BorderBrush="Transparent" BorderThickness="0">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                <LinearGradientBrush.GradientStops>
+                                                                    <GradientStop Offset="0" Color="#FFB0B7C0"/>
+                                                                    <GradientStop Offset="1" Color="#FFB1B7C1"/>
+                                                                </LinearGradientBrush.GradientStops>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                        <DockPanel Margin="5">
+                                                            <TextBlock Text="By" Foreground="White" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                                                            <TextBlock Text="{TemplateBinding Author}" Foreground="White" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <TextBlock TextWrapping="WrapWithOverflow" Text="{TemplateBinding Description}" Margin="5"/>
+                                                </DockPanel>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </ContentControl.Content>
+                            </ContentControl>
+                        </ui:Planerator>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Scaler" Storyboard.TargetProperty="ScaleX" To="0.875" Duration="0:0:0.200">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="Scaler" Storyboard.TargetProperty="ScaleY" To="0.875" Duration="0:0:0.200">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Scaler" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.200">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="Scaler" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.200">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuinticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="RotationMultiplier" To="-0.25" Duration="0:0:0.5">
+                                <DoubleAnimation.EasingFunction>
+                                    <CircleEase EasingMode="EaseOut"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="RotationMultiplier" To="0" Duration="0:0:0.375">
+                                <DoubleAnimation.EasingFunction>
+                                    <CircleEase EasingMode="EaseIn"/>
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion Market stuff-->
 </ResourceDictionary>
