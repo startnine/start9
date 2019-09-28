@@ -1,0 +1,126 @@
+﻿<win:DecoratableWindow x:Class="Start9.Host.Windows.SettingsWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:networkui="clr-namespace:NetworkUI;assembly=networkui"
+                 xmlns:ui="clr-namespace:Start9.UI.Wpf;assembly=Start9.UI.Wpf"
+                 xmlns:win="clr-namespace:Start9.UI.Wpf.Windows;assembly=Start9.UI.Wpf"
+                 mc:Ignorable="d"
+                 Title="Start9 Settings" Height="610" Width="840" ResizeMode="CanResize" Visibility="Visible">
+    <!--xmlns:apictrl="clr-namespace:Start9.Api.Controls;assembly=Start9.Api"
+                 xmlns:plex="clr-namespace:Start9.Api.Plex;assembly=Start9.Api"-->
+    <win:DecoratableWindow.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="TestBitmapImage" UriSource="C:\Windows\Web\Wallpaper\img0.jpg" />
+            <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+            <SolidColorBrush x:Key="nodeBorderBrush" Color="Black" />
+            <LinearGradientBrush x:Key="nodeFillBrush" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="White" Offset="0" />
+                <GradientStop Color="#7FC9FF" Offset="0.6" />
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="connectionBrush" Color="Black" />
+            <SolidColorBrush x:Key="LinkBrush" Color="#FF40EFFF" />
+            <SolidColorBrush x:Key="connectorBackgroundBrush" Color="White"/>
+
+        </ResourceDictionary>
+    </win:DecoratableWindow.Resources>
+    <DockPanel>
+        <ContentControl Style="{DynamicResource TitlebarAreaContentControl}" DockPanel.Dock="Top">
+            <Grid>
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Button x:Name="UserEmblemButton" Style="{DynamicResource UserEmblemButtonStyle}" Click="UserEmblemButton_Click" />
+                    <Button x:Name="LoginButton" Style="{DynamicResource LoginButtonStyle}">Log in</Button>
+                    <Button x:Name="RegisterButton" Style="{DynamicResource RegisterButtonStyle}">Register</Button>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button x:Name="MarketButton" Style="{DynamicResource MarketButtonStyle}" ToolTip="Market" Click="MarketButton_Click"/>
+                    <Button x:Name="CommunityButton" Style="{DynamicResource CommunityButtonStyle}" ToolTip="Community"/>
+                </StackPanel>
+            </Grid>
+        </ContentControl>
+        <!--TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="22" Margin="18,0"
+                 Style="{DynamicResource AddressBox}" /-->
+        <TabControl Style="{DynamicResource MainTabControlStyle}">
+            <TabItem Header="Modules">
+                <DockPanel>
+                    <ListView x:Name="Modules" Style="{DynamicResource ModulesListViewStyle}" DockPanel.Dock="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <!--<ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:Module}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="18" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Path=Description, Mode=OneTime}" Grid.Row="1" TextWrapping="Wrap"/>
+                                <TextBlock FontSize="10" Grid.Row="2" TextWrapping="Wrap">
+                                    <Run Text="Version: "/>
+                                    <Run Text="{Binding Path=Version, Mode=OneTime}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="10" Grid.Row="3" TextWrapping="Wrap">
+                                    <Run Text="Publisher: "/>
+                                    <Run Text="{Binding Path=Publisher, Mode=OneTime}"/>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>-->
+                    </ListView>
+                    <ScrollViewer Style="{DynamicResource ModulesGraphScrollViewerStyle}"
+                    CanContentScroll="True"
+                    VerticalScrollBarVisibility="Visible"
+                    HorizontalScrollBarVisibility="Auto"
+                    Focusable="False"
+                    Grid.Column="1"/>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Options">
+                <Grid>
+                    <Grid x:Name="MarketGrid" Visibility="Hidden">
+                        <Grid.RenderTransform>
+                            <TranslateTransform/>
+                        </Grid.RenderTransform>
+                        <Frame x:Name="MarketFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch" Visibility="Hidden" Navigated="MarketFrame_Navigated"
+                   NavigationUIVisibility="Hidden">
+                            <Frame.OpacityMask>
+                                <VisualBrush AlignmentX="Center" AlignmentY="Center">
+                                    <VisualBrush.Visual>
+                                        <Border Background="Black" BorderBrush="Transparent" BorderThickness="0"
+                                    CornerRadius="0,0,12,12"
+                                    Width="{Binding ActualWidth, Source={x:Reference SizingAid}, FallbackValue=25}"
+                                    Height="{Binding ActualHeight, Source={x:Reference SizingAid}, FallbackValue=25}" />
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Frame.OpacityMask>
+                        </Frame>
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center">Show Market Window</Button>
+                    </Grid>
+                    <Grid x:Name="SettingsGrid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Hidden">
+                        <Grid.RenderTransform>
+                            <TranslateTransform/>
+                        </Grid.RenderTransform>
+                        <Rectangle x:Name="SizingAid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                       Opacity="1" IsHitTestVisible="False" />
+                        <Frame x:Name="SettingsFrame" Margin="2" Padding="0" HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch" Visibility="Visible" Navigated="SettingsFrame_Navigated"
+                   NavigationUIVisibility="Hidden">
+                            <Frame.OpacityMask>
+                                <VisualBrush AlignmentX="Center" AlignmentY="Center">
+                                    <VisualBrush.Visual>
+                                        <Border Background="Black" BorderBrush="Transparent" BorderThickness="0"
+                                    CornerRadius="0,0,12,12"
+                                    Width="{Binding ActualWidth, Source={x:Reference SizingAid}, FallbackValue=25}"
+                                    Height="{Binding ActualHeight, Source={x:Reference SizingAid}, FallbackValue=25}" />
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Frame.OpacityMask>
+                        </Frame>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</win:DecoratableWindow>

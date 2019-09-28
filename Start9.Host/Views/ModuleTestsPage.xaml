@@ -1,0 +1,64 @@
+﻿<Page x:Class="Start9.Host.Pages.ModuleTestsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Start9.Host.Pages"
+      mc:Ignorable="d"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="ModuleTestsPage">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Start9.Api;component/Themes/Plex.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Page.Resources>
+    <StackPanel>
+        <Label>Choose a module:</Label>
+        <ListView Margin="5" Name="Modules">
+            <!--<ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type start9:Module}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneTime}" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding Path=Description, Mode=OneTime}"/>
+                        <TextBlock FontSize="10">
+                            <Run Text="Version: "/>
+                            <Run Text="{Binding Path=Version, Mode=OneTime}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="10">
+                            <Run Text="Publisher: "/>
+                            <Run Text="{Binding Path=Publisher, Mode=OneTime}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
+        </ListView>
+        <Button Height="40" Click="Button_Click">Launch New Instance</Button>
+        <Separator Margin="0,10,0,10"/>
+        <Label>Instances:</Label>
+        <ListView Margin="5" Name="Instances" ItemsSource="{Binding ElementName=Modules, Path=SelectedItem.Instances}">
+            <!--<ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type start9:ModuleInstance}">
+                    <TextBlock>
+                        <Run Text="Process ID" />
+                        <Run Text="{Binding Process.ProcessId, Mode=OneTime}" />
+                    </TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
+        </ListView>
+
+        <!--<Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button> Kill this plant!</Button>
+            <Button Grid.Column="1">Get qualification data</Button>
+        </Grid>
+        
+        To be implemented later...-->
+    </StackPanel>
+</Page>

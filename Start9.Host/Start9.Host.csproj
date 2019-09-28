@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Start9.Host</RootNamespace>
+    <AssemblyName>Start9.Host</AssemblyName>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+	  <UseWpf>true</UseWpf>
+    <AssemblyTitle>Start9.Host</AssemblyTitle>
+    <Product>Start9</Product>
+    <Copyright>Copyright © Start9 Contributors 2019</Copyright>
+    <OutputPath>$(AppData)\Start9\</OutputPath>
+	  <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Shale.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.0.1" />
+    <PackageReference Include="NetworkView" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Start9.UI.Wpf">
+      <HintPath>..\..\start9-ui\Start9.UI.Wpf\bin\Debug\netcoreapp3.0\Start9.UI.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\superbar\Superbar\bin\Debug\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\Shale.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

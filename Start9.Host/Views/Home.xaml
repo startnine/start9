@@ -1,0 +1,91 @@
+﻿<Page x:Class="Start9.Host.Pages.Home"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Start9.Host.Pages"
+      mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="800"
+      Title="Home">
+    <Page.Content>
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
+                <Button x:Name="PlexTestCommandLinkButton" Height="192"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="PlexTestCommandLinkButton_Click">
+                    <!--ui:CommandLinkButton.Icon>
+                        <Canvas>
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="-60" Y="-15" />
+                            </Canvas.RenderTransform>
+                            <Path Style="{DynamicResource IconPathStyle}">
+                                <Path.Data>
+                                    <PathGeometry
+                                        Figures="m 15.827115 59.232401 c 0 0 15.977941 -2.415497 19.218502 -8.64833 3.879385 -7.461543 -0.984581 -15.666443 -9.609247 -11.723286 -4.125199 1.886023 -3.090155 10.376667 -9.609255 20.371616 z"
+                                        FillRule="NonZero" />
+                                </Path.Data>
+                            </Path>
+                            <Path Style="{DynamicResource IconPathStyle}">
+                                <Path.Data>
+                                    <PathGeometry
+                                        Figures="M 39.238314 42.630679 C 38.226119 38.598774 35.853806 35.8226 31.931536 35.043125 l 8.600112 -9.432956 c 3.901435 1.201202 7.031959 3.498466 7.627832 8.53591 z"
+                                        FillRule="NonZero" />
+                                </Path.Data>
+                            </Path>
+                            <Path Style="{DynamicResource IconPathStyle}">
+                                <Path.Data>
+                                    <PathGeometry
+                                        Figures="m 42.930385 22.826177 c 3.901435 1.201201 7.031959 3.498466 7.627832 8.53591 C 75.260091 10.42282 86.843925 1.0139581 97.82597 -21.945585 c 1.04488 -2.184491 -0.466039 -3.769996 -2.568427 -2.568424 -25.46521 14.554104 -29.657109 21.5250521 -52.327158 47.340186 z"
+                                        FillRule="NonZero" />
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </ui:CommandLinkButton.Icon-->
+                    View and test various Plex controls and styles (TEMPORARY)
+                </Button>
+                <Button x:Name="ModuleFrontEndTestCommandLinkButton" Height="192"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                           Click="ModuleFrontEndTestCommandLinkButton_Click">
+                    <!--apictrl:CommandLinkButton.Icon>
+                        <Canvas>
+                            <Canvas.RenderTransform>
+                                <TranslateTransform X="-52" Y="-130" />
+                            </Canvas.RenderTransform>
+                            <Path x:Name="ModuleTestsPath" Style="{DynamicResource IconPathStyle}">
+                                <Path.Data>
+                                    <PathGeometry
+                                        Figures="m 24.712062 172.77058 h 65.594035 v -17.009 H 28.794205 c 4.100644 5.98211 2.621108 13.69274 -4.082143 17.009 z"
+                                        FillRule="NonZero" />
+                                </Path.Data>
+                            </Path>
+                            <Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="9.5"
+                                     Canvas.Top="153.6" Width="17.7" Height="17.7"
+                                     Fill="{Binding Fill, Source={x:Reference ModuleTestsPath}}"
+                                     StrokeThickness="{Binding StrokeThickness, Source={x:Reference ModuleTestsPath}}"
+                                     Stroke="{Binding Stroke, Source={x:Reference ModuleTestsPath}}"
+                                     StrokeMiterLimit="4" />
+                            <Path Style="{DynamicResource IconPathStyle}">
+                                <Path.Data>
+                                    <PathGeometry
+                                        Figures="m 26.148531 153.11575 c -3.720038 -4.06948 -12.835264 -5.82117 -18.1806548 2.64583 L 7.9677171 88.61037 H 28.794717 v 4.24621 h -15.481 v 54.438 h 15.481 l -3.53e-4 5.82117 z"
+                                        FillRule="NonZero" />
+                                </Path.Data>
+                            </Path>
+                            <Path Style="{DynamicResource IconPathStyle}">
+                                <Path.Data>
+                                    <PathGeometry
+                                        Figures="m 28.265197 153.11558 3.53e-4 -64.505 h 30.766667 v 64.505 z"
+                                        FillRule="NonZero" />
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </apictrl:CommandLinkButton.Icon-->
+                    View and test various Front-end experiments for potential Modules (TEMPORARY)
+                </Button>
+                <!--apictrl:CommandLinkButton x:Name="MarketTestCommandLinkButton" Height="192"
+                                           Style="{DynamicResource IceIconCommandLinkButtonStyle}"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                           Header="Market Front-End Test" Click="MarketTestCommandLinkButton_Click"/-->
+            </StackPanel>
+        </ScrollViewer>
+    </Page.Content>
+</Page>
